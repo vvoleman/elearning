@@ -1,0 +1,78 @@
+:root{
+    --fancy-font:"Century Gothic";
+    --footer-height:60px;
+}
+html {
+    position: relative;
+    min-height: 100%;
+}
+body{
+    background:#e8e8e8 !important;
+    margin-bottom:80px !important;
+}
+.nav_menu{
+    background:#21252B;
+    box-shadow: 0px 5px 41px -10px rgba(0,0,0,0.75);
+    color:white;
+    font-family:var(--fancy-font);
+}
+.nav_menu a{
+    color:white;
+}
+.nav_menu a:hover{
+    color:#ccc;
+}
+.big_text{
+    font-size:100px;
+}
+.img_block{
+    color:#2B3038;
+}
+.img_block img{
+    padding:15px;
+    width:700px;
+}
+.login_form_div{
+    padding:30px;
+    background:#E0E0E0;
+    border:1px solid #C4C4C4;
+}
+.login_form_div button{
+    background:#35b03c;
+    color:white;
+}
+.form_div h3{
+    text-align:center;
+}
+.m-top{
+    margin-top:10px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: var(--footer-height); /* Set the fixed height of the footer here */
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
+.fa-exclamation-circle{
+    color:#cc0b00;
+}
+.fa-check-circle{
+    color:#46a851;
+}
+.fa-circle{
+    color:#f6a607;
+}
+.fas{
+    padding:5px;
+    font-size:25px;
+}
+#navbar .dropdown-menu a{
+    color:black;
+}
+.fa-crown{
+    color:gold;
+    font-size:18px;
+}
