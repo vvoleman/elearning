@@ -20,5 +20,6 @@ Route::get('/logout','LoginController@getLogout')->middleware('auth')->name('log
 
 Route::get('/dashboard','AccountController@getDashboard')->middleware('auth')->name('account.dashboard');
 
+Route::get('/accounts','AccountController@getAccountsListAdmin')->middleware('hasRole:admin')->name('admin.accounts');
 
 ?>

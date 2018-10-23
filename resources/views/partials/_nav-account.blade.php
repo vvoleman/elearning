@@ -9,7 +9,7 @@
                 <a class="nav-link" href="{{route('account.dashboard')}}"><i class="fas fa-home"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link">@yield('title-username')
+                <a class="nav-link">{{Auth::user()->getFullname()}}
                 @if(Auth::user()->hasRole('admin'))
                     <i class="fas fa-crown"></i>
                 @endif
@@ -20,8 +20,12 @@
                     <i class="fas fa-caret-down"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Historie kurzů</a>
-                    <a class="dropdown-item" href="#">Nastavení</a>
+                    @if(Auth::user()->hasRole('admin'))
+                        <a class="dropdown-item" href="{{route('admin.accounts')}}">Účty</a>
+                    @endif
+                    @if(Auth::user()->hasRole('user'))
+                        <a class="dropdown-item" href="#">Historie kurzů</a>
+                    @endif
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{route('login.logout')}}">Odhlásit</a>
                 </div>

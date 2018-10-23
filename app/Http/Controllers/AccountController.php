@@ -8,13 +8,12 @@ use App\User;
 class AccountController extends Controller
 {
     public function getDashboard(Request $request){
-        if($request->user()->hasRole('admin')){
-            $user = new User();
-            $users = $user->select('id_u as id','firstname','surname','email','registered','last_login','roles.name')->join('roles','users.role_id','=','roles.id_r')->get();
+        return view('Account/dashboard');
+    }
+    public function getAccountsListAdmin(Request $request){
+        $user = new User();
+        $users = $user->select('id_u as id','deact_reason','deact_date','firstname','surname','email','registered','last_login','roles.name')->join('roles','users.role_id','=','roles.id_r')->get();
 
-            return view('Account/dashboard',["data"=>$users]);
-        }else{
-            return view('Account/dashboard');
-        }
+        return view('Account/accounts',["data"=>$users]);
     }
 }

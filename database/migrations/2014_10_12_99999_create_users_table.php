@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->dateTime('registered')->default(\Illuminate\Support\Facades\DB::raw("NOW()"));
             $table->dateTime('last_login')->nullable();
+            $table->string('deact_reason')->nullable();
+            $table->dateTime('deact_date')->nullable();
         });
     }
 
