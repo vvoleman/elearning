@@ -32,7 +32,7 @@ class LoginController extends Controller
             //dd(Session::all());
             return redirect()->route('account.dashboard');
         }else{
-            Session::flash('danger','Špatné přihlašovací údaje!   1');
+            Session::flash('danger','Špatné přihlašovací údaje!');
             return redirect()->route('login.login');
         } //checks credentials
     }

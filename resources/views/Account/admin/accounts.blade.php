@@ -1,4 +1,4 @@
-@extends('mains/account_main')
+@extends('mains.account_main')
 @section('title','Uživatelé |')
 @section('content')
     <div class="container m-top">
@@ -29,17 +29,17 @@
 
                                 <i class="fas fa-check-circle"></i>
                             @else
-                                <i data-toggle="tooltip" data-placement="right" title="{{$u->deact_reason}}" class="fas fa-exclamation-circle"></i>
+                                <i data-toggle="tooltip" data-placement="right" title="{{$u->deact_reason." (".Carbon\Carbon::parse($u->deact_date)->format('d. m. Y H:i').")"}}" class="fas fa-exclamation-circle"></i>
                             @endif
                         </td>
-                        <td><button class="btn-sm btn btn-primary">Upravit</button></td>
+                        <td><a href="{{route('admin.editAccount',$u->id)}}"><button class="btn-sm btn btn-primary">Upravit</button></a></td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         @endif
         <hr>
-        <a href="#"><button class="btn btn-success">Nový uživatel</button></a>
+        <a href="#" data-toggle="tooltip" data-placement="right" title="Funkce není k dispozici."><button disabled  class="btn btn-success">Nový uživatel</button></a>
     </div>
 @stop
 @section('customjs')

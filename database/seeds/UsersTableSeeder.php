@@ -23,14 +23,14 @@ class UsersTableSeeder extends Seeder
             'firstname' => "Vojtěch",
             'surname' => "Voleman",
             'email' => "vojtavol@email.cz",
-            'password' => bcrypt("pedro12"),
+            'password' => bcrypt("heslo"),
         ]);
         DB::table('users')->insert([
             'role_id'=>1,
-            'firstname' => "Moon",
-            'surname' => "Moon",
-            'email' => "moon@moon.cz",
-            'password' => bcrypt("moon"),
+            'firstname' => "Random",
+            'surname' => "Jmeno",
+            'email' => "random@jmeno.cz",
+            'password' => bcrypt("password"),
             'deact_reason' => "You are too stupid to be here!",
             'deact_date' => "2018-10-23 13:19:35",
         ]);

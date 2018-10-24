@@ -20,6 +20,12 @@ Route::get('/logout','LoginController@getLogout')->middleware('auth')->name('log
 
 Route::get('/dashboard','AccountController@getDashboard')->middleware('auth')->name('account.dashboard');
 
-Route::get('/accounts','AccountController@getAccountsListAdmin')->middleware('hasRole:admin')->name('admin.accounts');
+Route::middleware("hasRole:admin")->group(function(){
+    Route::get('/accounts','AccountController@getAccountsListAdmin')->name('admin.accounts');
+    Route::get('/accounts/edit/{id}','AccountController@getEditAccountAdmin')->where('id', '[0-9]+')->name('admin.editAccount');
+    Route::post('/accounts','AccountController@postEditAccountAdmin')->name('admin.saveEditAccount');
+
+})
+
 
 ?>
