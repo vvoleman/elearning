@@ -16,13 +16,15 @@ class UsersTableSeeder extends Seeder
             'firstname' => "Marco",
             'surname' => "Polo",
             'email' => "admin@themulti.eu",
+            'registered' => \Illuminate\Support\Facades\DB::raw("NOW()"),
             'password' => bcrypt("admin"),
         ]);
         DB::table('users')->insert([
-            'role_id'=>1,
+            'role_id'=>2,
             'firstname' => "Vojtěch",
             'surname' => "Voleman",
             'email' => "vojtavol@email.cz",
+            'registered' => \Illuminate\Support\Facades\DB::raw("NOW()"),
             'password' => bcrypt("heslo"),
         ]);
         DB::table('users')->insert([
@@ -31,6 +33,7 @@ class UsersTableSeeder extends Seeder
             'surname' => "Jmeno",
             'email' => "random@jmeno.cz",
             'password' => bcrypt("password"),
+            'registered' => \Illuminate\Support\Facades\DB::raw("NOW()"),
             'deact_reason' => "You are too stupid to be here!",
             'deact_date' => "2018-10-23 13:19:35",
         ]);

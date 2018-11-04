@@ -19,13 +19,15 @@ Route::post('/login','LoginController@verifyLogin')->name('login.verifyLogin');
 Route::get('/logout','LoginController@getLogout')->middleware('auth')->name('login.logout');
 
 Route::get('/dashboard','AccountController@getDashboard')->middleware('auth')->name('account.dashboard');
-
+Route::get('/activate/{key}','AccountController@getActivateAccount')->name('account.activate');
 Route::middleware("hasRole:admin")->group(function(){
     Route::get('/accounts','AccountController@getAccountsListAdmin')->name('admin.accounts');
     Route::get('/accounts/edit/{id}','AccountController@getEditAccountAdmin')->where('id', '[0-9]+')->name('admin.editAccount');
     Route::post('/accounts','AccountController@postEditAccountAdmin')->name('admin.saveEditAccount');
-
-})
-
-
+});
+Route::middleware("hasRole:teacher")->group(function (){
+    Route::get('/add','AccountController@getAddStudents')->name('teacher.showAddStudents');
+    Route::post('/add','AccountController@postAddSingleStudent')->name('teacher.addSingleStudent');
+    Route::post('/addf','AccountController@postAddStudents')->name('teacher.addStudents');
+});
 ?>

@@ -18,13 +18,14 @@ class CreateUsersTable extends Migration
             $table->string('firstname',60);
             $table->string('surname',40);
             $table->string('email',128)->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->integer("role_id")->unsigned();
             $table->foreign('role_id')->references('id_r')->on("roles");
             $table->rememberToken();
-            $table->dateTime('registered')->default(\Illuminate\Support\Facades\DB::raw("NOW()"));
+            $table->dateTime('registered')->nullable();
             $table->dateTime('last_login')->nullable();
             $table->string('deact_reason')->nullable();
+            $table->string('reg_token')->nullable();
             $table->dateTime('deact_date')->nullable();
         });
     }

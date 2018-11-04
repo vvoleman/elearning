@@ -1,7 +1,7 @@
 <div class="flash-message position-absolute col-12" style="padding:0;border-radius:0">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
         @if(Session::has($msg))
-            <div class="alert fade text-center show alert-{{ $msg }}">
+            <div class="alert fade text-center show alert-{{ $msg }}" style="z-index:5">
                 <span>{{ Session::get($msg) }}</span>
             </div>
         @endif

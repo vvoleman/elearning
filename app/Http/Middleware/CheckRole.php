@@ -14,13 +14,24 @@ class CheckRole
      * @param  string  $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if(!$request->user()->hasRole($role)){
-            die("error 403 - zdroj \App\Middleware\CheckRole.php");
+        if(\Auth::check()){
+            $hasRole = false;
+            foreach($roles as $role){
+                if($request->user()->hasRole($role)){
+                    $hasRole = true;
+                    break;
+                }
+            }
+            if($hasRole){
+                return $next($request);
+            }else{
+                die("error 403 - zdroj \App\Middleware\CheckRole.php");
+            }
         }
+        return redirect()->route('login.login');
 
-        return $next($request);
     }
 
 }
