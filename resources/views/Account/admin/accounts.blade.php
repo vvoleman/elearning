@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                 @foreach($data as $u)
-                    <tr>
+                    <tr @if(empty($u->registered))@endif>
                         <td>{{$u->id}}</td>
                         <td>{{$u->surname}}</td>
                         <td>{{$u->firstname}}</td>
@@ -25,11 +25,13 @@
                         <td>{{ ucfirst(__('roles.'.$u->name)) }}</td>
                         <td>{{$u->registered}}</td>
                         <td>
-                            @if(empty($u->deact_date))
+                            @if(empty($u->deact_date) && !empty($u->registered))
 
                                 <i class="fas fa-check-circle"></i>
+                            @elseif(!empty($u->registered))
+                                <i data-toggle="tooltip" data-placement="right" title="{{$u->deact_reason." (".Carbon\Carbon::parse($u->deact_date)->format('d. m. Y H:i').")"}}" class="fas fa-times-circle"></i>
                             @else
-                                <i data-toggle="tooltip" data-placement="right" title="{{$u->deact_reason." (".Carbon\Carbon::parse($u->deact_date)->format('d. m. Y H:i').")"}}" class="fas fa-exclamation-circle"></i>
+                                <i data-toggle="tooltip" data-placement="right" title="Tento účet zatím nebyl aktivován!" class="fas fa-exclamation-triangle"></i>
                             @endif
                         </td>
                         <td><a href="{{route('admin.editAccount',$u->id)}}"><button class="btn-sm btn btn-primary">Upravit</button></a></td>

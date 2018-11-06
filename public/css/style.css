@@ -56,8 +56,11 @@ body{
     background-color: #f5f5f5;
 }
 
-.fa-exclamation-circle{
+.fa-exclamation-circle,.fa-times-circle{
     color:#cc0b00;
+}
+.fa-exclamation-triangle{
+    color:#ff9922;
 }
 .fa-check-circle{
     color:#46a851;
