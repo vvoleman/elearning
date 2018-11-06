@@ -79,3 +79,6 @@ body{
     color:gold;
     font-size:18px;
 }
+.low_opacity{
+    opacity:0.6;
+}

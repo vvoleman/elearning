@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Own\CSVFormator;
+use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
@@ -40,7 +42,7 @@ class AccountController extends Controller
     public function getEditAccountAdmin($id){
         $user = new User();
         $user = $user->find($id);
-        return view("Account/admin/accountEdit",["u" => $user,"roles" => \App\Role::all()]);
+        return view("Account/admin/accountEdit",["u" => $user,"roles" => Role::all()]);
     }
 
     /**
@@ -50,8 +52,8 @@ class AccountController extends Controller
      */
     public function postEditAccountAdmin(Request $request){
         $data = $request->validate([
-            'firstname' => "required",
-            'surname' => "required",
+            'firstname' => "regex:/(^[A-Za-z0-9 ]+$)+/|required",
+            'surname' => "regex:/(^[A-Za-z0-9 ]+$)+/|required",
             'email' => "required|email",
             'id_u' => "required|integer",
             'deactivate' => 'nullable',
@@ -87,18 +89,45 @@ class AccountController extends Controller
     public function getActivateAccount($key){
         $usr = \DB::table('users')->where('reg_token',$key)->where('password',null)->get();
         if(sizeof($usr) > 0){
-            echo "(y)";
+            return view('Account/activate',["user"=>$usr[0]]);
         }else{
-            echo "Neplatný kód";
+            Session::flash('danger','Tento registrační klíč neexistuje!');
+            return redirect()->route('index');
+        }
+    }
+
+    public function postActivateAccount(Request $request){
+        $data = $request->validate([
+            "new_pass" => "required|min:8|max:32",
+            "new_pass2" => "same:new_pass",
+            "reg_token" => "required"
+        ]);
+        $user = User::where('reg_token',$data["reg_token"])->get()[0]->id_u;
+        $user = User::find($user);
+        $user->password = Hash::make($data["new_pass"]);
+        $user->reg_token = null;
+        $user->registered = \Illuminate\Support\Facades\DB::raw("NOW()");
+        if($user->save()){
+            $request->session()->flash('success','Byl jste úspěšně zaregistrován! Nyní se můžete přihlásit.');
+            return redirect()->route('index');
+        }else{
+            $request->session()->flash('danger','Při ukládání se vyskytly komplikace!');
+            return redirect()->route('account.activate',$data["reg_token"]);
         }
     }
 
     /**
-     * Returns view for 'Add students' for teachers
+     * Returns view for 'Add students/users' for teachers/admins
      * @return null
      */
     public function getAddStudents(){
-        return view('Account/unpublic/add_students');
+        $data = [];
+        $data["isAdmin"] = false;
+        if(\Auth::user()->hasRole('admin')){
+            $data["roles"] = Role::orderBy('id_r','asc')->get();
+            $data["isAdmin"] = true;
+        }
+        return view('Account/unpublic/add_users',$data);
     }
 
     /**
@@ -106,18 +135,32 @@ class AccountController extends Controller
      */
     public function postAddStudents(Request $request){
         $formator = new CSVFormator();
-        $plebs = $formator->csvToArray($request->file('students_file'),["student_firstname","student_surname","student_email"]);
+        $cols  = ["student_firstname","student_surname","student_email"];
+        if(\Auth::user()->hasRole('admin')){
+            $cols[] = "student_role";
+        }
+        $plebs = $formator->csvToArray($request->file('students_file'),$cols);
         $error = [];
         foreach ($plebs as $p){
-            if(!$this->registerStudent($p)){
-                $error[] = $p;
+            try{
+                $p["student_role"] = Role::where('name',$p["student_role"])->get()[0]->id_r;
+                if(!$this->registerStudent($p)){
+                    $error[] = "Uživatel ".$p["student_firstname"]." ".$p["student_surname"]." již nejspíše existuje!";
+                }
+            }catch (\Exception $e) {
+                $error[] = "Problém se strukturou souboru - není středník tam, kde být nemá?";
             }
         }
         if(empty($error)){
             Session::flash('success','Úspěšně přidáno '.sizeof($plebs).' studentů!');
-            return redirect()->route('teacher.showAddStudents');
+            return redirect()->route('account.showAddUsers');
         }else{
-            dd($error);
+            $string = "";
+            for ($i = 0;$i<sizeof($error);$i++){
+                $string.=$error[$i]."\n";
+            }
+            Session::flash('danger',$string);
+            return redirect()->route('account.showAddUsers');
         }
     }
 
@@ -128,25 +171,20 @@ class AccountController extends Controller
      */
     private function registerStudent($data){
         $role = new \App\Role();
-        $role = $role->where('name','user')->get()[0]->id_r;
         $student = new User();
         $student->firstname = $data["student_firstname"];
         $student->surname = $data["student_surname"];
         $student->email = $data["student_email"];
         $student->reg_token = str_random(8);
-        $student->role_id = $role;
+        $student->role_id = (empty($data["student_role"]))? $role->where('name','user')->get()[0]->id_r : $data["student_role"];
         try{
             if($student->save()) {
                 Mail::to($student->email)->send(new \App\Mail\RegisterToken($student->reg_token));
                 //dd($student->email);
                 return true;
-            }else{
-                return false;
             }
-
-            //dd(1);
         }catch(\Exception $exception){
-            dd($exception);
+
         }
 
         return false;
@@ -157,16 +195,21 @@ class AccountController extends Controller
      */
     public function postAddSingleStudent(Request $request){
         $data = $request->validate([
-            'student_firstname' => 'required|min:2|max:40',
-            'student_surname' => 'required|min:2|max:40',
+            'student_firstname' => 'regex:/(^[A-Za-z0-9 ]+$)+/|required|min:2|max:40',
+            'student_surname' => 'regex:/(^[A-Za-z0-9 ]+$)+/|required|min:2|max:40',
             'student_email' => 'required|email'
         ]);
+        if(\Auth::user()->hasRole('admin')){
+            $data['student_role'] = $request->validate([
+                'student_role' => 'required|numeric|min:1'
+            ])['student_role'];
+        }
         if($this->registerStudent($data)){
             Session::flash('success','Student byl úspěšně přidán!');
-            return redirect()->route('teacher.showAddStudents');
+            return redirect()->route('account.showAddUsers');
         }else{
             Session::flash('danger','Přidání studenta neproběhlo úspěšně!');
-            return redirect()->route('teacher.showAddStudents');
+            return redirect()->route('account.showAddUsers');
         }
      }
 }

@@ -41,7 +41,7 @@
             </table>
         @endif
         <hr>
-        <a href="#" data-toggle="tooltip" data-placement="right" title="Funkce není k dispozici."><button disabled  class="btn btn-success">Nový uživatel</button></a>
+        <a href="{{route('account.showAddUsers')}}"><button class="btn btn-success">Nový uživatel</button></a>
     </div>
 @stop
 @section('customjs')

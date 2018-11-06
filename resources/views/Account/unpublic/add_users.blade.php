@@ -2,9 +2,18 @@
 @section('title','Přidání studentů |')
 @section('content')
     <div class="container col-lg-4 col-md-6 m-top mx-auto">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    <li>Pole obsahují nepodporované znaky!</li>
+                </ul>
+            </div>
+        @endif
         <div>
-            {!! Form::open(["route"=>"teacher.addSingleStudent"]) !!}
-            <h3>Přidání pouze jednoho studenta:</h3>
+            {!! Form::open(["route"=>"account.addSingleStudent"]) !!}
+            <h3>
+               Přidání pouze jednoho  @if(!$isAdmin)studenta: @else uživatele: @endif
+            </h3>
                 <hr>
             <div class="login_form_div">
                 <div class="form-group">
@@ -28,14 +37,20 @@
                         <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>
                     </div>
                 </div>
+                @if($isAdmin)
+                    <div class="form-group">
+                        {{Form::label('role','Role')}}
+                        {{Form::select('student_role', $roles->pluck("name", 'id_r'),null,["class"=>"form-control"])}}
+                    </div>
+                @endif
                 <button class="btn btn-block">Přidat</button>
             </div>
             {!! Form::close() !!}
         </div>
         <div>
-            {!! Form::open(["route"=>"teacher.addStudents","files"=>true]) !!}
-                <h3>Přidání více studentů:</h3>
-                <h5><small>Používejte .csv soubory se strukturou: <span class="badge badge-dark">Jméno;Příjmení;Email</span></small></h5>
+            {!! Form::open(["route"=>"account.addStudents","files"=>true]) !!}
+                <h3>Přidání více @if(!$isAdmin)studentů: @else uživatelů: @endif</h3>
+                <h5><small>Používejte .csv soubory se strukturou: <span class="badge badge-dark">Jméno;Příjmení;Email{{($isAdmin) ? ";Role" : ""}} </span></small></h5>
                 <hr>
                 <div class="login_form_div">
                     <div class="form-group">

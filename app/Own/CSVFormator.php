@@ -18,7 +18,7 @@
             $returnAr = [];
             for($i = 0;$i<sizeof($columns);$i++){
                 if(!empty($splited[$i])){
-                    $returnAr[$columns[$i]] = $splited[$i];
+                    $returnAr[$columns[$i]] = htmlspecialchars($splited[$i]);
                 }else{
                     return false;
                 }

@@ -14,6 +14,8 @@
             <li class="nav-item">
                 @if(Auth::guest())
                     <a class="nav-link" href="{{ route('login.login') }}">Přihlášení</a>
+                @else
+                    <a class="nav-link" href="{{route('account.dashboard')}}">Elearn</a>
                 @endif
             </li>
         </ul>
