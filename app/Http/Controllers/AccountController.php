@@ -195,8 +195,8 @@ class AccountController extends Controller
      */
     public function postAddSingleStudent(Request $request){
         $data = $request->validate([
-            'student_firstname' => 'regex:/(^[A-Za-z0-9 ]+$)+/|required|min:2|max:40',
-            'student_surname' => 'regex:/(^[A-Za-z0-9 ]+$)+/|required|min:2|max:40',
+            'student_firstname' => 'required|min:2|max:40',
+            'student_surname' => 'required|min:2|max:40',
             'student_email' => 'required|email'
         ]);
         if(\Auth::user()->hasRole('admin')){

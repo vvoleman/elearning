@@ -4,20 +4,20 @@
         <span class="navbar-toggler-icon"><i style="color:white" class="fas fa-bars"></i></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbar">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav d-flex align-items-center">
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('about') }}">O nás</a>
             </li>
-            <li class="nav-item">
-                @if(Auth::guest())
+            @if(Auth::check())
+                @include('partials/_account-nav-item')
+            @else
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('login.login') }}">Přihlášení</a>
-                @else
-                    <a class="nav-link" href="{{route('account.dashboard')}}">Elearn</a>
-                @endif
-            </li>
+                </li>
+            @endif
         </ul>
     </div>
 </nav>

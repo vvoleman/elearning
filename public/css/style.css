@@ -82,3 +82,40 @@ body{
 .low_opacity{
     opacity:0.6;
 }
+.dashboard{
+    font-family:"Century Gothic";
+}
+.dash-head hr{
+    margin-top:10px;
+    margin-bottom: 5px;
+}
+.dashboard hr{
+    color:#1f2227;
+    font-size:3px;
+    box-shadow: -1px 1px 1px 0px rgba(0,0,0,0.75);
+}
+.dash-shorts{
+    margin-top:45px;
+}
+.dash-shorts .short-block{
+    padding:5px;
+}
+.dash-shorts .short-block:hover{
+    background: #ccc;
+}
+.dash-shorts .fas{
+    font-size:35px;
+}
+.dash-shorts .circle{
+    border-radius: 100%;
+    width:20px;
+    height:20px;
+    text-align:center;
+    line-height: 20px;
+    color:#1f2227;
+    font-size:14px;
+    background:#ffd030;
+    position: absolute;
+    margin-top:-22px;
+    margin-left:25px;
+}

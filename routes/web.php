@@ -30,6 +30,7 @@ Route::middleware("hasRole:admin")->group(function(){
 Route::middleware("hasRole:teacher,admin")->group(function (){
     Route::get('/add','AccountController@getAddStudents')->name('account.showAddUsers');
     Route::post('/add','AccountController@postAddSingleStudent')->name('account.addSingleStudent');
-    Route::post('/addf','AccountController@postAddStudents')->name('account.addStudents');
+    Route::post('/adds','AccountController@postAddStudents')->name('account.addStudents');
 });
+
 ?>

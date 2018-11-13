@@ -1,5 +1,29 @@
 @extends('mains/account_main')
 @section('title','Dashboard |')
 @section('content')
-    <h1>Role: {{ ucfirst(__("roles.".Auth::user()->role->name)) }}</h1>
+    <div class="dashboard m-top">
+        <div class="col-md-8 mx-auto text-center dash-head">
+            <h1>Úvodní obrazovka</h1>
+            <hr>
+            <span>Vojtěch Voleman, administrátor</span>
+        </div>
+        <div class="d-block d-md-flex mx-auto justify-content-around col-md-8 col-sm-10 dash-shorts">
+            <div class="short-block">
+                <i class="fas fa-tasks"></i>
+                <div class="circle">5</div>
+                Aktivní úkoly
+            </div>
+            <div class="short-block">
+                <i class="fas fa-envelope"></i>
+                <div class="circle">5</div>
+                Nové zprávy
+            </div>
+            <div class="short-block">
+                <i class="fas fa-bell"></i>
+                <div class="circle">5</div>
+                Nové upozornění
+            </div>
+        </div>
+        <
+    </div>
 @stop
