@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use App\Own\CSVFormator;
@@ -96,6 +97,11 @@ class AccountController extends Controller
         }
     }
 
+    /**
+     * Create account via activation
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postActivateAccount(Request $request){
         $data = $request->validate([
             "new_pass" => "required|min:8|max:32",
@@ -212,4 +218,38 @@ class AccountController extends Controller
             return redirect()->route('account.showAddUsers');
         }
      }
+
+    /**
+     * Returns settings page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getSettingsAccount(){
+        return view('Account/acc_settings');
+    }
+
+    public function postSettingsAccount(Request $request){
+        $data = $request->validate([
+            "email" => "email|nullable|unique:users,email",
+            "new_pass" => "nullable|min:8|max:32",
+            "password" => "required"
+        ]);
+        if(Hash::check($data["password"],Auth::user()->password)){
+            $user = Auth::user();
+            if(!empty($data["email"])){
+                $old = $user->email;
+                $user->email = $data["email"];
+                try{
+                    if($user->save()) {
+                        Mail::to($user->email)->send(new \App\Mail\ChangedMail(["name" => $user->getFullname(), "old_mail" => $old,"new_mail" => $user->email]));
+                        return true;
+                    }else{
+
+                    }
+                }catch(\Exception $exception){
+                    die('Vyskytla se chyba, "ups"');
+                }
+            }
+        }
+
+    }
 }

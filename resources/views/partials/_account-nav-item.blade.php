@@ -27,7 +27,7 @@
                 <a class="dropdown-item" href="#">Historie kurzů</a>
                 @break
         @endswitch
-        <a class="dropdown-item" href="{{route('login.logout')}}">Nastavení</a>
+        <a class="dropdown-item" href="{{route('account.settings')}}">Nastavení</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{{route('login.logout')}}">Odhlásit</a>
     </div>

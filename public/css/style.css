@@ -32,9 +32,9 @@ body{
     padding:15px;
     width:700px;
 }
-.login_form_div{
+.login_form_div,.tab_item{
     padding:30px;
-    background:#E0E0E0;
+    background:#E3E3E3;
     border:1px solid #C4C4C4;
 }
 .login_form_div button{
@@ -98,10 +98,13 @@ body{
     margin-top:45px;
 }
 .dash-shorts .short-block{
+    text-align:center;
     padding:5px;
 }
 .dash-shorts .short-block:hover{
     background: #ccc;
+    -webkit-transition:0.1s;
+    transition:0.1s;
 }
 .dash-shorts .fas{
     font-size:35px;
@@ -115,7 +118,60 @@ body{
     color:#1f2227;
     font-size:14px;
     background:#ffd030;
-    position: absolute;
+    position: relative;
     margin-top:-22px;
-    margin-left:25px;
+    margin-left:52%;
+}
+[v-cloak]{
+    display:none;
+}
+.tabs_div .nav-pills .nav-link:not(.active){
+    background: #cdcdcd;
+}
+.tabs_div .nav-pills .nav-link.active{
+    background:#272C33;
+    transition: 0.2s;
+}
+.tab_item{
+    background:#dadada !important;
+}
+.settings .tab_name{
+    text-align: center;
+}
+input:not([type=checkbox]){
+    background: #fff;
+    color: #1b1e21;
+    font: inherit;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+    border: 0;
+    outline: 0;
+    padding: 22px 18px;
+    border-radius:0px;
+    transition: 0.3s;
+ }
+.btn-gray{
+    background: #272C33;
+    color:white;
+}
+.form-group label.label{
+    background:#333;
+    text-align: center;
+    padding:5px 15px;
+    margin-bottom: 0;
+    color:white;
+}
+.form-group label.label.bad{
+    background: #f64954;
+    color:black;
+    font-weight: bold;
+}
+.form-group label.label.correct{
+    background:#46a851;
+    color:black;
+    font-weight: bold;
+}
+.form-group label.label.meh{
+    background:#f6a607;
+    color:black;
+    font-weight: bold;
 }

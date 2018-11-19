@@ -7,18 +7,18 @@
             <hr>
             <span>Vojtěch Voleman, administrátor</span>
         </div>
-        <div class="d-block d-md-flex mx-auto justify-content-around col-md-8 col-sm-10 dash-shorts">
-            <div class="short-block">
+        <div class=" d-flex mx-auto justify-content-center col-md-8 col-sm-10 dash-shorts">
+            <div class="short-block col-md-3">
                 <i class="fas fa-tasks"></i>
                 <div class="circle">5</div>
                 Aktivní úkoly
             </div>
-            <div class="short-block">
+            <div class="short-block col-md-3">
                 <i class="fas fa-envelope"></i>
                 <div class="circle">5</div>
                 Nové zprávy
             </div>
-            <div class="short-block">
+            <div class="short-block col-md-3">
                 <i class="fas fa-bell"></i>
                 <div class="circle">5</div>
                 Nové upozornění
