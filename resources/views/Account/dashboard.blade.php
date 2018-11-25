@@ -5,7 +5,7 @@
         <div class="col-md-8 mx-auto text-center dash-head">
             <h1>Úvodní obrazovka</h1>
             <hr>
-            <span>Vojtěch Voleman, administrátor</span>
+            <span>{{Auth::user()->getFullname()}}, {{ucfirst(__('roles.'.Auth::user()->role->name))}}</span>
         </div>
         <div class=" d-flex mx-auto justify-content-center col-md-8 col-sm-10 dash-shorts">
             <div class="short-block col-md-3">

@@ -1,3 +1,4 @@
+import Vue from "vue";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -19,7 +20,6 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('emailver', require('./components/EmailVer.vue'));
 Vue.component('tabs', require('./components/Tabs.vue'));
-
 const app = new Vue({
     el: '#app'
 });

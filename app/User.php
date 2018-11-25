@@ -35,6 +35,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return false;
     }
+
+
+    public function isDeactivated(){
+        if(!empty($this->deact_date)){
+            return true;
+        }
+        return false;
+    }
     /**
      * Returns the fullname of user
      * @return string

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -26,15 +27,21 @@ class LoginController extends Controller
             $r = true;
         }
         if (Auth::attempt($credentials,$r)){
-            Auth::user()->last_login = \Illuminate\Support\Facades\DB::raw("NOW()");
-            Auth::user()->save();
-            Session::flash('success','Přihlášení proběhlo úspěšně!');
-            //dd(Session::all());
-            return redirect()->route('account.dashboard');
-        }else{
+            if(!Auth::user()->isDeactivated()){
+                Auth::user()->last_login = \Illuminate\Support\Facades\DB::raw("NOW()");
+                Auth::user()->save();
+                Session::flash('success','Přihlášení proběhlo úspěšně!');
+                //dd(Session::all());
+                return redirect()->route('account.dashboard');
+            }else{
+                Session::flash('danger','Tento účet byl deaktivován (Důvod: '.Auth::user()->deact_reason.')');
+                Auth::logout();
+            }
+        }else {
             Session::flash('danger','Špatné přihlašovací údaje!');
-            return redirect()->route('login.login');
-        } //checks credentials
+        }
+        return redirect()->route('login.login');
+         //checks credentials
     }
     public function getLogout(){
         Auth::logout();

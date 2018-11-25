@@ -3,7 +3,9 @@
 <body>
 @include('../partials/_nav-account')
 @include('../partials/_flashmessages')
-@yield('content')
+<div id="app">
+    @yield('content')
+</div>
 @include('../partials/_basicjs')
 @yield('customjs')
 </body>

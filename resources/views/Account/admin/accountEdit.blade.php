@@ -3,30 +3,30 @@
 @section('content')
     <div>
     {!! Form::model($u->toArray(), ['route' => ['admin.saveEditAccount']]) !!}
-        <div class="m-top col-lg-4 col-md-6 mx-auto login_form_div">
+        <div class="m-top col-lg-4 col-md-6 mx-auto login_form_div" id="edit">
             <h1>Úprava účtu #{{$u->id_u}}</h1>
             {{Form::hidden('id_u')}}
             <div class="form-group">
-                <label class="">Jméno</label>
+                <label class="label">Jméno</label>
                 {{Form::text('firstname',null,["class"=>"form-control"])}}
                 <!--<div class="bg-light form-control" data-toggle="tooltip" data-placement="right" title="Tuto položku není možno upravit.">{{$u->firstname}}</div>!-->
             </div>
             <div class="form-group">
-                {{Form::label('surname','Příjmení')}}
+                {{Form::label('surname','Příjmení',["class"=>"label"])}}
                 {{Form::text('surname',null,["class"=>"form-control"])}}
                 <!--<div class="bg-light form-control" data-toggle="tooltip" data-placement="right" title="Tuto položku není možno upravit.">{{$u->surname}}</div>!-->
             </div>
             <div class="form-group">
-                {{Form::label('email','Email')}}
+                {{Form::label('email','Email',["class"=>"label"])}}
                 {{Form::email('email',null,["class"=>"form-control"])}}
                 <!--<div class="bg-light form-control" data-toggle="tooltip" data-placement="right" title="Tuto položku není možno upravit.">{{$u->email}}</div>!-->
             </div>
             <div class="form-group">
-                {{Form::label('role','Role')}}
+                {{Form::label('role','Role',["class"=>"label"])}}
                 {{Form::select('role_id', $roles->pluck("name", 'id_r'), $u->role_id,["class"=>"form-control"])}}
             </div>
             <div class="form-group">
-                <label class="">Zablokovat</label>
+                <label class="label">Zablokovat</label>
                 {{Form::checkbox('deactivate','true',!empty($u->deact_date),["class"=>""])}}
                 {{Form::textarea('deact_reason',null,["class"=>"form-control","placeholder"=>"Důvod"])}}
             </div>

@@ -5,7 +5,7 @@
             <input type="email" class="form-control" v-bind:name="em_name" v-model="email">
         </div>
         <div class="form-group">
-            <label class="label">Heslo pro potvrzení</label>
+            <label class="label">Heslo pro potvrzefní</label>
             <input type="password" class="form-control" name="password" v-model="password">
         </div>
         <button :disabled="!formReady" class="btn btn-gray btn-block">Změnit</button>

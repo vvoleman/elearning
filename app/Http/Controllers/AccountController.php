@@ -53,10 +53,10 @@ class AccountController extends Controller
      */
     public function postEditAccountAdmin(Request $request){
         $data = $request->validate([
-            'firstname' => "regex:/(^[A-Za-z0-9 ]+$)+/|required",
-            'surname' => "regex:/(^[A-Za-z0-9 ]+$)+/|required",
-            'email' => "required|email",
-            'id_u' => "required|integer",
+            'firstname' => "required",
+            'surname' => "required",
+            'email' => "email",
+            'id_u' => "integer",
             'deactivate' => 'nullable',
             'deact_reason' => 'nullable',
             'role_id' => 'required|integer'
