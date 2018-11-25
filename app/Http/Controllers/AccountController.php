@@ -230,7 +230,8 @@ class AccountController extends Controller
     public function postSettingsAccount(Request $request){
         $data = $request->validate([
             "email" => "email|nullable|unique:users,email",
-            "new_pass" => "nullable|min:8|max:32",
+            "newpass" => "nullable|min:8|max:32",
+            "newpass2" => "same:newpass",
             "password" => "required"
         ]);
         if(Hash::check($data["password"],Auth::user()->password)){
@@ -241,15 +242,36 @@ class AccountController extends Controller
                 try{
                     if($user->save()) {
                         Mail::to($user->email)->send(new \App\Mail\ChangedMail(["name" => $user->getFullname(), "old_mail" => $old,"new_mail" => $user->email]));
-                        return true;
-                    }else{
-
+                        Session::flash('success','Nový email byl úspěšně uložen!');
+                        return redirect()->route('account.settings');
                     }
                 }catch(\Exception $exception){
-                    die('Vyskytla se chyba, "ups"');
+
                 }
+                Session::flash('danger','Při ukládání se vyskytla chyba!');
+
+            }elseif(!empty($data["newpass"]) && ($data["password"] != $data["newpass"])){
+                $user->password = Hash::make($data["newpass"]);
+                try{
+                    if($user->save()){
+                        Mail::to($user->email)->send(new \App\Mail\ChangedPassword(["name" => $user->getFullname()]));
+                        Session::flash('success','Heslo bylo úspěšně změněno!');
+                        return redirect()->route('account.settings');
+                    }else{
+                        dd("tu1");
+                    }
+                }catch(\Exception $exception){
+                    dd("tu2");
+                }
+                Session::flash('danger','Při ukládání se vyskytla chyba!');
+            }else{
+                dd("tu3");
             }
+
+        }else{
+            Session::flash('danger','Neplatné heslo!');
         }
+        return redirect()->route('account.settings');
 
     }
 }

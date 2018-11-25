@@ -15,6 +15,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('emailver', require('./components/EmailVer.vue'));
 Vue.component('tabs', require('./components/Tabs.vue'));
