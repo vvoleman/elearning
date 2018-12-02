@@ -17,9 +17,11 @@ window.Vue = require('vue');
  */
 
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('emailver', require('./components/EmailVer.vue'));
 Vue.component('tabs', require('./components/Tabs.vue'));
+Vue.component('messenger',require('./components/Messenger'));
+Vue.component('modal', require('./components/Modal.vue'));
+Vue.component('emailsel', require('./components/EmailSel.vue'));
 const app = new Vue({
     el: '#app'
 });

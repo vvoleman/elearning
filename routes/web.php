@@ -19,14 +19,17 @@ Route::get('/about', 'HomeController@getAbout')->name('about');
 
 Route::middleware(['isAjax'])->group(function (){
     Route::post('/ajax/checkEmailExists/','AjaxController@postCheckExistingEmail');
+    Route::get('/ajax/getMessages','MessageController@getMessagesByAjax')->middleware('auth');
+    Route::post('/ajax/markMsgAsSeen','MessageController@postMarkAsSeen')->middleware('auth');
 });
+Route::get('/ajax/getUsersByName','AjaxController@getUsersByName')->middleware('auth');
 
 /* LOGIN */
 Route::get('/login','LoginController@getLogin')->name('login.login');
 Route::post('/login','LoginController@verifyLogin')->name('login.verifyLogin');
 Route::get('/logout','LoginController@getLogout')->middleware('auth')->name('login.logout');
 
-/* Accounts */
+/* ACCOUNTS */
 Route::get('/dashboard','AccountController@getDashboard')->middleware('auth')->name('account.dashboard');                           //Dashboard view
 Route::get('/activate/{key}','AccountController@getActivateAccount')->name('account.activate');                                     //Activation view
 Route::post('/activate','AccountController@postActivateAccount')->name('account.saveActivation');                                   //Activation (saving credentials)
@@ -44,4 +47,8 @@ Route::middleware("hasRole:teacher,admin")->group(function (){                  
     Route::post('/adds','AccountController@postAddStudents')->name('account.addStudents');                                          //Post .csv with students
 });
 
+/* MESSAGES */
+Route::middleware('auth')->group(function(){
+    Route::get('/messages','MessageController@getMessenger')->name('messages.index');
+});
 ?>

@@ -15,14 +15,11 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id_m');
+            $table->string('title',32);
             $table->text("message");
-            $table->unsignedInteger("author_id");
-            $table->unsignedInteger("receiver_id");
-            $table->dateTime("sent_at");
-            $table->dateTime("seen_at");
+            $table->integer("author_id")->unsigned();
+            $table->dateTime("sent_at")->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->foreign("author_id")->references("id_u")->on("users");
-            $table->foreign("receiver_id")->references("id_u")->on("users");
-            $table->timestamps();
         });
     }
 

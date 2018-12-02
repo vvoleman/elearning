@@ -7,16 +7,18 @@
             <hr>
             <span>{{Auth::user()->getFullname()}}, {{ucfirst(__('roles.'.Auth::user()->role->name))}}</span>
         </div>
-        <div class=" d-flex mx-auto justify-content-center col-md-8 col-sm-10 dash-shorts">
+        <div class=" d-flex mx-auto justify-content-center col-md-8 col-sm-10 dash-shorts no-a">
             <div class="short-block col-md-3">
                 <i class="fas fa-tasks"></i>
                 <div class="circle">5</div>
                 Aktivní úkoly
             </div>
             <div class="short-block col-md-3">
-                <i class="fas fa-envelope"></i>
-                <div class="circle">5</div>
-                Nové zprávy
+                <a href="{{route('messages.index')}}">
+                    <i class="fas fa-envelope"></i>
+                    <div class="circle">5</div>
+                    Nové zprávy
+                </a>
             </div>
             <div class="short-block col-md-3">
                 <i class="fas fa-bell"></i>
@@ -24,6 +26,6 @@
                 Nové upozornění
             </div>
         </div>
-        <
+
     </div>
 @stop

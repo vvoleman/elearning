@@ -17,10 +17,15 @@
             $splited = explode(";",$line);
             $returnAr = [];
             for($i = 0;$i<sizeof($columns);$i++){
-                if(!empty($splited[$i])){
-                    $returnAr[$columns[$i]] = htmlspecialchars($splited[$i]);
+                if(!is_array($columns[$i])){
+                    $temp = [$columns[$i],true];
                 }else{
+                    $temp = $columns[$i];
+                }
+                if(empty($temp[0]) && $temp[1]){
                     return false;
+                }else{
+                    $returnAr[$temp[0]] = htmlspecialchars((empty($splited[$i]))?"":$splited[$i]);
                 }
             }
             return $returnAr;

@@ -22,6 +22,7 @@ body{
 .nav_menu a:hover{
     color:#ccc;
 }
+
 .big_text{
     font-size:100px;
 }
@@ -32,6 +33,7 @@ body{
     padding:15px;
     width:700px;
 }
+
 .login_form_div,.tab_item{
     padding:30px;
     background:#E3E3E3;
@@ -44,9 +46,11 @@ body{
 .form_div h3{
     text-align:center;
 }
+
 .m-top{
     margin-top:10px;
 }
+
 .footer {
     position: absolute;
     bottom: 0;
@@ -72,16 +76,20 @@ body{
     padding:5px;
     font-size:25px;
 }
+
 #navbar .dropdown-menu a{
     color:black;
 }
+
 .fa-crown{
     color:gold;
     font-size:18px;
 }
+
 .low_opacity{
     opacity:0.6;
 }
+
 .dashboard{
     font-family:"Century Gothic";
 }
@@ -94,6 +102,16 @@ body{
     font-size:3px;
     box-shadow: -1px 1px 1px 0px rgba(0,0,0,0.75);
 }
+
+.no-a a{
+    text-decoration: none;
+    color:inherit;
+}
+.no-a a:hover{
+    text-decoration: none;
+    color:inherit;
+}
+
 .dash-shorts{
     margin-top:45px;
 }
@@ -125,6 +143,7 @@ body{
 [v-cloak]{
     display:none;
 }
+
 .tabs_div .nav-pills .nav-link:not(.active){
     background: #cdcdcd;
 }
@@ -138,6 +157,7 @@ body{
 .settings .tab_name{
     text-align: center;
 }
+
 input:not([type=checkbox]){
     background: #fff;
     color: #1b1e21;
@@ -174,4 +194,122 @@ input:not([type=checkbox]){
     background:#f6a607;
     color:black;
     font-weight: bold;
+}
+
+.messenger.col-md-12{
+    padding-left:0px;
+    padding-right:0px;
+    padding:0px;
+    font-family:"Century Gothic";
+}
+.messenger .col-lg-3, .messenger .col-md-5{
+    padding-left:0;
+    padding-right: 0;
+}
+.messenger .shortcut .attr{
+    display:block;
+    padding-left:5px;
+    font-size:16px;
+}
+.messenger .shortcut .info{
+    padding:10px;
+}
+.messenger .shortcut{
+    padding:10px;
+}
+.messenger .shortcut.new{
+    background: #f6a607;
+}
+.messenger .shortcut.active{
+    background: #CACBCC;
+}
+.messenger .shortcut:hover:not(.active){
+    background:#DADBDD;
+}
+.email_small{
+    color:#898C8E;
+    font-size:18px;
+}
+.messenger .shortcut .title{
+    font-weight: bold;
+}
+.messenger .circle{
+    background: #C0C0C0;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    border:2px solid #898C8E;
+}
+.messenger .shortcut_part{
+    height:85%;
+    overflow: auto;
+    border-right:1px solid #929292;
+}
+
+.messenger .msg_show{
+}
+.messenger .msg_show .header .box{
+    background:#21252B;
+    padding:15px;
+    padding-bottom: 10px;
+    font-size:18px;
+    color:#898C8E;
+}
+.messenger .msg_show .header .name{
+    font-size:28px;
+}
+.messenger .msg_show .header .box .circle_down{
+    border:10px solid #21252B;
+    width:100px;
+    position: absolute;
+    margin-left:-15px;
+    color:black;
+    margin-top:2px;
+    height: 100px;
+}
+.messenger .msg_show .header .title{
+    padding:15px;
+    padding-top:5px;
+}
+.messenger .msg_show .msg_panel{
+    background: #DADBDD;
+    min-height: 50%;
+    padding:10px;
+}
+.messenger .btn_grp{
+    padding-left:0;
+    padding-right: 0;
+    padding:5px;
+    display:flex;
+    align-items: flex-end;
+}
+.messenger .btn_grp button{
+    margin-left:2px;
+}
+.messenger hr{
+    background: #CACBCC;
+}
+.messenger{
+
+}
+
+
+@media only screen and (max-width:400px){
+
+
+}
+@media only screen and (max-width: 600px){
+    .messenger .msg_show .header .box{
+        display:flex;
+        align-items: center;
+        height: 109px;
+    }
+    .messenger .msg_show .msg_panel{
+        background: #DADBDD;
+        min-height: 200px;
+    }
 }

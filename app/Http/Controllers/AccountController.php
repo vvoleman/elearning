@@ -143,13 +143,17 @@ class AccountController extends Controller
         $formator = new CSVFormator();
         $cols  = ["student_firstname","student_surname","student_email"];
         if(\Auth::user()->hasRole('admin')){
-            $cols[] = "student_role";
+            $cols[] = ["student_role",true];
         }
         $plebs = $formator->csvToArray($request->file('students_file'),$cols);
         $error = [];
         foreach ($plebs as $p){
             try{
-                $p["student_role"] = Role::where('name',$p["student_role"])->get()[0]->id_r;
+                if(empty($p["student_role"])){
+                    $p["student_role"] = Role::where('name','user')->get()[0]->id_r;
+                }else{
+                    $p["student_role"] = Role::where('name',$p["student_role"])->get()[0]->id_r;
+                }
                 if(!$this->registerStudent($p)){
                     $error[] = "Uživatel ".$p["student_firstname"]." ".$p["student_surname"]." již nejspíše existuje!";
                 }
@@ -227,6 +231,11 @@ class AccountController extends Controller
         return view('Account/acc_settings');
     }
 
+    /**
+     * Posts new settings to DB
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function postSettingsAccount(Request $request){
         $data = $request->validate([
             "email" => "email|nullable|unique:users,email",
