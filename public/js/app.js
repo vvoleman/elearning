@@ -25184,6 +25184,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __webpack_require__(19);
 
 window.Vue = __webpack_require__(6);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.directive('click-outside', {
+    bind: function bind(el, binding, vnode) {
+        el.clickOutsideEvent = function (event) {
+            // here I check that click was outside the el and his childrens
+            if (!(el == event.target || el.contains(event.target))) {
+                // and if it did, call method provided in attribute value
+                vnode.context[binding.expression](event);
+            }
+        };
+        document.body.addEventListener('click', el.clickOutsideEvent);
+    },
+    unbind: function unbind(el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent);
+    }
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -25197,7 +25212,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('messenger', __webpack_req
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('modal', __webpack_require__(56));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('emailsel', __webpack_require__(61));
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-  el: '#app'
+    el: '#app'
 });
 
 /***/ }),
@@ -48142,7 +48157,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             messages: "",
             currMsg: "",
             newMsgShow: {
-                show: false,
+                show: true,
                 respond_email: ""
             }
         };
@@ -48433,41 +48448,33 @@ var render = function() {
                 _vm._v("Nová zpráva")
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "login_form_div",
-                  attrs: { slot: "body" },
-                  slot: "body"
-                },
-                [
-                  _c(
-                    "div",
-                    { staticClass: "form-group" },
-                    [
-                      _c("label", { staticClass: "label" }, [_vm._v("Email")]),
-                      _vm._v(" "),
-                      _c("emailsel")
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { staticClass: "label" }, [_vm._v("Předmět")]),
+              _c("div", { attrs: { slot: "body" }, slot: "body" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-group" },
+                  [
+                    _c("label", { staticClass: "label" }, [_vm._v("Email")]),
                     _vm._v(" "),
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: { type: "text", name: "title" }
-                    })
-                  ]),
+                    _c("emailsel")
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "label" }, [_vm._v("Předmět")]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { staticClass: "label" }, [_vm._v("Zpráva")]),
-                    _vm._v(" "),
-                    _c("textarea", { staticClass: "form-control" })
-                  ])
-                ]
-              )
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "text", name: "title" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "label" }, [_vm._v("Zpráva")]),
+                  _vm._v(" "),
+                  _c("textarea", { staticClass: "form-control" })
+                ])
+              ])
             ]
           )
         : _vm._e()
@@ -48571,7 +48578,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-mask[data-v-53ab54d2] {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n.modal-wrapper[data-v-53ab54d2] {\n    display: table-cell;\n    vertical-align: middle;\n}\n.modal-container[data-v-53ab54d2] {\n    margin: 0px auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n            box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n    font-family: Helvetica, Arial, sans-serif;\n}\n.modal-header h3[data-v-53ab54d2] {\n    margin-top: 0;\n    color: #42b983;\n}\n.modal-body[data-v-53ab54d2] {\n    margin: 20px 0;\n}\n.modal-default-button[data-v-53ab54d2] {\n    float: right;\n}\n\n/*\n * The following styles are auto-applied to elements with\n * transition=\"modal\" when their visibility is toggled\n * by Vue.js.\n *\n * You can easily play with the modal transition by editing\n * these styles.\n */\n.modal-enter[data-v-53ab54d2] {\n    opacity: 0;\n}\n.modal-leave-active[data-v-53ab54d2] {\n    opacity: 0;\n}\n.modal-enter .modal-container[data-v-53ab54d2],\n.modal-leave-active .modal-container[data-v-53ab54d2] {\n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n", ""]);
+exports.push([module.i, "\n.modal-mask[data-v-53ab54d2] {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n.modal-wrapper[data-v-53ab54d2] {\n    display: table-cell;\n    vertical-align: middle;\n}\n.modal-container[data-v-53ab54d2] {\n    margin: 0px auto;\n    padding: 20px 30px;\n    background-color: #ddd;\n    border-radius: 2px;\n    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n            box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n    font-family: Helvetica, Arial, sans-serif;\n}\n.modal-header h3[data-v-53ab54d2] {\n    margin-top: 0;\n}\n.modal-header[data-v-53ab54d2]{\n    border-bottom:1px solid #bcbcbc;\n}\n.modal-footer[data-v-53ab54d2]{\n    border-top:1px solid #bcbcbc;\n}\n.modal-body[data-v-53ab54d2] {\n    margin: 20px 0;\n}\n.modal-container hr[data-v-53ab54d2]{\n    background:#bcbcbc;\n}\n.modal-default-button[data-v-53ab54d2] {\n    float: right;\n}\n@media only screen and (max-width:600px){\n.modal-container[data-v-53ab54d2]{\n        height: 95%;\n        overflow:auto;\n}\n}\n\n/*\n * The following styles are auto-applied to elements with\n * transition=\"modal\" when their visibility is toggled\n * by Vue.js.\n *\n * You can easily play with the modal transition by editing\n * these styles.\n */\n.modal-enter[data-v-53ab54d2] {\n    opacity: 0;\n}\n.modal-leave-active[data-v-53ab54d2] {\n    opacity: 0;\n}\n.modal-enter .modal-container[data-v-53ab54d2],\n.modal-leave-active .modal-container[data-v-53ab54d2] {\n    -webkit-transform: scale(1.1);\n    transform: scale(1.1);\n}\n", ""]);
 
 // exports
 
@@ -48582,8 +48589,6 @@ exports.push([module.i, "\n.modal-mask[data-v-53ab54d2] {\n    position: fixed;\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
 //
 //
 //
@@ -48773,7 +48778,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48793,6 +48798,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "EmailSel",
@@ -48800,25 +48816,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             name: "",
             name_list: "",
-            looking: false
+            selected: 0,
+            looking: false,
+            sel_users: [{ id: 2, firstname: "Vojtěch", surname: "Voleman", role: "teacher" }, { id: 1, firstname: "Marco", surname: "Polo", role: "admin" }, { id: 3, firstname: "Random", surname: "Jmeno", role: "user" }]
         };
     },
+    mounted: function mounted() {},
     methods: {
+        dropUser: function dropUser(i) {
+            this.sel_users.splice(i, 1);
+        },
+        selectUser: function selectUser() {
+            if (!Array.isArray(this.sel_users)) {
+                this.sel_users = [];
+                console.log("ti");
+            }
+            this.sel_users.push(this.name_list[this.selected]);
+            this.name_list.splice(this.selected, 1);
+            this.selected = 0;
+            this.closeSearch();
+        },
+        keyUp: function keyUp(e) {
+            if (this.looking && (e.keyCode == 38 || e.keyCode == 40)) {
+                var temp = 1;
+                if (e.keyCode == 38) {
+                    temp = -1;
+                }
+                this.selected = (this.selected + temp + this.name_list.length) % this.name_list.length;
+                console.log(this.selected);
+            } else if (e.keyCode == 13) {
+                this.selectUser();
+            }
+        },
         startProcess: function startProcess() {
             if (this.name.length >= 4) {
                 var temp = this;
+                this.looking = true;
                 $.get("ajax/getUsersByName", { name: temp.name }, function (data) {
                     temp.name_list = data;
                 });
             } else if (this.name_list.length > 0) {
                 this.name_list = "";
             }
+        },
+        closeSearch: function closeSearch() {
+            if (this.looking) {
+                this.looking = false;
+            }
         }
     },
     watch: {
         name: _.debounce(function () {
             this.startProcess();
-        }, 500)
+        }, 500),
+        looking: function looking() {
+            console.log("Looking = " + this.looking);
+        }
     }
 });
 
@@ -48830,38 +48883,113 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("input", {
-      directives: [
+  return _c(
+    "div",
+    {
+      staticClass: "col-12 selusers",
+      staticStyle: { "padding-left": "0px", "padding-right": "0px" },
+      on: { keyup: _vm.keyUp }
+    },
+    [
+      _c(
+        "div",
         {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.name,
-          expression: "name"
-        }
-      ],
-      staticClass: "form-control",
-      attrs: { type: "text" },
-      domProps: { value: _vm.name },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.name = $event.target.value
-        }
-      }
-    }),
-    _vm._v(" "),
-    _vm.name_list.length > 0
-      ? _c(
-          "div",
-          _vm._l(_vm.name_list, function(o, i) {
-            return _c("div", [_vm._v(_vm._s(o.firstname))])
-          })
-        )
-      : _vm._e()
-  ])
+          directives: [
+            {
+              name: "click-outside",
+              rawName: "v-click-outside",
+              value: _vm.closeSearch,
+              expression: "closeSearch"
+            }
+          ]
+        },
+        [
+          _c("div", { staticClass: "d-flex  justify-content-between" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.name,
+                  expression: "name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.name },
+              on: {
+                click: function($event) {
+                  _vm.looking = true
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.name = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm.looking
+            ? _c(
+                "div",
+                { staticClass: "results d-block col-12 position-absolute" },
+                _vm._l(_vm.name_list, function(o, i) {
+                  return _c(
+                    "div",
+                    {
+                      class: { selected: i == _vm.selected },
+                      on: { click: _vm.selectUser }
+                    },
+                    [_vm._v(_vm._s(o.firstname) + " " + _vm._s(o.surname))]
+                  )
+                })
+              )
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "d-flex justify-content-between",
+          staticStyle: { "flex-wrap": "wrap" }
+        },
+        _vm._l(_vm.sel_users, function(o, i) {
+          return _c(
+            "div",
+            {
+              staticClass:
+                "send_to d-flex align-items-center justify-content-between col-md-6"
+            },
+            [
+              _c("div", { staticClass: "circle" }, [
+                _vm._v(_vm._s(o.firstname[0] + o.surname[0]))
+              ]),
+              _vm._v(" "),
+              _c("span", [
+                _vm._v(_vm._s(o.firstname) + " " + _vm._s(o.surname))
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm",
+                  on: {
+                    click: function($event) {
+                      _vm.dropUser(i)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fas fa-times" })]
+              )
+            ]
+          )
+        })
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

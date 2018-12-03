@@ -54,7 +54,7 @@
         </div><!-- Nová zpráva !-->
         <modal v-bind:email="newMsgShow.respond_email" v-if="newMsgShow.show" @closeModal="newMsgShow.show = !newMsgShow.show">
             <h3 slot="header">Nová zpráva</h3>
-            <div slot="body" class="login_form_div">
+            <div slot="body">
                 <div class="form-group">
                     <label class="label">Email</label>
                     <emailsel></emailsel>
@@ -80,7 +80,7 @@
                 messages:"",
                 currMsg:"",
                 newMsgShow:{
-                    show:false,
+                    show:true,
                     respond_email:""
                 }
             };

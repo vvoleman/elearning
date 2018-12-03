@@ -179,6 +179,9 @@ input:not([type=checkbox]){
     padding:5px 15px;
     margin-bottom: 0;
     color:white;
+    display:flex;
+    width:24.9%;
+    flex: 1 1 0;
 }
 .form-group label.label.bad{
     background: #f64954;
@@ -297,6 +300,30 @@ input:not([type=checkbox]){
 
 }
 
+.results{
+    background: #c6c8ca;
+    padding:5px;
+    position: fixed;
+    margin-top:-1px;
+    border:1px solid #ccc;
+    z-index:5;
+}
+.results .selected{
+    font-weight: bold;
+}
+.selusers .circle{
+    width:40px;
+    height: 40px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius:50%;
+    background: #2a9055;
+    margin-right:5px;
+}
+.send_to{
+    padding:5px 0 5px 0;
+}
 
 @media only screen and (max-width:400px){
 
@@ -312,4 +339,10 @@ input:not([type=checkbox]){
         background: #DADBDD;
         min-height: 200px;
     }
+    .label{
+        width:100% !important;
+    }
+}
+div{
+    transition: opacity .5s;
 }
