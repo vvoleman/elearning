@@ -309,7 +309,10 @@ input:not([type=checkbox]){
     z-index:5;
 }
 .results .selected{
-    font-weight: bold;
+    font-weight: bold !important;
+}
+.results .sm{
+    font-size:12px;
 }
 .selusers .circle{
     width:40px;

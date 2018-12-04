@@ -18,9 +18,10 @@ Route::get('/about', 'HomeController@getAbout')->name('about');
 /* AJAX */
 
 Route::middleware(['isAjax'])->group(function (){
-    Route::post('/ajax/checkEmailExists/','AjaxController@postCheckExistingEmail');
+    Route::post('/ajax/checkEmailExists/','AjaxController@postCheckExistingEmail')->middleware('auth');
     Route::get('/ajax/getMessages','MessageController@getMessagesByAjax')->middleware('auth');
     Route::post('/ajax/markMsgAsSeen','MessageController@postMarkAsSeen')->middleware('auth');
+    Route::post('/ajax/postMessage','MessageController@postMessage')->middleware('auth');
 });
 Route::get('/ajax/getUsersByName','AjaxController@getUsersByName')->middleware('auth');
 

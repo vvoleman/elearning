@@ -1,11 +1,11 @@
 <template>
     <div style="padding-left: 0px;padding-right: 0px" class="col-12 selusers" v-on:keyup="keyUp">
-        <div v-click-outside="closeSearch">
-            <div class="d-flex  justify-content-between">
+        <div v-click-outside="closeSearch" style="z-index:11">
+            <div class="d-flex  justify-content-between" >
                 <input @click="looking = true" type="text" v-model="name" class="form-control">
             </div>
             <div v-if="looking" class="results d-block col-12 position-absolute">
-                <div v-for="(o,i) in name_list" :class="{selected:i==selected}" v-on:click="selectUser">{{o.firstname}} {{o.surname}}</div>
+                <div class="d-flex justify-content-between align-items-center" v-for="(o,i) in name_list" :class="{selected:i==selected}" v-on:click="selectUser">{{o.firstname}} {{o.surname}} <span class="sm">{{o.email}}</span></div>
             </div>
         </div>
         <div class="d-flex justify-content-between" style="flex-wrap:wrap">
@@ -27,11 +27,7 @@
                 name_list:"",
                 selected:0,
                 looking:false,
-                sel_users:[
-                    {id: 2, firstname: "Vojtěch", surname: "Voleman", role: "teacher"},
-                    {id: 1, firstname: "Marco", surname: "Polo", role: "admin"},
-                    {id: 3, firstname: "Random", surname: "Jmeno", role: "user"}
-                ]
+                sel_users:""
             }
         },
         mounted:function(){
@@ -46,7 +42,6 @@
                     console.log("ti");
                 }
                 this.sel_users.push(this.name_list[this.selected]);
-                this.name_list.splice(this.selected,1);
                 this.selected = 0;
                 this.closeSearch();
             },
@@ -67,7 +62,23 @@
                     var temp = this;
                     this.looking = true;
                     $.get("ajax/getUsersByName", {name: temp.name}, function (data) {
-                        temp.name_list = data;
+                        var test = [];
+                        if(temp.sel_users.length == 0){
+                            temp.name_list = data;
+                        }else{
+                            for (var i = 0; i<data.length;i++){
+                                var boo = true;
+                                for (var j = 0;j<temp.sel_users.length;j++){
+                                    if(data[i].id == temp.sel_users[j].id){
+                                        boo = false;
+                                    }
+                                }
+                                if(boo){
+                                    test.push(data[i]);
+                                }
+                            }
+                            temp.name_list = test;
+                        }
                     });
                 }else if(this.name_list.length > 0){
                     this.name_list = "";
@@ -82,9 +93,12 @@
         watch:{
             name: _.debounce(function(){
                 this.startProcess();
-            },500),
+            },300),
             looking:function(){
                 console.log("Looking = "+this.looking)
+            },
+            sel_users: function(){
+                this.$emit('sel_users',this.sel_users);
             }
         }
     }

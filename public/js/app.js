@@ -48064,7 +48064,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48157,8 +48157,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             messages: "",
             currMsg: "",
             newMsgShow: {
-                show: true,
-                respond_email: ""
+                errors: {
+                    user: "",
+                    title: "",
+                    message: ""
+                },
+                inputs: {
+                    title: "",
+                    message: ""
+                },
+                show: false,
+                respond_emails: ""
             }
         };
     },
@@ -48176,15 +48185,67 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     watch: {
         currMsg: function currMsg() {
-            if (this.currMsg.length > 0 && this.messages[this.currMsg].seen == true) {
+            if (typeof this.currMsg == "number" && this.messages[this.currMsg].seen == true) {
                 this.markAsSeen(this.currMsg, true);
+            }
+        },
+        newMsgShow: function newMsgShow() {
+            alert("test");
+        },
+        title: function title() {
+            var s = this.newMsgShow.inputs.title;
+            if (s.length == 0) {
+                this.newMsgShow.errors.title = "Předmět musí být vyplněn!";
+            } else if (s.length > 32) {
+                this.newMsgShow.errors.title = "Předmět může mít max. 32 znaků!";
+            } else {
+                this.newMsgShow.errors.title = -1;
+            }
+        },
+        message: function message() {
+            var s = this.newMsgShow.inputs.message;
+            if (s.length == 0) {
+                this.newMsgShow.errors.message = "Zpráva nemůže být prázdná!";
+            } else {
+                this.newMsgShow.errors.message = -1;
+            }
+        },
+        receivers: function receivers() {
+            if (this.newMsgShow.respond_emails.length > 0) {
+                this.newMsgShow.errors.user = -1;
+            } else {
+                this.newMsgShow.errors.user = "Vyberte prosím, komu máme zprávu zaslat!";
             }
         }
     },
     methods: {
+        checkMail: function checkMail() {
+            if (this.rwegucci) {
+                this.sendMail({
+                    title: this.title,
+                    receivers: this.receivers,
+                    message: this.message
+                });
+            } else {
+                alert("Nelze odeslat zprávu!");
+                console.log(this.newMsgShow);
+            }
+        },
+        sendMail: function sendMail(d) {
+            var temp = this;
+            $.post('/ajax/postMessage', { data: d }, function (data) {
+                if (data.response != null && data.response == 200) {
+                    alert('Zpráva byla úspěšně odeslána!');
+                    temp.newMsgShow.show = false;
+                }
+            });
+        },
         markAsSeen: function markAsSeen(msg, boo) {
+            var temp = this;
             $.post('/ajax/markMsgAsSeen', { id: this.messages[msg].my_id, boolean: boo, msg_id: this.messages[msg].msg_id }, function (data) {
-                console.log(data);
+                if (data.response != null && data.response == 200) {
+                    temp.messages[msg].seen = true;
+                }
             });
         },
         getDate: function getDate(unix) {
@@ -48203,11 +48264,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.newMsgShow.respond_email = email;
             }
             this.newMsgShow.show = true;
+        },
+        setResponses: function setResponses(value) {
+            this.newMsgShow.respond_emails = value;
+            console.log(value);
         }
     },
     computed: {
         cm: function cm() {
             return this.messages[this.currMsg];
+        },
+        title: function title() {
+            return this.newMsgShow.inputs.title;
+        },
+        message: function message() {
+            return this.newMsgShow.inputs.message;
+        },
+        receivers: function receivers() {
+            return this.newMsgShow.respond_emails;
+        },
+        rwegucci: function rwegucci() {
+            return this.newMsgShow.errors.message == -1 && this.newMsgShow.errors.title == -1 && this.newMsgShow.respond_emails.length > 0;
         }
     }
 });
@@ -48236,8 +48313,7 @@ var render = function() {
                       {
                         staticClass: "shortcut",
                         class: {
-                          active: i == _vm.currMsg && _vm.currMsg.length != 0,
-                          new: o.seen
+                          active: i == _vm.currMsg && _vm.currMsg.length != 0
                         },
                         on: {
                           click: function($event) {
@@ -48380,7 +48456,11 @@ var render = function() {
                         staticClass: "btn btn-gray",
                         on: {
                           click: function($event) {
-                            _vm.newMsg(_vm.cm.author.email)
+                            _vm.newMsg(
+                              _vm.cm.author.firstname +
+                                " " +
+                                _vm.cm.author.surname
+                            )
                           }
                         }
                       },
@@ -48436,11 +48516,11 @@ var render = function() {
         ? _c(
             "modal",
             {
-              attrs: { email: _vm.newMsgShow.respond_email },
               on: {
                 closeModal: function($event) {
                   _vm.newMsgShow.show = !_vm.newMsgShow.show
-                }
+                },
+                send: _vm.checkMail
               }
             },
             [
@@ -48453,26 +48533,103 @@ var render = function() {
                   "div",
                   { staticClass: "form-group" },
                   [
-                    _c("label", { staticClass: "label" }, [_vm._v("Email")]),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "label",
+                        class: {
+                          bad: _vm.newMsgShow.errors.user.length > 0,
+                          correct: _vm.newMsgShow.errors.user == -1
+                        },
+                        attrs: { title: "", title: _vm.newMsgShow.errors.user }
+                      },
+                      [_vm._v("Adresát")]
+                    ),
                     _vm._v(" "),
-                    _c("emailsel")
+                    _c("emailsel", { on: { sel_users: _vm.setResponses } })
                   ],
                   1
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _c("label", { staticClass: "label" }, [_vm._v("Předmět")]),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "label",
+                      class: {
+                        bad: _vm.newMsgShow.errors.title.length > 0,
+                        correct: _vm.newMsgShow.errors.title == -1
+                      },
+                      attrs: { title: _vm.newMsgShow.errors.title }
+                    },
+                    [_vm._v("Předmět")]
+                  ),
                   _vm._v(" "),
                   _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newMsgShow.inputs.title,
+                        expression: "newMsgShow.inputs.title"
+                      }
+                    ],
                     staticClass: "form-control",
-                    attrs: { type: "text", name: "title" }
+                    attrs: { type: "text", name: "title" },
+                    domProps: { value: _vm.newMsgShow.inputs.title },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.newMsgShow.inputs,
+                          "title",
+                          $event.target.value
+                        )
+                      }
+                    }
                   })
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
-                  _c("label", { staticClass: "label" }, [_vm._v("Zpráva")]),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "label",
+                      class: {
+                        bad: _vm.newMsgShow.errors.message.length > 0,
+                        correct: _vm.newMsgShow.errors.message == -1
+                      },
+                      attrs: { title: _vm.newMsgShow.errors.message }
+                    },
+                    [_vm._v("Zpráva")]
+                  ),
                   _vm._v(" "),
-                  _c("textarea", { staticClass: "form-control" })
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newMsgShow.inputs.message,
+                        expression: "newMsgShow.inputs.message"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    domProps: { value: _vm.newMsgShow.inputs.message },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.newMsgShow.inputs,
+                          "message",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
                 ])
               ])
             ]
@@ -48666,7 +48823,11 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-success",
-                  on: { click: _vm.closeModal }
+                  on: {
+                    click: function($event) {
+                      _vm.$emit("send", true)
+                    }
+                  }
                 },
                 [
                   _vm._v(
@@ -48778,7 +48939,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48818,7 +48979,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             name_list: "",
             selected: 0,
             looking: false,
-            sel_users: [{ id: 2, firstname: "Vojtěch", surname: "Voleman", role: "teacher" }, { id: 1, firstname: "Marco", surname: "Polo", role: "admin" }, { id: 3, firstname: "Random", surname: "Jmeno", role: "user" }]
+            sel_users: ""
         };
     },
     mounted: function mounted() {},
@@ -48832,7 +48993,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log("ti");
             }
             this.sel_users.push(this.name_list[this.selected]);
-            this.name_list.splice(this.selected, 1);
             this.selected = 0;
             this.closeSearch();
         },
@@ -48853,7 +49013,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var temp = this;
                 this.looking = true;
                 $.get("ajax/getUsersByName", { name: temp.name }, function (data) {
-                    temp.name_list = data;
+                    var test = [];
+                    if (temp.sel_users.length == 0) {
+                        temp.name_list = data;
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            var boo = true;
+                            for (var j = 0; j < temp.sel_users.length; j++) {
+                                if (data[i].id == temp.sel_users[j].id) {
+                                    boo = false;
+                                }
+                            }
+                            if (boo) {
+                                test.push(data[i]);
+                            }
+                        }
+                        temp.name_list = test;
+                    }
                 });
             } else if (this.name_list.length > 0) {
                 this.name_list = "";
@@ -48868,9 +49044,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     watch: {
         name: _.debounce(function () {
             this.startProcess();
-        }, 500),
+        }, 300),
         looking: function looking() {
             console.log("Looking = " + this.looking);
+        },
+        sel_users: function sel_users() {
+            this.$emit('sel_users', this.sel_users);
         }
     }
 });
@@ -48901,7 +49080,8 @@ var render = function() {
               value: _vm.closeSearch,
               expression: "closeSearch"
             }
-          ]
+          ],
+          staticStyle: { "z-index": "11" }
         },
         [
           _c("div", { staticClass: "d-flex  justify-content-between" }, [
@@ -48939,10 +49119,19 @@ var render = function() {
                   return _c(
                     "div",
                     {
+                      staticClass:
+                        "d-flex justify-content-between align-items-center",
                       class: { selected: i == _vm.selected },
                       on: { click: _vm.selectUser }
                     },
-                    [_vm._v(_vm._s(o.firstname) + " " + _vm._s(o.surname))]
+                    [
+                      _vm._v(
+                        _vm._s(o.firstname) + " " + _vm._s(o.surname) + " "
+                      ),
+                      _c("span", { staticClass: "sm" }, [
+                        _vm._v(_vm._s(o.email))
+                      ])
+                    ]
                   )
                 })
               )
