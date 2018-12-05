@@ -179,9 +179,6 @@ input:not([type=checkbox]){
     padding:5px 15px;
     margin-bottom: 0;
     color:white;
-    display:flex;
-    width:24.9%;
-    flex: 1 1 0;
 }
 .form-group label.label.bad{
     background: #f64954;
@@ -326,6 +323,16 @@ input:not([type=checkbox]){
 }
 .send_to{
     padding:5px 0 5px 0;
+}
+
+.course_short .header{
+    padding:10px;
+    background: #272C33;
+    color:white;
+}
+.course_short .body{
+    border:1px solid #898C8E;
+    height: 300px;
 }
 
 @media only screen and (max-width:400px){

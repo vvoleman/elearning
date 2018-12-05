@@ -37,6 +37,7 @@ Vue.component('tabs', require('./components/Tabs.vue'));
 Vue.component('messenger',require('./components/Messenger'));
 Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('emailsel', require('./components/EmailSel.vue'));
+Vue.component('hideable', require('./components/Hideable.vue'));
 const app = new Vue({
     el: '#app'
 });

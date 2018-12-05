@@ -52,4 +52,9 @@ Route::middleware("hasRole:teacher,admin")->group(function (){                  
 Route::middleware('auth')->group(function(){
     Route::get('/messages','MessageController@getMessenger')->name('messages.index');
 });
+
+/* COURSES */
+Route::middleware('auth')->group(function(){
+    Route::get('/courses','CourseController@getMyCourses');
+});
 ?>
