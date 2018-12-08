@@ -59,7 +59,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
     public function messages(){
         return $this->belongsToMany('App\Message', 'mes_use','user_id','message_id')->withPivot('seen')->orderBy('sent_at', 'desc');
-
+    }
+    public function groups(){
+        return $this->belongsToMany('App\Group', 'use_gro','student_id','group_id')->withPivot('added');
     }
 }
 

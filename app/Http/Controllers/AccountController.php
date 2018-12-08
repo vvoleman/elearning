@@ -15,15 +15,6 @@ use Illuminate\Support\Facades\Hash;
 class AccountController extends Controller
 {
     /**
-     * Returns dashboard
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function getDashboard(Request $request){
-        return view('Account/dashboard');
-    }
-
-    /**
      * Returns list of accounts (admin)
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

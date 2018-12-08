@@ -1,5 +1,5 @@
 <li class="nav-item">
-    <a class="nav-link" href="{{route('account.dashboard')}}">{{Auth::user()->getFullname()}}
+    <a class="nav-link" href="{{route('course.dashboard')}}">{{Auth::user()->getFullname()}}
         @if(Auth::user()->hasRole('admin'))
         <i class="fas fa-crown"></i>
         @endif
@@ -7,7 +7,7 @@
 </li>
 <!--
 <li class="nav-item">
-    <a class="nav-link" href="{{route('account.dashboard')}}">
+    <a class="nav-link" href="{{route('course.dashboard')}}">
         <i class="fas fa-bell"></i>
     </a>
 </li> !-->

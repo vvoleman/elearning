@@ -32,7 +32,7 @@ class LoginController extends Controller
                 Auth::user()->save();
                 Session::flash('success','Přihlášení proběhlo úspěšně!');
                 //dd(Session::all());
-                return redirect()->route('account.dashboard');
+                return redirect()->route('course.dashboard');
             }else{
                 Session::flash('danger','Tento účet byl deaktivován (Důvod: '.Auth::user()->deact_reason.')');
                 Auth::logout();

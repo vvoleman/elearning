@@ -31,9 +31,8 @@ Route::post('/login','LoginController@verifyLogin')->name('login.verifyLogin');
 Route::get('/logout','LoginController@getLogout')->middleware('auth')->name('login.logout');
 
 /* ACCOUNTS */
-Route::get('/dashboard','AccountController@getDashboard')->middleware('auth')->name('account.dashboard');                           //Dashboard view
 Route::get('/activate/{key}','AccountController@getActivateAccount')->name('account.activate');                                     //Activation view
-Route::post('/activate','AccountController@postActivateAccount')->name('account.saveActivation');                                   //Activation (saving credentials)
+Route::post('/act','AccountController@postActivateAccount')->name('account.saveActivation');                                   //Activation (saving credentials)
 Route::get('/settings','AccountController@getSettingsAccount')->middleware('auth')->name('account.settings');                       //Settings view
 Route::post('/settings','AccountController@postSettingsAccount')->middleware('auth')->name('account.settings');                     //Save new acc settings
 Route::get('/add','AccountController@getAddStudents')->middleware('hasRole:teacher,admin')->name('account.showAddUsers');           //Add view
@@ -55,6 +54,7 @@ Route::middleware('auth')->group(function(){
 
 /* COURSES */
 Route::middleware('auth')->group(function(){
-    Route::get('/courses','CourseController@getMyCourses');
+    Route::get('/dashboard','CourseController@getDashboard')->name('course.dashboard');                           //Dashboard view
+    Route::get('/course/{id}','CourseController@getCoursePage')->where('id', '[0-9]+')->name('course.course');
 });
 ?>

@@ -22,6 +22,7 @@
     "dependencies": {
         "bootstrap-vue": "^2.0.0-rc.11",
         "npm": "^6.4.1",
+        "vue-slide-toggle": "^1.1.0",
         "vuelidate": "^0.7.4"
     }
 }
