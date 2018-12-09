@@ -56,5 +56,6 @@ Route::middleware('auth')->group(function(){
 Route::middleware('auth')->group(function(){
     Route::get('/dashboard','CourseController@getDashboard')->name('course.dashboard');                           //Dashboard view
     Route::get('/course/{id}','CourseController@getCoursePage')->where('id', '[0-9]+')->name('course.course');
+    Route::get('/course/new','CourseController@getNewCourse')->middleware('hasRole:teacher,admin')->name('course.newCourse');
 });
 ?>

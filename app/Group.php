@@ -12,6 +12,6 @@ class Group extends Model{
         return $this->belongsTo('App\User',"owner_id");
     }
     public function students(){
-        return $this->belongsToMany('App\User','use_gro','group_id','student_id')->withPivot('added');
+        return $this->belongsToMany('App\User','use_gro','group_id','student_id')->withPivot('expirate_at');
     }
 }

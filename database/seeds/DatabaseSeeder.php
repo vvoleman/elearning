@@ -17,5 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(mes_useTableSeeder::class);
         $this->call(GroupsTableSeeder::class);
         $this->call(CoursesTableSeeder::class);
+        $this->call(use_couTableSeeder::class);
+        $this->call(gro_couTableSeeder::class);
+        $this->call(use_groTableSeeder::class);
     }
 }

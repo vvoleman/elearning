@@ -1,9 +1,12 @@
 <template>
 
-    <div class="col-md-6 mx-auto course_short">
+    <div class="col-md-8 mx-auto course_short">
         <div class="d-flex justify-content-between header align-items-center m-top">
             <h4><slot name="head-text"></slot></h4>
-            <i class="fas noselect " :class="{'fa-caret-down':!show,'fa-caret-up':show}" @click="show = !show"></i>
+            <div>
+                <slot name="control"></slot>
+                <i class="fas noselect " :class="{'fa-caret-down':!show,'fa-caret-up':show}" @click="show = !show"></i>
+            </div>
         </div>
         <div class="body" v-if="show">
             <slot name="body"></slot>

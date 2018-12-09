@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt("heslo"),
         ]);
         DB::table('users')->insert([
-            'role_id'=>1,
+            'role_id'=>2,
             'firstname' => "Random",
             'surname' => "Jmeno",
             'email' => "random@jmeno.cz",

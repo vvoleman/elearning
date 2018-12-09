@@ -50,7 +50,13 @@ body{
 .m-top{
     margin-top:10px;
 }
-
+.m-top-2{
+    margin-top:20px;
+}
+.plusbtn{
+    color:#65f674;
+    font-size:16px;
+}
 .footer {
     position: absolute;
     bottom: 0;

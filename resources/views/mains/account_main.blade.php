@@ -3,7 +3,7 @@
 <body>
 @include('../partials/_nav-account')
 @include('../partials/_flashmessages')
-<div id="app">
+<div id="app" v-cloak>
     @yield('content')
 </div>
 @include('../partials/_basicjs')

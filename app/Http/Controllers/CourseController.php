@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
+use App\Course;
 
 class CourseController extends Controller
 {
@@ -13,11 +14,16 @@ class CourseController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getDashboard(Request $request){
-        $user = Group::find(1)->students[0];
-        dd($user->groups);
-        //return view('Course/dashboard');
+        return view('Course/dashboard');
     }
     public function getCoursePage($id){
-
+        $course = Course::find($id);
+        if(empty($course)){
+            abort(404);
+        }
+        return view('Course/CoursePage',["c"=>$course]);
+    }
+    public function getNewCourse(){
+        return view('Course/NewCourse');
     }
 }

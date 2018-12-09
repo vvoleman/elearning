@@ -42,6 +42,7 @@
                         Kurzy
                         @break
                     @endswitch
+                    <a href="{{route('course.newCourse')}}" title="Vytvořit nový kurz" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
                 </span>
                 <div slot="body" class="d-md-flex justify-content-between col-md-12" style="flex-wrap: wrap;">
                     <div class="col-md-4 wrap">

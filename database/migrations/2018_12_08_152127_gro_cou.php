@@ -16,7 +16,7 @@ class GroCou extends Migration
         Schema::create('gro_cou', function (Blueprint $table) {
             $table->integer('course_id')->unsigned();
             $table->integer('group_id')->unsigned();
-            $table->dateTime('added')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('expirate_at')->nullable();
             $table->foreign('course_id')->references('id_c')->on('courses');
             $table->foreign('group_id')->references('id_g')->on('groups');
         });

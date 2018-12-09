@@ -8,7 +8,7 @@ class Course extends Model{
     public $timestamps = false;
     protected $primaryKey = "id_c";
 
-    public function owner(){
-        return $this->belongsTo('App\User',"owner_id");
+    public function owners(){
+        return $this->belongsToMany('App\User','use_cou','course_id','owner_id');
     }
 }
