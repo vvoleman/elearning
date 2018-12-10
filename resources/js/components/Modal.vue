@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-mask">
+    <div class="modal-mask" >
         <div class="modal-wrapper col-12">
             <div class="modal-container col-xl-4 col-md-6">
 
@@ -35,6 +35,13 @@
             sendMail:function(){
                 this.$emit('sendMail',1);
             }
+        },
+        mounted:function () {
+            window.addEventListener('keyup', e => {
+                if(e.keyCode == 27){
+                    this.closeModal();
+                }
+            })
         }
     }
 </script>

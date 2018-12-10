@@ -16,14 +16,14 @@ Route::get('/', 'HomeController@getIndex')->name('index');
 Route::get('/about', 'HomeController@getAbout')->name('about');
 
 /* AJAX */
-
 Route::middleware(['isAjax'])->group(function (){
     Route::post('/ajax/checkEmailExists/','AjaxController@postCheckExistingEmail')->middleware('auth');
     Route::get('/ajax/getMessages','MessageController@getMessagesByAjax')->middleware('auth');
     Route::post('/ajax/markMsgAsSeen','MessageController@postMarkAsSeen')->middleware('auth');
     Route::post('/ajax/postMessage','MessageController@postMessage')->middleware('auth');
+    Route::get('/ajax/getUsersByName','AjaxController@getUsersByName')->middleware('auth');
+    Route::get('/ajax/getUsersByIds','AjaxController@getUsersByIds');
 });
-Route::get('/ajax/getUsersByName','AjaxController@getUsersByName')->middleware('auth');
 
 /* LOGIN */
 Route::get('/login','LoginController@getLogin')->name('login.login');
@@ -32,7 +32,7 @@ Route::get('/logout','LoginController@getLogout')->middleware('auth')->name('log
 
 /* ACCOUNTS */
 Route::get('/activate/{key}','AccountController@getActivateAccount')->name('account.activate');                                     //Activation view
-Route::post('/act','AccountController@postActivateAccount')->name('account.saveActivation');                                   //Activation (saving credentials)
+Route::post('/act','AccountController@postActivateAccount')->name('account.saveActivation');                                        //Activation (saving credentials)
 Route::get('/settings','AccountController@getSettingsAccount')->middleware('auth')->name('account.settings');                       //Settings view
 Route::post('/settings','AccountController@postSettingsAccount')->middleware('auth')->name('account.settings');                     //Save new acc settings
 Route::get('/add','AccountController@getAddStudents')->middleware('hasRole:teacher,admin')->name('account.showAddUsers');           //Add view
@@ -50,6 +50,7 @@ Route::middleware("hasRole:teacher,admin")->group(function (){                  
 /* MESSAGES */
 Route::middleware('auth')->group(function(){
     Route::get('/messages','MessageController@getMessenger')->name('messages.index');
+    Route::post('/messages','MessageController@postReplyToGetMessenger')->name('messages.replies');
 });
 
 /* COURSES */

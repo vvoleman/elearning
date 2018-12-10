@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Group;
 use App\Course;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -14,7 +16,8 @@ class CourseController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getDashboard(Request $request){
-        return view('Course/dashboard');
+        $msgs_count = Auth::user()->messages()->whereNull('mes_use.seen')->count();
+        return view('Course/dashboard',["msgs_count"=>$msgs_count]);
     }
     public function getCoursePage($id){
         $course = Course::find($id);

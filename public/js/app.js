@@ -486,33 +486,6 @@ module.exports = function normalizeComponent (
 /* 2 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -592,7 +565,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -817,6 +790,33 @@ function applyToTag (styleElement, obj) {
     styleElement.appendChild(document.createTextNode(css))
   }
 }
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -11887,7 +11887,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(17).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(17).setImmediate))
 
 /***/ }),
 /* 7 */
@@ -14516,7 +14516,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
 /* 9 */
@@ -25162,7 +25162,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(71);
+module.exports = __webpack_require__(76);
 
 
 /***/ }),
@@ -25212,7 +25212,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('messenger', __webpack_req
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('modal', __webpack_require__(56));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('emailsel', __webpack_require__(61));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('hideable', __webpack_require__(66));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('readmore', __webpack_require__(75));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('readmore', __webpack_require__(71));
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app'
 });
@@ -25285,7 +25285,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
 /* 18 */
@@ -25478,7 +25478,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(7)))
 
 /***/ }),
 /* 19 */
@@ -42654,7 +42654,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(21)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(21)(module)))
 
 /***/ }),
 /* 21 */
@@ -47800,7 +47800,7 @@ var content = __webpack_require__(47);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("f50450e6", content, false, {});
+var update = __webpack_require__(3)("f50450e6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47819,7 +47819,7 @@ if(false) {
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -48042,7 +48042,7 @@ var content = __webpack_require__(53);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("90ef674a", content, false, {});
+var update = __webpack_require__(3)("90ef674a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48061,12 +48061,12 @@ if(false) {
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48151,12 +48151,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ["replyto"],
     data: function data() {
         return {
             messages: "",
+            messagesVis: true,
             currMsg: "",
             newMsgShow: {
                 errors: {
@@ -48170,15 +48176,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 },
                 show: false,
                 respond_emails: ""
-            }
+            },
+            ready: true,
+            reply: this.replyTo
         };
     },
     mounted: function mounted() {
-        var temp = this;
-        $.get('/ajax/getMessages', function (data) {
-            temp.messages = data;
-            console.log(data);
-        });
+        this.getMsgs();
+        if (this.replyto != null) {
+            this.newMsg();
+        }
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -48187,12 +48194,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     watch: {
         currMsg: function currMsg() {
-            if (typeof this.currMsg == "number" && this.messages[this.currMsg].seen == true) {
+            if (typeof this.currMsg == "number" && this.messages[this.currMsg].seen == false) {
                 this.markAsSeen(this.currMsg, true);
             }
-        },
-        newMsgShow: function newMsgShow() {
-            alert("test");
         },
         title: function title() {
             var s = this.newMsgShow.inputs.title;
@@ -48233,10 +48237,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(this.newMsgShow);
             }
         },
+        clearInputs: function clearInputs() {
+            this.inputs.message = "";
+            this.inputs.title = "";
+        },
         sendMail: function sendMail(d) {
             var temp = this;
             $.post('/ajax/postMessage', { data: d }, function (data) {
                 if (data.response != null && data.response == 200) {
+                    temp.clearInputs();
                     alert('Zpráva byla úspěšně odeslána!');
                     temp.newMsgShow.show = false;
                 }
@@ -48258,18 +48267,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.messages[i].author.firstname[0] + this.messages[i].author.surname[0];
         },
         newMsg: function newMsg() {
-            var email = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+            var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-            if (email.length == 0) {
-                this.newMsgShow.respond_email = "";
-            } else {
-                this.newMsgShow.respond_email = email;
+            if (id != null && typeof id == "number" && id % 1 == 0) {
+                this.reply = "" + id;
+            } else if (typeof id == "array") {
+                for (var i = 0; i < id.length - 1; i++) {
+                    this.reply += id[i] + ",";
+                }
+                this.reply += id[id.length - 1];
             }
             this.newMsgShow.show = true;
         },
         setResponses: function setResponses(value) {
             this.newMsgShow.respond_emails = value;
             console.log(value);
+        },
+        getMsgs: function getMsgs() {
+            this.messagesVis = false;
+            if (this.ready) {
+                this.ready = false;
+                setTimeout(function () {
+                    this.ready = true;
+                }.bind(this), 1000);
+                $.get('/ajax/getMessages', function (data) {
+                    this.messages = data;
+                    this.messagesVis = true;
+                    console.log(data);
+                }.bind(this));
+            }
         }
     },
     computed: {
@@ -48301,6 +48327,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "messenger_megadiv" },
     [
       _c("div", { staticClass: "col-md-12 messenger d-md-flex" }, [
         _c("div", { staticClass: "col-md-4 col-lg-3 shortcut_part" }, [
@@ -48309,13 +48336,14 @@ var render = function() {
             { staticClass: "m-top boxbox" },
             [
               _vm._l(_vm.messages, function(o, i) {
-                return _vm.messages.length != 0
+                return _vm.messages.length != 0 && _vm.messagesVis
                   ? _c(
                       "div",
                       {
                         staticClass: "shortcut",
                         class: {
-                          active: i == _vm.currMsg && _vm.currMsg.length != 0
+                          active: i == _vm.currMsg && _vm.currMsg.length != 0,
+                          new: !o.seen
                         },
                         on: {
                           click: function($event) {
@@ -48335,7 +48363,7 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "info" }, [
-                              _c("h5", [
+                              _c("h5", { staticStyle: { margin: "2px" } }, [
                                 _vm._v(
                                   _vm._s(o.author.firstname) +
                                     " " +
@@ -48344,7 +48372,7 @@ var render = function() {
                               ]),
                               _vm._v(" "),
                               _c("span", { staticClass: "attr title" }, [
-                                _vm._v(_vm._s(o.title))
+                                _vm._v(_vm._s(o.title) + " ")
                               ]),
                               _vm._v(" "),
                               _c("span", { staticClass: "attr text" }, [
@@ -48354,7 +48382,20 @@ var render = function() {
                                       _vm._s(o.message.length > 27 ? "..." : "")
                                   )
                                 ])
-                              ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "attr",
+                                  staticStyle: { "font-size": "14px" }
+                                },
+                                [
+                                  _vm._v(
+                                    "(" + _vm._s(_vm.getDate(o.sent)) + ")"
+                                  )
+                                ]
+                              )
                             ])
                           ]
                         )
@@ -48370,8 +48411,18 @@ var render = function() {
                       staticClass:
                         "d-flex align-items-center justify-content-center"
                     },
-                    [_c("span", [_vm._v("Žádné zprávy nejsou k dispozici")])]
+                    [
+                      _vm._v(
+                        "\n                    Žádná zpráva nebyla nalezena\n                "
+                      )
+                    ]
                   )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.messages.length > 0 && !_vm.messagesVis
+                ? _c("div", { staticClass: "d-flex justify-content-center" }, [
+                    _c("i", { staticClass: "fas fa-sync-alt fa-spin" })
+                  ])
                 : _vm._e()
             ],
             2
@@ -48458,11 +48509,7 @@ var render = function() {
                         staticClass: "btn btn-gray",
                         on: {
                           click: function($event) {
-                            _vm.newMsg(
-                              _vm.cm.author.firstname +
-                                " " +
-                                _vm.cm.author.surname
-                            )
+                            _vm.newMsg(_vm.cm.author.id)
                           }
                         }
                       },
@@ -48491,15 +48538,19 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "col-md-4 col-lg-3",
-          staticStyle: { "border-right": "1px solid #929292" }
+          staticClass: "col-md-4 col-lg-3 d-flex",
+          staticStyle: {
+            "border-right": "1px solid #929292",
+            "padding-right": "0px",
+            "padding-left": "0"
+          }
         },
         [
           _c(
             "button",
             {
               staticClass:
-                "d-flex col-12 justify-content-center align-items-center btn",
+                "d-flex col-9 justify-content-center align-items-center btn",
               on: {
                 click: function($event) {
                   _vm.newMsg()
@@ -48510,6 +48561,23 @@ var render = function() {
               _c("i", { staticClass: "fas fa-plus-circle" }),
               _vm._v("Nová zpráva")
             ]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn no_p col-3",
+              attrs: {
+                title: "Zprávy lze načíst jen jednou za 15 vteřin",
+                disabled: !_vm.ready
+              },
+              on: {
+                click: function($event) {
+                  _vm.getMsgs()
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-sync-alt" })]
           )
         ]
       ),
@@ -48548,7 +48616,10 @@ var render = function() {
                       [_vm._v("Adresát")]
                     ),
                     _vm._v(" "),
-                    _c("emailsel", { on: { sel_users: _vm.setResponses } })
+                    _c("emailsel", {
+                      attrs: { replyto: _vm.reply },
+                      on: { sel_users: _vm.setResponses }
+                    })
                   ],
                   1
                 ),
@@ -48713,7 +48784,7 @@ var content = __webpack_require__(58);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("b6fef8a4", content, false, {});
+var update = __webpack_require__(3)("b6fef8a4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48732,7 +48803,7 @@ if(false) {
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -48785,6 +48856,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         sendMail: function sendMail() {
             this.$emit('sendMail', 1);
         }
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        window.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                _this.closeModal();
+            }
+        });
     }
 });
 
@@ -48917,7 +48997,7 @@ var content = __webpack_require__(63);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("3a608ab2", content, false, {});
+var update = __webpack_require__(3)("3a608ab2", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -48936,12 +49016,12 @@ if(false) {
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48975,6 +49055,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "EmailSel",
+    props: ['replyto'],
     data: function data() {
         return {
             name: "",
@@ -48984,7 +49065,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             sel_users: ""
         };
     },
-    mounted: function mounted() {},
+    mounted: function mounted() {
+        console.log(this.replyto);
+        if (this.replyto != null) {
+            var data = this.prepareInput(this.replyto);
+            if (data) {
+                this.searchForUsersById(data);
+            }
+            //console.log("test");
+        }
+    },
     methods: {
         dropUser: function dropUser(i) {
             this.sel_users.splice(i, 1);
@@ -48996,6 +49086,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             this.sel_users.push(this.name_list[this.selected]);
             this.selected = 0;
+            this.name = "";
             this.closeSearch();
         },
         keyUp: function keyUp(e) {
@@ -49041,6 +49132,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.looking) {
                 this.looking = false;
             }
+        },
+        prepareInput: function prepareInput(data) {
+            var temp = data.split(",");
+            for (var i = 0; i < temp.length; i++) {
+                if (isNaN(temp[i]) || Number(temp[i]) < 0 || Number(temp[i]) % 1 != 0) {
+                    temp = false;
+                    break;
+                }
+            }
+            return temp;
+        },
+        searchForUsersById: function searchForUsersById(data) {
+            $.get("/ajax/getUsersByIds/", { ids: data }, function (data) {
+                if (typeof data != "number") {
+                    this.sel_users = data;
+                }
+            }.bind(this));
         }
     },
     watch: {
@@ -49152,7 +49260,7 @@ var render = function() {
             "div",
             {
               staticClass:
-                "send_to d-flex align-items-center justify-content-between col-md-6"
+                "send_to d-flex align-items-center justify-content-between col-md-12"
             },
             [
               _c("div", { staticClass: "circle" }, [
@@ -49254,7 +49362,7 @@ var content = __webpack_require__(68);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("02852e20", content, false, {});
+var update = __webpack_require__(3)("02852e20", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -49273,7 +49381,7 @@ if(false) {
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -49371,27 +49479,18 @@ if (false) {
 
 /***/ }),
 /* 71 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(76)
+  __webpack_require__(72)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(78)
+var __vue_script__ = __webpack_require__(74)
 /* template */
-var __vue_template__ = __webpack_require__(79)
+var __vue_template__ = __webpack_require__(75)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49430,17 +49529,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 76 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(77);
+var content = __webpack_require__(73);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("9ba16b6a", content, false, {});
+var update = __webpack_require__(3)("9ba16b6a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -49456,10 +49555,10 @@ if(false) {
 }
 
 /***/ }),
-/* 77 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -49470,7 +49569,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", 
 
 
 /***/ }),
-/* 78 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49499,7 +49598,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 79 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49517,6 +49616,12 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-99effc54", module.exports)
   }
 }
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

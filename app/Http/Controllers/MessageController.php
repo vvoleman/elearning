@@ -16,13 +16,11 @@ class MessageController extends Controller
     {
         $this->toolkit = new Toolkit();
     }
-
     public function getMessenger()
     {
         $this->getMessagesByAjax();
         return view('messages/messenger');
     }
-
     private function parseMessages($msgs)
     {
         $pass = [];
@@ -35,12 +33,11 @@ class MessageController extends Controller
                 "author" => $this->toolkit->parseUsers([User::find($m->author_id)])[0],
                 "sent" => strtotime($m->sent_at),
                 "message" => $m->message,
-                "seen" => (empty($m->pivot->seen)) ? true : false
+                "seen" => (empty($m->pivot->seen)) ? false : true
             ];
         }
         return $pass;
     }
-
     public function getMessagesByAjax()
     {
         try {
@@ -50,7 +47,6 @@ class MessageController extends Controller
             return "This place is protected you scum!";
         }
     }
-
     public function postMarkAsSeen(Request $r)
     {
         $response = "";
@@ -75,7 +71,6 @@ class MessageController extends Controller
         }
         return response()->json(["response" => $response]);
     }
-
     public function postMessage(Request $r)
     {
         $data = $r->data;
@@ -87,7 +82,7 @@ class MessageController extends Controller
         $msg->title = $data["title"];
         $msg->message = $data["message"];
         if($msg->save()){
-            $msg->receivers()->attach(1);
+            $msg->receivers()->attach($this->getUserModels($data["receivers"]));
             if($msg->save()){
                 return response()->json(["response"=>200]);
             }
@@ -102,5 +97,8 @@ class MessageController extends Controller
             $temp[] = $d["id"];
         }
         return $temp;
+    }
+    public function postReplyToGetMessenger(Request $r){
+        dd($r);
     }
 }

@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between" style="flex-wrap:wrap">
-            <div v-for="(o,i) in sel_users" class="send_to d-flex align-items-center justify-content-between col-md-6">
+            <div v-for="(o,i) in sel_users" class="send_to d-flex align-items-center justify-content-between col-md-12">
                 <div class="circle">{{o.firstname[0]+o.surname[0]}}</div>
                 <span>{{o.firstname}} {{o.surname}}</span>
                 <button class="btn btn-sm" @click="dropUser(i)"><i class="fas fa-times"></i></button>
@@ -21,6 +21,7 @@
 <script>
     export default {
         name: "EmailSel",
+        props:['replyto'],
         data:function () {
             return{
                 name:"",
@@ -31,21 +32,30 @@
             }
         },
         mounted:function(){
+            console.log(this.replyto);
+            if(this.replyto != null){
+                var data = this.prepareInput(this.replyto);
+                if(data){
+                    this.searchForUsersById(data);
+                }
+                //console.log("test");
+            }
         },
         methods:{
-            dropUser:function(i){
+            dropUser: function(i){
                 this.sel_users.splice(i,1);
             },
-            selectUser:function(){
+            selectUser: function(){
                 if(!Array.isArray(this.sel_users)){
                     this.sel_users = [];
                     console.log("ti");
                 }
                 this.sel_users.push(this.name_list[this.selected]);
                 this.selected = 0;
+                this.name = "";
                 this.closeSearch();
             },
-            keyUp:function(e){
+            keyUp: function(e){
                 if(this.looking && (e.keyCode == 38 || e.keyCode == 40)){
                     var temp = 1;
                     if(e.keyCode == 38){
@@ -88,6 +98,23 @@
                 if(this.looking){
                     this.looking = false;
                 }
+            },
+            prepareInput: function(data){
+                var temp = data.split(",");
+                for(var i=0;i<temp.length;i++){
+                    if(isNaN(temp[i]) || Number(temp[i])<0 || (Number(temp[i]) %1 != 0)){
+                        temp = false;
+                        break;
+                    }
+                }
+                return temp;
+            },
+            searchForUsersById: function(data){
+                $.get("/ajax/getUsersByIds/",{ids:data},function(data){
+                    if(typeof data != "number"){
+                        this.sel_users = data;
+                    }
+                }.bind(this));
             }
         },
         watch:{

@@ -11,7 +11,7 @@
                     <h4>Lektoři:</h4>
                     <ul>
                         @foreach($c->owners as $o)
-                            <li>{{($o->id_u != Auth::user()->id_u) ? $o->getFullname() : "Vy"}}</li>
+                            <a href="{{route('messages.replies',["id"=>$o->id_u])}}"><li>{{($o->id_u != Auth::user()->id_u) ? $o->getFullname() : "Vy"}}</li></a>
                         @endforeach
                     </ul>
                 </div>

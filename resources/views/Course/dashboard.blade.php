@@ -12,19 +12,21 @@
                 <div class="short-block col-md-3">
                     <i class="fas fa-tasks"></i>
                     <div class="circle">5</div>
-                    Aktivní úkoly
+                    Úkoly
                 </div>
                 <div class="short-block col-md-3">
                     <a href="{{route('messages.index')}}">
                         <i class="fas fa-envelope"></i>
-                        <div class="circle">5</div>
-                        Nové zprávy
+                        @if($msgs_count>0)
+                        <div class="circle">{{$msgs_count}}</div>
+                        @endif
+                        Zprávy
                     </a>
                 </div>
                 <div class="short-block col-md-3">
                     <i class="fas fa-bell"></i>
                     <div class="circle">5</div>
-                    Nové upozornění
+                    Upozornění
                 </div>
             </div>
         </div>

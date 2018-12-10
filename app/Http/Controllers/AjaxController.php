@@ -25,8 +25,23 @@ class AjaxController extends Controller
         if(empty($r->name)){
             return response()->json(["response"=>"422"]);
         }
-        $users = $toolkit->parseUsers(User::whereRaw('CONCAT(firstname," ",surname) LIKE "%'.$r->name.'%"')->get());
+        $users = $toolkit->parseUsers(User::whereRaw('CONCAT(firstname," ",surname) LIKE "%'.$r->name.'%" || email LIKE "%'.$r->name.'%"')->get());
         return response()->json($users);
-
+    }
+    public function getUsersByIds(Request $r){
+        $toolkit = new Toolkit();
+        $data = $r->ids;
+        for($i=0;$i<sizeof($data);$i++){
+            if(!is_numeric($data[$i]) || (intval($data[$i]) < 0)){
+                return response()->json(["response"=>422]);
+            }
+            $data[$i] = intval($data[$i]);
+        }
+        try{
+            $data = $toolkit->parseUsers(User::find($data));
+        }catch(\Exception $e){
+            $data = ["response"=>500];
+        }
+        return response()->json($data);
     }
 }
