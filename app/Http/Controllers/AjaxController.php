@@ -44,4 +44,13 @@ class AjaxController extends Controller
         }
         return response()->json($data);
     }
+    public function getCheckCourseSlug(Request $r){
+        $res = \App\Course::where('slug',$r->slug)->get();
+        if(sizeof($res) == 1){
+            return response()->json(["used" => true]);
+        }else if(sizeof($res) > 1){
+            return response()->json(["response" => 500]);
+        }
+        return response()->json(["used" => false]);
+    }
 }

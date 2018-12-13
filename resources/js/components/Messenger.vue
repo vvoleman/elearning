@@ -160,8 +160,8 @@
                 }
             },
             clearInputs:function(){
-                this.inputs.message = "";
-                this.inputs.title = "";
+                this.newMsgShow.inputs.message = "";
+                this.newMsgShow.inputs.title = "";
             },
             sendMail:function(d){
                 var temp = this;

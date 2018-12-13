@@ -71,7 +71,7 @@
                 if(this.name.length >= 4) {
                     var temp = this;
                     this.looking = true;
-                    $.get("ajax/getUsersByName", {name: temp.name}, function (data) {
+                    $.get("/ajax/getUsersByName", {name: temp.name}, function (data) {
                         var test = [];
                         if(temp.sel_users.length == 0){
                             temp.name_list = data;

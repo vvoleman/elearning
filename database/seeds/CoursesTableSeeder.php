@@ -14,12 +14,14 @@ class CoursesTableSeeder extends Seeder
         DB::table('courses')->insert([
             "name"=>"Český jazyk 3. ročník",
             "desc"=>"Český jazyk neboli čeština je západoslovanský jazyk, nejbližší slovenštině, poté lužické srbštině a polštině. Patří mezi slovanské jazyky, do rodiny jazyků indoevropských. Čeština se vyvinula ze západních nářečí praslovanštiny na konci 10. století. Je částečně ovlivněná latinou a němčinou.",
-            "created_at" => \Illuminate\Support\Facades\DB::raw("NOW()")
+            "created_at"=>\Illuminate\Support\Facades\DB::raw("NOW()"),
+            "slug"=>"cj3r"
         ]);
         DB::table('courses')->insert([
-            "name"=>"Matematika A 3. ročník",
+            "name"=>"Matematika 3. ročník",
             "desc"=>"Matematika je věda zabývající se z formálního hlediska kvantitou, strukturou, prostorem a změnou. Matematika je též popisována jako disciplína, jež se zabývá vytvářením abstraktních entit a vyhledáváním zákonitých vztahů mezi nimi.",
-            "created_at" => \Illuminate\Support\Facades\DB::raw("NOW()")
+            "created_at" => \Illuminate\Support\Facades\DB::raw("NOW()"),
+            "slug"=>"mat3a"
             ]);
     }
 }

@@ -22,7 +22,8 @@ Route::middleware(['isAjax'])->group(function (){
     Route::post('/ajax/markMsgAsSeen','MessageController@postMarkAsSeen')->middleware('auth');
     Route::post('/ajax/postMessage','MessageController@postMessage')->middleware('auth');
     Route::get('/ajax/getUsersByName','AjaxController@getUsersByName')->middleware('auth');
-    Route::get('/ajax/getUsersByIds','AjaxController@getUsersByIds');
+    Route::get('/ajax/getUsersByIds','AjaxController@getUsersByIds')->middleware('auth');
+    Route::get('/ajax/checkCourseSlug','AjaxController@getCheckCourseSlug')->middleware('auth');
 });
 
 /* LOGIN */
@@ -56,7 +57,7 @@ Route::middleware('auth')->group(function(){
 /* COURSES */
 Route::middleware('auth')->group(function(){
     Route::get('/dashboard','CourseController@getDashboard')->name('course.dashboard');                           //Dashboard view
-    Route::get('/course/{id}','CourseController@getCoursePage')->where('id', '[0-9]+')->name('course.course');
     Route::get('/course/new','CourseController@getNewCourse')->middleware('hasRole:teacher,admin')->name('course.newCourse');
+    Route::get('/course/{slug}','CourseController@getCoursePage')->where('slug', '[a-z0-9_]+')->name('course.course');
 });
 ?>

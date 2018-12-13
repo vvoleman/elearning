@@ -17,6 +17,7 @@ class CreateCoursesTable extends Migration
             $table->increments('id_c');
             $table->char("name",32);
             $table->text("desc");
+            $table->char("slug",8)->unique();
             $table->dateTime("created_at")->useCurrent();
         });
     }

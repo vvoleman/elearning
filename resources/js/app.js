@@ -39,6 +39,8 @@ Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('emailsel', require('./components/EmailSel.vue'));
 Vue.component('hideable', require('./components/Hideable.vue'));
 Vue.component('readmore', require('./components/Readmore.vue'));
+Vue.component('newcourse', require('./components/NewCourse.vue'));
+Vue.component('scchecker', require('./components/ShortcutChecker.vue'));
 const app = new Vue({
     el: '#app'
 });
