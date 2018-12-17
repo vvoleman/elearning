@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Own\Toolkit;
 use App\User;
+use App\Role;
 
 class AjaxController extends Controller
 {
@@ -25,7 +26,12 @@ class AjaxController extends Controller
         if(empty($r->name)){
             return response()->json(["response"=>"422"]);
         }
-        $users = $toolkit->parseUsers(User::whereRaw('CONCAT(firstname," ",surname) LIKE "%'.$r->name.'%" || email LIKE "%'.$r->name.'%"')->get());
+        $users = User::whereRaw('(CONCAT(firstname," ",surname) LIKE "%'.$r->name.'%" || email LIKE "%'.$r->name.'%")');
+        if(!empty($r->group)){
+            $temp = Role::where('name',$r->group)->get()[0]->id_r;
+            $users = $users->where('role_id',$temp);
+        }
+        $users = $toolkit->parseUsers($users->get());
         return response()->json($users);
     }
     public function getUsersByIds(Request $r){

@@ -24,6 +24,7 @@ Route::middleware(['isAjax'])->group(function (){
     Route::get('/ajax/getUsersByName','AjaxController@getUsersByName')->middleware('auth');
     Route::get('/ajax/getUsersByIds','AjaxController@getUsersByIds')->middleware('auth');
     Route::get('/ajax/checkCourseSlug','AjaxController@getCheckCourseSlug')->middleware('auth');
+    Route::post('/ajax/updateTeachers','CourseController@ajaxUpdateTeachers')->middleware('hasRole:teacher,admin');
 });
 
 /* LOGIN */
@@ -57,7 +58,16 @@ Route::middleware('auth')->group(function(){
 /* COURSES */
 Route::middleware('auth')->group(function(){
     Route::get('/dashboard','CourseController@getDashboard')->name('course.dashboard');                           //Dashboard view
-    Route::get('/course/new','CourseController@getNewCourse')->middleware('hasRole:teacher,admin')->name('course.newCourse');
+    Route::middleware('hasRole:teacher,admin')->group(function(){
+        Route::get('/course/new','CourseController@getNewCourse')->name('course.newCourse');
+        Route::post('/course/new','CourseController@postNewCourse')->name("course.postNewCourse");
+        Route::get('/course/{slug}/edit','CourseController@getEditCourse')->name('course.editCourse')->where('slug', '[a-z0-9_]+');
+        Route::get('/course/{slug}/edit/lectors','CourseController@getEditLectors')->name('course.editLectors')->where('slug', '[a-z0-9_]+');
+        Route::get('/course/{slug}/edit/groups','CourseController@getEditGroups')->name('course.editGroups')->where('slug', '[a-z0-9_]+');
+        Route::get('/course/{slug}/edit/modules','CourseController@getEditModules')->name('course.editModules')->where('slug', '[a-z0-9_]+');
+        Route::post('/course/{slug}/edit/settings','CourseController@postEditSettings')->name('course.postSettings')->where('slug', '[a-z0-9_]+');
+        Route::get('/course/{slug}/edit/settings','CourseController@getEditSettings')->name('course.editSettings')->where('slug', '[a-z0-9_]+');
+    });
     Route::get('/course/{slug}','CourseController@getCoursePage')->where('slug', '[a-z0-9_]+')->name('course.course');
 });
 ?>

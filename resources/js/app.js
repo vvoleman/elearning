@@ -1,4 +1,5 @@
 import Vue from "vue";
+import VeeValidate from 'vee-validate';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -8,6 +9,13 @@ import Vue from "vue";
 
 require('./bootstrap');
 
+
+Vue.use(VeeValidate);
+
+/**
+ *
+ *
+ */
 window.Vue = require('vue');
 Vue.directive('click-outside', {
     bind: function (el, binding, vnode) {
@@ -25,6 +33,28 @@ Vue.directive('click-outside', {
     },
 });
 
+
+const dict = {
+    custom: {
+        email: {
+            required: 'Email nesmí být prázdný!',
+            email: 'Toto není email!'
+        },
+        name: {
+            required: 'Název nesmí být prázdný!',
+            min: 'Název je příliš krátký!',
+            max: 'Název je příliš dlouhý!',
+        },
+        shortcut: {
+            required: 'Zkratka musí být vyplněna!',
+            min: 'Zkratka musí být min. 4 znaky dlouhá!',
+            max: 'Zkratka může být max. 8 znaků dlouhá!',
+            regex: 'Zkratka obsahuje nepovolované znaky!'
+        }
+    }
+}; //err messages
+
+;
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -39,8 +69,13 @@ Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('emailsel', require('./components/EmailSel.vue'));
 Vue.component('hideable', require('./components/Hideable.vue'));
 Vue.component('readmore', require('./components/Readmore.vue'));
-Vue.component('newcourse', require('./components/NewCourse.vue'));
+Vue.component('newcourse', require('./components/course/NewCourse.vue'));
 Vue.component('scchecker', require('./components/ShortcutChecker.vue'));
+Vue.component('editlectors', require('./components/course/EditLectors.vue'));
+Vue.component('ecset',require('./components/course/EditSettings'));
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    mounted(){
+        this.$validator.localize('en', dict);
+    }
 });

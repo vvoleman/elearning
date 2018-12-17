@@ -46,40 +46,16 @@
                     @endswitch
                     <a href="{{route('course.newCourse')}}" title="Vytvořit nový kurz" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
                 </span>
-                <div slot="body" class="d-md-flex justify-content-between col-md-12" style="flex-wrap: wrap;">
+                <div slot="body" class="d-md-flex justify-content-between col-md-12 box_body" style="flex-wrap: wrap;">
+                    @foreach($c as $course)
                     <div class="col-md-4 wrap">
                         <div class="course_shortcut ">
-                            <a href="{{route("course.course",["id"=>1])}}">
-                            <h5>Český jazyk 3.ročník</h5>
+                            <a href="{{route("course.course",["id"=>$course->slug])}}">
+                            <h5>{{$course->name}}</h5>
                             </a>
                         </div>
-
                     </div>
-                    <div class="col-md-4 wrap">
-                        <div class="course_shortcut ">
-                            <h5>ČJ3R</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wrap">
-                        <div class="course_shortcut ">
-                            <h5>ČJ3R</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wrap">
-                        <div class="course_shortcut ">
-                            <h5>ČJ3R</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wrap">
-                        <div class="course_shortcut ">
-                            <h5>ČJ3R</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-4 wrap">
-                        <div class="course_shortcut ">
-                            <h5>ČJ3R</h5>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </hideable>
         </div>

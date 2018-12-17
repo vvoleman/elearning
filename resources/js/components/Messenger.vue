@@ -63,7 +63,7 @@
             <div slot="body">
                 <div class="form-group">
                     <label class="label" title="" :class="{bad:newMsgShow.errors.user.length>0,correct:newMsgShow.errors.user==-1}" :title="newMsgShow.errors.user">Adresát</label>
-                    <emailsel v-bind:replyto="reply" @sel_users="setResponses"></emailsel>
+                    <emailsel v-bind:replyto="reply" @input="setResponses"></emailsel>
                 </div>
                 <div class="form-group">
                     <label class="label" :class="{bad:newMsgShow.errors.title.length>0,correct:newMsgShow.errors.title==-1}" :title="newMsgShow.errors.title">Předmět</label>
@@ -183,6 +183,7 @@
             },
             getDate:function(unix){
                 var d = new Date(unix*1000);
+                console.log(d);
                 return d.getDate()+". "+d.getMonth()+". "+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes();
             },
             getNameShortcut:function(i){

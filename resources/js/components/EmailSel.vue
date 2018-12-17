@@ -4,11 +4,11 @@
             <div class="d-flex  justify-content-between" >
                 <input @click="looking = true" type="text" v-model="name" class="form-control">
             </div>
-            <div v-if="looking" class="results d-block col-12 position-absolute">
-                <div class="d-flex justify-content-between align-items-center" v-for="(o,i) in name_list" :class="{selected:i==selected}" v-on:click="selectUser">{{o.firstname}} {{o.surname}} <span class="sm">{{o.email}}</span></div>
+            <div v-if="looking" class="results d-block col-12 position-absolute" style="padding-left:0;padding-right:0">
+                <div class="d-flex align-items-center box" v-for="(o,i) in name_list" :class="{selected:i==selected}" v-on:click="selectUser">{{o.firstname}} {{o.surname}} <span class="sm offset-0"> &nbsp{{o.email}}</span></div>
             </div>
         </div>
-        <div class="d-flex justify-content-between" style="flex-wrap:wrap">
+        <div class="d-flex justify-content-between" v-if="!cust" style="flex-wrap:wrap">
             <div v-for="(o,i) in sel_users" class="send_to d-flex align-items-center justify-content-between col-md-12">
                 <div class="circle">{{o.firstname[0]+o.surname[0]}}</div>
                 <span>{{o.firstname}} {{o.surname}}</span>
@@ -21,18 +21,28 @@
 <script>
     export default {
         name: "EmailSel",
-        props:['replyto'],
+        props:['replyto','value','default','custom','group'],
         data:function () {
             return{
                 name:"",
                 name_list:"",
                 selected:0,
                 looking:false,
-                sel_users:""
+                sel_users:"",
+                cust:false,
+                gr:""
             }
         },
         mounted:function(){
-            console.log(this.replyto);
+            if(this.default != null && this.default.length > 0){
+                this.sel_users = JSON.parse(this.default);
+            }
+            if(this.custom == "true"){
+                this.cust = true;
+            }
+            if(this.group != null && this.group.length > 0){
+                this.gr = this.group;
+            }
             if(this.replyto != null){
                 var data = this.prepareInput(this.replyto);
                 if(data){
@@ -48,12 +58,14 @@
             selectUser: function(){
                 if(!Array.isArray(this.sel_users)){
                     this.sel_users = [];
-                    console.log("ti");
                 }
                 this.sel_users.push(this.name_list[this.selected]);
                 this.selected = 0;
                 this.name = "";
                 this.closeSearch();
+                if(this.cust){
+                    this.$emit("users_sel",this.sel_users);
+                }
             },
             keyUp: function(e){
                 if(this.looking && (e.keyCode == 38 || e.keyCode == 40)){
@@ -71,7 +83,7 @@
                 if(this.name.length >= 4) {
                     var temp = this;
                     this.looking = true;
-                    $.get("/ajax/getUsersByName", {name: temp.name}, function (data) {
+                    $.get("/ajax/getUsersByName", {name: temp.name,group:temp.gr}, function (data) {
                         var test = [];
                         if(temp.sel_users.length == 0){
                             temp.name_list = data;
@@ -125,7 +137,10 @@
                 console.log("Looking = "+this.looking)
             },
             sel_users: function(){
-                this.$emit('sel_users',this.sel_users);
+                this.$emit('input',this.sel_users);
+            },
+            value:function(data){
+                this.sel_users = data;
             }
         }
     }

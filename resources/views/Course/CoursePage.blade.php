@@ -11,7 +11,7 @@
                     <h4>Lektoři:</h4>
                     <ul>
                         @foreach($c->owners as $o)
-                            <a href="{{route('messages.replies',["id"=>$o->id_u])}}"><li>{{($o->id_u != Auth::user()->id_u) ? $o->getFullname() : "Vy"}}</li></a>
+                            <a @if($o->id_u != Auth::user()->id_u) href="{{route('messages.replies',["id"=>$o->id_u])}}"@endif><li>{{($o->id_u != Auth::user()->id_u) ? $o->getFullname() : "Vy"}}</li></a>
                         @endforeach
                     </ul>
                 </div>
@@ -23,13 +23,31 @@
             <hr>
                 <p>{{$c->desc}}</p>
             <hr>
-            @if(Auth::user()->role->name == "admin")
-            @endif
+
+
         </div>
         <div>
+            @if(Auth::user()->ownCourse($c->slug))
             <div class="d-flex justify-content-end mx-auto col-md-8">
-                <i class="fas fa-cog" style="font-size:20px"></i>
+                <a href="{{route('course.editCourse',[$c->slug])}}" class="no-a">
+                    <i class="fas fa-cog" style="font-size:20px"></i>
+                </a>
             </div>
+            <hideable def_show="true">
+                <span slot="head-text">Třídy</span>
+                <div slot="body" class="d-md-flex col-md-12 box_body" style="flex-wrap: wrap;">
+                    @foreach($c->groups as $course)
+                        <div class="col-md-4 wrap">
+                            <div class="course_shortcut ">
+                                <a href="">
+                                    <h5>{{$course->name}}</h5>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </hideable>
+            @endif
             <hideable def_show="true">
                 <span slot="head-text">Moduly</span>
                 <div slot="body">

@@ -1,5 +1,7 @@
 @extends('mains.account_main')
 @section('title','Nový kurz | ')
 @section('content')
-<newcourse></newcourse>
+    {{Form::open(["route"=>"course.postNewCourse"])}}
+        <newcourse></newcourse>
+    {{Form::close()}}
 @stop

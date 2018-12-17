@@ -60,11 +60,45 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function messages(){
         return $this->belongsToMany('App\Message', 'mes_use','user_id','message_id')->withPivot('seen')->orderBy('seen','asc')->orderBy('sent_at', 'asc');
     }
-    public function inGroups(){
-        return $this->belongsToMany('App\Group', 'use_gro','student_id','group_id')->withPivot('expirate_at');
+    public function inCourses(){
+        $g = [];
+        $temp = $this->inGroups;
+        foreach($temp as $t){
+            foreach($t->courses as $c){
+                $g[] = $c;
+            }
+        }
+        return $g;
     }
+    public function inGroups(){
+        return $this->belongsToMany('App\Group', 'use_gro','student_id','group_id')->withPivot('added');
+    }
+    /**
+     * Relationship between courses and users
+     * @return Course[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function ownCourses(){
-        return $this->belongsToMany('App\Course','use_cou','owner_id','course_id');
+        if($this->role->name == "admin"){
+            return \App\Course::all();
+        }
+        return $this->belongsToMany('App\Course','use_cou','owner_id','course_id')->get();
+    }
+    /***
+     * Function which checks if user is course-owner
+     * @param $c_id
+     */
+    public function ownCourse($c_id){
+        $role = $this->role->name;
+        if($role == "admin"){
+            return true;
+        }else if($role == "student"){
+            return false;
+        }
+        if(sizeof($this->ownCourses()->where('slug',$c_id)) > 0){
+            return true;
+        }
+        return false;
+
     }
 }
 

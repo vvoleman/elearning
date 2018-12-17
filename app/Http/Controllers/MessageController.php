@@ -82,7 +82,7 @@ class MessageController extends Controller
         $msg->title = $data["title"];
         $msg->message = $data["message"];
         if($msg->save()){
-            $msg->receivers()->attach($this->getUserModels($data["receivers"]));
+            $msg->receivers()->attach($this->toolkit->getUserModels($data["receivers"]));
             if($msg->save()){
                 return response()->json(["response"=>200]);
             }
@@ -90,13 +90,6 @@ class MessageController extends Controller
         return response()->json(["response"=>500]);
 
 
-    }
-    private function getUserModels($data){
-        $temp = [];
-        foreach ($data as $d){
-            $temp[] = $d["id"];
-        }
-        return $temp;
     }
     public function postReplyToGetMessenger(Request $r){
         dd($r);

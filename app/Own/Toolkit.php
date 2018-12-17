@@ -9,10 +9,21 @@ namespace App\Own;
                     "firstname" => $u->firstname,
                     "surname" => $u->surname,
                     "email" => $this->protectEmail($u->email),
-                    "role" => $u->role->name
+                    "role" => $u->role->name,
+                    "me" => (\Auth::user()->id_u == $u->id_u) ? true : false
                 ];
             }
             return $pass;
+        }
+        public function getUserModels($data,$www = "id"){
+            if(empty($data)){
+                return [];
+            }
+            $temp = [];
+            foreach ($data as $d){
+                $temp[] = $d[$www];
+            }
+            return $temp;
         }
         private function protectEmail($string){
             $parts = explode("@",$string);
