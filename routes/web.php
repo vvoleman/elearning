@@ -25,6 +25,7 @@ Route::middleware(['isAjax'])->group(function (){
     Route::get('/ajax/getUsersByIds','AjaxController@getUsersByIds')->middleware('auth');
     Route::get('/ajax/checkCourseSlug','AjaxController@getCheckCourseSlug')->middleware('auth');
     Route::post('/ajax/updateTeachers','CourseController@ajaxUpdateTeachers')->middleware('hasRole:teacher,admin');
+    Route::post('/ajax/syncStudentsInGroup','GroupController@ajaxSyncStudentsInGroup')->middleware('hasRole:teacher,admin');
 });
 
 /* LOGIN */
@@ -61,13 +62,19 @@ Route::middleware('auth')->group(function(){
     Route::middleware('hasRole:teacher,admin')->group(function(){
         Route::get('/course/new','CourseController@getNewCourse')->name('course.newCourse');
         Route::post('/course/new','CourseController@postNewCourse')->name("course.postNewCourse");
-        Route::get('/course/{slug}/edit','CourseController@getEditCourse')->name('course.editCourse')->where('slug', '[a-z0-9_]+');
-        Route::get('/course/{slug}/edit/lectors','CourseController@getEditLectors')->name('course.editLectors')->where('slug', '[a-z0-9_]+');
-        Route::get('/course/{slug}/edit/groups','CourseController@getEditGroups')->name('course.editGroups')->where('slug', '[a-z0-9_]+');
-        Route::get('/course/{slug}/edit/modules','CourseController@getEditModules')->name('course.editModules')->where('slug', '[a-z0-9_]+');
-        Route::post('/course/{slug}/edit/settings','CourseController@postEditSettings')->name('course.postSettings')->where('slug', '[a-z0-9_]+');
-        Route::get('/course/{slug}/edit/settings','CourseController@getEditSettings')->name('course.editSettings')->where('slug', '[a-z0-9_]+');
+        Route::get('/course/{slug}/edit','CourseController@getEditCourse')->name('course.editCourse')->where('slug', '[a-zA-Z0-9_]+');
+        Route::get('/course/{slug}/edit/lectors','CourseController@getEditLectors')->name('course.editLectors')->where('slug', '[a-zA-Z0-9_]+');
+        Route::get('/course/{slug}/edit/groups','CourseController@getEditGroups')->name('course.editGroups')->where('slug', '[a-zA-Z0-9_]+');
+        Route::get('/course/{slug}/edit/modules','CourseController@getEditModules')->name('course.editModules')->where('slug', '[a-zA-Z0-9_]+');
+        Route::post('/course/{slug}/edit/settings','CourseController@postEditSettings')->name('course.postSettings')->where('slug', '[a-zA-Z0-9_]+');
+        Route::get('/course/{slug}/edit/settings','CourseController@getEditSettings')->name('course.editSettings')->where('slug', '[a-zA-Z0-9_]+');
     });
-    Route::get('/course/{slug}','CourseController@getCoursePage')->where('slug', '[a-z0-9_]+')->name('course.course');
+    Route::get('/course/{slug}','CourseController@getCoursePage')->where('slug', '[a-zA-Z0-9_]+')->name('course.course');
+});
+
+/* GROUPS */
+Route::middleware('auth')->group(function(){
+    Route::get('/group/{id}','GroupController@getGroupPage')->name('group.group')->where('id', '[a-zA-Z0-9_]+');
+    Route::get('/group/{id}/editstudent','GroupController@getEditStudent')->name('group.editStudent')->where('id', '[a-zA-Z0-9_]+')->middleware('hasRole:teacher,admin');
 });
 ?>

@@ -8,14 +8,14 @@
             <h1>Nastavení</h1>
             <hr>
         </div>
-        <tabs class="settings">
-            <div class="tab_item tab_active col-md-8 mx-auto">
+        <tabs class="settings col-md-8 mx-auto">
+            <div class="tab_item tab_active mx-auto">
                 <h3 class="tab_name">Změna emailu</h3>
                 {!! Form::open(["route"=>"account.settings"]) !!}
                 <emailver em_name="email" em_addr="{{Auth::user()->email}}"></emailver>
                 {!! Form::close() !!}
             </div>
-            <div class="tab_item col-md-8 mx-auto">
+            <div class="tab_item mx-auto">
                 <h3 class="tab_name">Změna hesla</h3>
                 {!! Form::open(["route"=>"account.settings"]) !!}
                     <div class="m-top col-md-8 mx-auto">

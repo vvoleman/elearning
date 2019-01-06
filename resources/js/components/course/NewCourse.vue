@@ -3,6 +3,7 @@
         <div class="d-md-flex justify-content-center col-md-10 mx-auto align-items-center">
             <div class="col-xl-4 col-md-6 login_form_div m-top-2">
                 <div class="col-md-11 mx-auto">
+                    <h3>Povinné</h3>
                     <div class="form-group">
                         <label class="label" :class="{bad:errors.first('name') != null,correct:errors.first('name') == null && name.length > 0}" :title="errors.first('name')">Název kurzu</label>
                         <input type="text" class="form-control" v-model="name" name="name" v-validate="{required:true,max:32,min:4}">
@@ -16,6 +17,7 @@
             </div>
             <div class="col-xl-4 col-md-6 login_form_div offset-md-1 m-top-2">
                 <div class="col-md-11 mx-auto">
+                    <h3>Nepovinné</h3>
                     <div class="form-group">
                         <label class="label">Popis kurzu</label>
                         <textarea class="form-control" style="resize:none" rows="4" name="desc"></textarea>

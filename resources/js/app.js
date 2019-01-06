@@ -1,5 +1,8 @@
 import Vue from "vue";
 import VeeValidate from 'vee-validate';
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -11,6 +14,7 @@ require('./bootstrap');
 
 
 Vue.use(VeeValidate);
+Vue.use(BootstrapVue);
 
 /**
  *
@@ -73,9 +77,15 @@ Vue.component('newcourse', require('./components/course/NewCourse.vue'));
 Vue.component('scchecker', require('./components/ShortcutChecker.vue'));
 Vue.component('editlectors', require('./components/course/EditLectors.vue'));
 Vue.component('ecset',require('./components/course/EditSettings'));
+Vue.component('editstudent',require('./components/group/editStudents'));
 const app = new Vue({
     el: '#app',
     mounted(){
         this.$validator.localize('en', dict);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     }
 });

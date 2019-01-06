@@ -18,13 +18,10 @@
                 <div class="d-flex align-items-center">
                     <h4>Založeno: </h4><span style="padding-left:5px">{{\Carbon\Carbon::parse($c->created_at)->format('d.m.Y')}}</span>
                 </div>
-
             </div>
             <hr>
                 <p>{{$c->desc}}</p>
             <hr>
-
-
         </div>
         <div>
             @if(Auth::user()->ownCourse($c->slug))
@@ -39,7 +36,7 @@
                     @foreach($c->groups as $course)
                         <div class="col-md-4 wrap">
                             <div class="course_shortcut ">
-                                <a href="">
+                                <a href="{{route('group.group',$course->slug)}}">
                                     <h5>{{$course->name}}</h5>
                                 </a>
                             </div>

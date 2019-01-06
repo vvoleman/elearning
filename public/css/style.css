@@ -175,8 +175,8 @@ input:not([type=checkbox]),textarea{
     transition: 0.3s;
  }
 .btn-gray{
-    background: #272C33;
-    color:white;
+    background: #272C33 !important;
+    color:white !important;
 }
 .form-group label.label{
     background:#333;
@@ -340,10 +340,13 @@ input:not([type=checkbox]),textarea{
     padding:10px;
     background: #272C33;
     color:white;
+    box-shadow: 0px 0px 16px -1px rgba(0,0,0,0.25);
 }
 .course_short .body{
     padding:1.5%;
     background: #d3d3d3;
+}
+.course_short{
 }
 .course_shortcut{
     background: #864686;
@@ -382,6 +385,10 @@ input:not([type=checkbox]),textarea{
                                   supported by Chrome and Opera */
 }
 
+.pointer{
+    cursor:pointer;
+}
+
 .content{
     background-color: blue;
     color: white;
@@ -393,7 +400,7 @@ input:not([type=checkbox]),textarea{
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
 }
-.no_p,.messenger_megadiv .col-9,.messenger_megadiv .col-3,.body .col-md-12, .body .col-md-4{
+.no_p,.messenger_megadiv .col-9,.messenger_megadiv .col-3,.body .col-md-12{
     padding-left:0;
     padding-right: 0;
 }
@@ -510,13 +517,17 @@ font-family:"Century Gothic";
 btn.no-bg{
     border:none;
 }
-@media only screen and (max-width:767px) {
+@media only screen and (max-width:767px) { /* < md */
     .editc .sidebar{
         height: initial;
         padding-bottom: 20px;
         box-shadow:none;
         position: static;
         margin-top:0;
+    }
+    .student_box{
+        margin-top:5px;
+        margin-bottom:5px;
     }
 }
 @media only screen and (max-width:400px){
@@ -540,4 +551,77 @@ btn.no-bg{
 div{
     transition: opacity .5s;
 }
+.student_box{
+    padding:10px !important;
+    font-size:18px;
+    background: #efefef;
+    box-shadow: 0px 0px 16px -1px rgba(0,0,0,0.25);
+}
+.student_box:hover{
+    background:#e1e1e1;
+}
+.student_box .fa-ellipsis-v{
+    font-size:18px;
+}
+.st{
+    margin-bottom: 10px;
+    margin-top:10px;
+}
+.btn-link{
+    padding:0 !important;
+    color:inherit !important;
+}
+.blinking-cursor {
+    font-size: 90px;
+    color: white;
+    -webkit-animation: 1s blink step-end infinite;
+    -moz-animation: 1s blink step-end infinite;
+    -ms-animation: 1s blink step-end infinite;
+    -o-animation: 1s blink step-end infinite;
+    animation: 1s blink step-end infinite;
+}
 
+@keyframes "blink" {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: inherit;
+    }
+}
+
+@-moz-keyframes blink {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: inherit;
+    }
+}
+
+@-webkit-keyframes "blink" {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: inherit;
+    }
+}
+
+@-ms-keyframes "blink" {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: inherit;
+    }
+}
+
+@-o-keyframes "blink" {
+    from, to {
+        color: transparent;
+    }
+    50% {
+        color: inherit;
+    }
+}

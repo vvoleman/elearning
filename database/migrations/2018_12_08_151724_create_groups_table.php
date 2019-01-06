@@ -17,6 +17,7 @@ class CreateGroupsTable extends Migration
             $table->increments('id_g')->unsigned();
             $table->string('name','32');
             $table->integer('owner_id')->unsigned();
+            $table->string('slug','8')->unique();
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->foreign('owner_id')->references('id_u')->on('users');
         });

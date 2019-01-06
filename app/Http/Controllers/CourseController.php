@@ -29,6 +29,7 @@ class CourseController extends Controller
         }else{
             $c = $user->ownCourses();
         }
+        $c->groups = $user->ownGroups();
         return view('Course/dashboard',["msgs_count"=>$msgs_count,"c"=>$c]);
     }
     public function getCoursePage($id){

@@ -31,7 +31,7 @@
             </div>
         </div>
         <div style="margin-top:50px;">
-            <hideable>
+            <hideable def_show="true"> <!-- Kurzy !-->
                 <span slot="head-text">
                     @switch(Auth::user()->role->name)
                         @case("teacher")
@@ -46,14 +46,40 @@
                     @endswitch
                     <a href="{{route('course.newCourse')}}" title="Vytvořit nový kurz" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
                 </span>
-                <div slot="body" class="d-md-flex justify-content-between col-md-12 box_body" style="flex-wrap: wrap;">
+                <div slot="body" class="d-md-flex col-md-12 box_body" style="flex-wrap: wrap;">
                     @foreach($c as $course)
-                    <div class="col-md-4 wrap">
-                        <div class="course_shortcut ">
-                            <a href="{{route("course.course",["id"=>$course->slug])}}">
-                            <h5>{{$course->name}}</h5>
+                        <div class="col-md-4 st">
+                            <a class="no-a" href="{{route("course.course",["id"=>$course->slug])}}">
+                                <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                    <span>{{$course->name}}</span>
+                                </div>
                             </a>
                         </div>
+                    @endforeach
+                </div>
+            </hideable>
+            <hideable def_show="true">
+                <span slot="head-text">
+                    @switch(Auth::user()->role->name)
+                        @case("teacher")
+                        Vaše třídy
+                        @break
+                        @case("user")
+                        Ve třídách
+                        @break
+                        @case("admin")
+                        Třídy
+                        @break
+                    @endswitch
+                </span>
+                <div slot="body" class="d-md-flex col-md-12">
+                    @foreach($c->groups as $g)
+                    <div class="col-md-4 st">
+                        <a class="no-a" href="">
+                            <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                <span>{{$g->name}}</span>
+                            </div>
+                        </a>
                     </div>
                     @endforeach
                 </div>

@@ -21,7 +21,7 @@
 <script>
     export default {
         name: "EmailSel",
-        props:['replyto','value','default','custom','group'],
+        props:['replyto','value','default','custom','group','existing'],
         data:function () {
             return{
                 name:"",
@@ -30,14 +30,20 @@
                 looking:false,
                 sel_users:"",
                 cust:false,
-                gr:""
+                gr:"",
+                exist:[]
+
             }
         },
         mounted:function(){
-            if(this.default != null && this.default.length > 0){
-                this.sel_users = JSON.parse(this.default);
+            if(this.existing != null && this.existing.length > 0){
+                this.exist = JSON.parse(this.existing).students;
             }
-            if(this.custom == "true"){
+            if(this.default != undefined && this.default.length > 0){
+                this.sel_users = JSON.parse(this.default).students;
+                console.log(this.sel_users);
+            }
+            if(this.custom != null && this.custom == "true"){
                 this.cust = true;
             }
             if(this.group != null && this.group.length > 0){
@@ -56,6 +62,9 @@
                 this.sel_users.splice(i,1);
             },
             selectUser: function(){
+                if(this.name_list == null || this.name_list.length == 0){
+                    return;
+                }
                 if(!Array.isArray(this.sel_users)){
                     this.sel_users = [];
                 }
@@ -85,14 +94,21 @@
                     this.looking = true;
                     $.get("/ajax/getUsersByName", {name: temp.name,group:temp.gr}, function (data) {
                         var test = [];
-                        if(temp.sel_users.length == 0){
+                        if(temp.sel_users.length == 0 && temp.exist.length == 0){
                             temp.name_list = data;
                         }else{
                             for (var i = 0; i<data.length;i++){
                                 var boo = true;
                                 for (var j = 0;j<temp.sel_users.length;j++){
-                                    if(data[i].id == temp.sel_users[j].id){
+                                    if(data[i].id == temp.sel_users[j].id || (temp.exist.length > 0 && data[i].id == temp.exist[j].id)){
                                         boo = false;
+                                    }
+                                }
+                                if(temp.exist.length > 0){
+                                    for(var j = 0;j<temp.exist.length;j++){
+                                        if(data[i].id == temp.exist[j].id){
+                                            boo = false;
+                                        }
                                     }
                                 }
                                 if(boo){
@@ -133,9 +149,6 @@
             name: _.debounce(function(){
                 this.startProcess();
             },300),
-            looking:function(){
-                console.log("Looking = "+this.looking)
-            },
             sel_users: function(){
                 this.$emit('input',this.sel_users);
             },

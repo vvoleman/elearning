@@ -6,6 +6,7 @@
 <div id="app" v-cloak>
     @yield('content')
 </div>
+@yield('prescript')
 @include('../partials/_basicjs')
 @yield('customjs')
 </body>

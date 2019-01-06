@@ -70,6 +70,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return $g;
     }
+    public function ownGroups(){
+        if($this->hasRole('admin')){
+            return Group::all();
+        }else if($this->hasRole('user')){
+            return [];
+        }
+        return $this->hasMany('App\Group',"owner_id");
+    }
     public function inGroups(){
         return $this->belongsToMany('App\Group', 'use_gro','student_id','group_id')->withPivot('added');
     }
@@ -98,7 +106,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             return true;
         }
         return false;
-
     }
 }
 

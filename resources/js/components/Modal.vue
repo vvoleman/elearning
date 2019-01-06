@@ -32,9 +32,6 @@
             closeModal:function(){
                 this.$emit('closeModal', 'true');
             },
-            sendMail:function(){
-                this.$emit('sendMail',1);
-            }
         },
         mounted:function () {
             window.addEventListener('keyup', e => {
@@ -99,15 +96,6 @@
             overflow:auto;
         }
     }
-
-    /*
-     * The following styles are auto-applied to elements with
-     * transition="modal" when their visibility is toggled
-     * by Vue.js.
-     *
-     * You can easily play with the modal transition by editing
-     * these styles.
-     */
 
     .modal-enter {
         opacity: 0;
