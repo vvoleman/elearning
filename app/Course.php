@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Course extends Model{
     public $timestamps = false;
@@ -14,5 +15,13 @@ class Course extends Model{
     }
     public function groups(){
         return $this->belongsToMany('App\Group','gro_cou','course_id','group_id')->withPivot('expirate_at');
+    }
+    public function canAccess(User $user){
+        if(!$user->hasRole('admin')){
+            if(sizeof($this->owners()->where('id_u',$user->id_u)->get()) == 0){
+                return false;
+            }
+        }
+        return true;
     }
 }

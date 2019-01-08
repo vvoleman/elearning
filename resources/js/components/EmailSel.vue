@@ -28,7 +28,7 @@
                 name_list:"",
                 selected:0,
                 looking:false,
-                sel_users:"",
+                sel_users:this.value,
                 cust:false,
                 gr:"",
                 exist:[]
@@ -36,17 +36,16 @@
             }
         },
         mounted:function(){
-            if(this.existing != null && this.existing.length > 0){
+            if(!this.isEmpty(this.existing)){
                 this.exist = JSON.parse(this.existing).students;
             }
-            if(this.default != undefined && this.default.length > 0){
+            if(!this.isEmpty(this.default) && this.isEmpty(this.value)){
                 this.sel_users = JSON.parse(this.default).students;
-                console.log(this.sel_users);
             }
             if(this.custom != null && this.custom == "true"){
                 this.cust = true;
             }
-            if(this.group != null && this.group.length > 0){
+            if(!this.isEmpty(this.group)){
                 this.gr = this.group;
             }
             if(this.replyto != null){
@@ -58,14 +57,19 @@
             }
         },
         methods:{
+            isEmpty(val){
+                return val == null || val.length == 0;
+            },
             dropUser: function(i){
                 this.sel_users.splice(i,1);
+                console.log(i);
             },
             selectUser: function(){
                 if(this.name_list == null || this.name_list.length == 0){
                     return;
                 }
                 if(!Array.isArray(this.sel_users)){
+                    console.log(this.sel_users);
                     this.sel_users = [];
                 }
                 this.sel_users.push(this.name_list[this.selected]);
@@ -94,7 +98,7 @@
                     this.looking = true;
                     $.get("/ajax/getUsersByName", {name: temp.name,group:temp.gr}, function (data) {
                         var test = [];
-                        if(temp.sel_users.length == 0 && temp.exist.length == 0){
+                        if((temp.sel_users == null || temp.sel_users.length == 0) && temp.exist.length == 0){
                             temp.name_list = data;
                         }else{
                             for (var i = 0; i<data.length;i++){

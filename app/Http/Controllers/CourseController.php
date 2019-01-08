@@ -26,11 +26,12 @@ class CourseController extends Controller
         $msgs_count = $user->messages()->whereNull('mes_use.seen')->count();
         if($user->role->name == "user"){
             $c = $user->inCourses();
+            $g = $user->inGroups;
         }else{
             $c = $user->ownCourses();
+            $g = $user->ownGroups();
         }
-        $c->groups = $user->ownGroups();
-        return view('Course/dashboard',["msgs_count"=>$msgs_count,"c"=>$c]);
+        return view('Course/dashboard',["msgs_count"=>$msgs_count,"c"=>$c,"groups"=>$g]);
     }
     public function getCoursePage($id){
         $course = $this->checkIfCanAccess($id);
@@ -151,11 +152,13 @@ class CourseController extends Controller
     }
     private function checkIfCanAccess($id){
         $course = Course::where("slug",$id)->get();
+
         if(sizeof($course) == 0 || sizeof($course) > 1){
             abort(404);
         }
-        if(Auth::user()->ownCourse($id) || (sizeof(Auth::user()->inGroups) > 0 && Auth::user()->inGroups->courses()->where('slug',$id))){
-            return $course[0];
+        $course = $course[0];
+        if($course->canAccess(Auth::user())){
+            return $course;
         }
         abort(403);
     }

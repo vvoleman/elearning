@@ -33,38 +33,6 @@ class GroupController extends Controller
         }
         return view('Group/EditStudent',["g" => $this->parseGroups([$group])[0]]);
     }
-    /*public function aj(Request $request){
-        $data = $request->validate([
-            "data" => "required",
-            "id" => "numeric|gt:0"
-        ]);
-        $user = Auth::user();
-        $group = Group::find($data["id"]);
-        $err = null;
-        if(empty($group)){
-           $err = 404;
-        }
-        if(($group->owner->id_u != $user->id_u) && !$user->hasRole('admin')){
-            $err = 403;
-        }
-
-        if(empty($err)){
-            $t = new Toolkit();
-            $tt = $t->getUserModels($data["data"]);
-            $temp = [];
-            for($i = 0; $i<sizeof($data["data"]);$i++){
-                if(empty($group->students->find($tt[$i]))){
-                    $group->students()->attach($tt[$i]);
-                }
-            }
-            if($group->save()){
-                $err = 200;
-            }else{
-                $err = 500;
-            }
-        }
-        return response()->json(["response" => $err]);
-    }*/
     public function ajaxSyncStudentsInGroup(Request $request){
         $data = $request->validate([
             "data" => "nullable",
@@ -96,6 +64,10 @@ class GroupController extends Controller
         }
         return response()->json(["response" => $err]);
     }
+    public function getNewGroup(){
+        return view('Group/NewGroup');
+    }
+
     private function parseGroups($groups){
         $temp = [];
         $t = new Toolkit();

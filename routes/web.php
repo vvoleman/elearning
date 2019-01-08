@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function(){
 
 /* GROUPS */
 Route::middleware('auth')->group(function(){
+    Route::get('/group/new','GroupController@getNewGroup')->name('group.newGroup')->middleware('hasRole:teacher,admin');
     Route::get('/group/{id}','GroupController@getGroupPage')->name('group.group')->where('id', '[a-zA-Z0-9_]+');
     Route::get('/group/{id}/editstudent','GroupController@getEditStudent')->name('group.editStudent')->where('id', '[a-zA-Z0-9_]+')->middleware('hasRole:teacher,admin');
 });

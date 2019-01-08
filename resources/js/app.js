@@ -78,6 +78,7 @@ Vue.component('scchecker', require('./components/ShortcutChecker.vue'));
 Vue.component('editlectors', require('./components/course/EditLectors.vue'));
 Vue.component('ecset',require('./components/course/EditSettings'));
 Vue.component('editstudent',require('./components/group/editStudents'));
+Vue.component('newgroup',require('./components/group/newGroup'));
 const app = new Vue({
     el: '#app',
     mounted(){

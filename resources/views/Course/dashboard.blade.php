@@ -44,7 +44,9 @@
                         Kurzy
                         @break
                     @endswitch
-                    <a href="{{route('course.newCourse')}}" title="Vytvořit nový kurz" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                    @if(Auth::user()->role->name != "user")
+                        <a href="{{route('course.newCourse')}}" title="Vytvořit nový kurz" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                    @endif
                 </span>
                 <div slot="body" class="d-md-flex col-md-12 box_body" style="flex-wrap: wrap;">
                     @foreach($c as $course)
@@ -71,11 +73,14 @@
                         Třídy
                         @break
                     @endswitch
+                    @if(Auth::user()->role->name != "user")
+                        <a href="{{route('group.newGroup')}}" title="Vytvořit novou třídu" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                    @endif
                 </span>
                 <div slot="body" class="d-md-flex col-md-12">
-                    @foreach($c->groups as $g)
+                    @foreach($groups as $g)
                     <div class="col-md-4 st">
-                        <a class="no-a" href="">
+                        <a class="no-a" href="{{route('group.group',$g->slug)}}">
                             <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
                                 <span>{{$g->name}}</span>
                             </div>

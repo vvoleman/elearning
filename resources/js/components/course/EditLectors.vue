@@ -60,7 +60,6 @@
             save(){
                 if(this.anyChange){
                     $.post('/ajax/updateTeachers',{lectors:(this.lectors.length > 0)?this.lectors:null,course:this.course},function(data){
-                        console.log(data);
                         if(data.response == 200){
                             this.og = this.lectors;
                             this.change = false;

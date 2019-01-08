@@ -1,6 +1,6 @@
 <template>
     <div class="tabs_div">
-        <div class="col-md-12 mx-auto" style="margin:0">
+        <div class="col-md-12 mx-auto tab_nav" style="margin:0">
             <ul class="nav nav-pills nav-justified">
                 <li v-for="(e,i) in elements" v-on:click="swapEl(i,this)" class="nav-item nav-link" v-bind:class="{active: selEl == i}" style="cursor:pointer">
                     {{e.title}}
@@ -60,7 +60,7 @@
     .nav{
         overflow: auto;
     }
-    *{
+    .tab_nav{
         padding-left:0px;
         padding-right:0px;
     }
