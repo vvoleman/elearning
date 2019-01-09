@@ -10,24 +10,25 @@ use App\Own\Toolkit;
 
 class GroupController extends Controller
 {
+    private $t; //toolkit
+    public function __construct(){
+        $this->t = new Toolkit();
+    }
     public function getGroupPage($id){
-        $group = Group::where("slug",$id)->get();
-        if(sizeof($group) != 1){
+        $group = $this->checkIfExist($id);
+        if($group === false){
             return abort(404);
         }
-        $group = $group[0];
         if(!$group->canAccess(Auth::user())){
             abort(403);
         }
-        $t = new Toolkit();
         return view('Group/GroupPage',["g"=>$group]);
     }
     public function getEditStudent($id){
-        $group = Group::where("slug",$id)->get();
-        if(sizeof($group) != 1){
-            return abort(404);
+        $group = $this->checkIfExist($id);
+        if($group === false){
+            abort(404);
         }
-        $group = $group[0];
         if(Auth::user()->hasRole("user") || !$group->canAccess(Auth::user())){
             abort(403);
         }
@@ -49,12 +50,11 @@ class GroupController extends Controller
         }
 
         if(empty($err)){
-            $t = new Toolkit();
             $temp = [];
             if(empty($data["data"])){
                 $group->students()->detach();
             }else{
-                $group->students()->sync($t->getUserModels($data["data"]));
+                $group->students()->sync($this->t->getUserModels($data["data"]));
             }
             if($group->save()){
                 $err = 200;
@@ -64,19 +64,34 @@ class GroupController extends Controller
         }
         return response()->json(["response" => $err]);
     }
+    public function ajaxImportStudents(Request $request){
+        $data = $request->validate([
+            "slug" => "required"
+        ]);
+        $group = $this->checkIfExist($data["slug"]);
+        if($group === false){
+            return response()->json(["response" => 404]);
+        }
+        return response()->json(["data"=>$this->t->parseUsers($group->students)]);
+    }
     public function getNewGroup(){
         return view('Group/NewGroup');
     }
-
+    private function checkIfExist($slug){
+        $group = Group::where("slug",$slug)->get();
+        if(sizeof($group) != 1){
+            return false;
+        }
+        return $group[0];
+    }
     private function parseGroups($groups){
         $temp = [];
-        $t = new Toolkit();
         foreach($groups as $g){
             $temp[] = [
                 "id_g" => $g->id_g,
                 "name" => $g->name,
-                "owner" => $t->parseUsers([$g->owner]),
-                "students" => $t->parseUsers($g->students),
+                "owner" => $this->t->parseUsers([$g->owner]),
+                "students" => $this->t->parseUsers($g->students),
                 "slug" => $g->slug,
                 "created_at" => strtotime($g->created_at)
 

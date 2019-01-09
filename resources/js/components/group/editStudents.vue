@@ -88,7 +88,6 @@
             },
             remove(i){
                 this.g.students.splice(i,1);
-                console.log(this.students,this.backup);
             },
             sync(){
                 if(this.changed === true){
@@ -104,7 +103,6 @@
             cancel(){
                 if(this.changed) {
                     this.g.students = this.backup.slice();
-                    console.log(this.backup.slice());
                 }
             },
         },
@@ -115,9 +113,7 @@
         },
         watch:{
             students(){
-                console.log("teď");
                 this.changed = !_.isEqual(this.g.students,this.backup);
-                console.log(_.isEqual(this.g.students,this.backup));
             }
         }
 

@@ -26,6 +26,7 @@ Route::middleware(['isAjax'])->group(function (){
     Route::get('/ajax/checkCourseSlug','AjaxController@getCheckCourseSlug')->middleware('auth');
     Route::post('/ajax/updateTeachers','CourseController@ajaxUpdateTeachers')->middleware('hasRole:teacher,admin');
     Route::post('/ajax/syncStudentsInGroup','GroupController@ajaxSyncStudentsInGroup')->middleware('hasRole:teacher,admin');
+    Route::get('/ajax/importStudents','GroupController@ajaxImportStudents')->middleware('hasRole:teacher,admin');
 });
 
 /* LOGIN */

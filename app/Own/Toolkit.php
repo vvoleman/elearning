@@ -1,6 +1,11 @@
 <?php
 namespace App\Own;
     class Toolkit{
+        /**
+         * Convert User models to arrays with user info
+         * @param $users
+         * @return array
+         */
         public function parseUsers($users){
             $pass = [];
             foreach ($users as $u){
@@ -15,6 +20,13 @@ namespace App\Own;
             }
             return $pass;
         }
+
+        /**
+         * Returns array with user IDs when parsed user array given (that array returned from above)
+         * @param $data
+         * @param string $www
+         * @return array
+         */
         public function getUserModels($data,$www = "id"){
             if(empty($data)){
                 return [];

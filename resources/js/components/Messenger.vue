@@ -58,7 +58,7 @@
             <button @click="newMsg()" class="d-flex col-9 justify-content-center align-items-center btn"><i class="fas fa-plus-circle"></i>Nová zpráva</button>
             <button @click="getMsgs()" title="Zprávy lze načíst jen jednou za 15 vteřin" :disabled="!ready" class="btn no_p col-3"><i class="fas fa-sync-alt"></i></button>
         </div><!-- Nová zpráva !-->
-        <modal v-if="newMsgShow.show" @closeModal="newMsgShow.show = !newMsgShow.show" @send="checkMail">
+        <modal v-if="newMsgShow.show" @closeModal="close" @send="checkMail">
             <h3 slot="header">Nová zpráva</h3>
             <div slot="body">
                 <div class="form-group">
@@ -170,6 +170,7 @@
                        temp.clearInputs();
                        alert('Zpráva byla úspěšně odeslána!');
                        temp.newMsgShow.show = false;
+                       temp.newMsgShow.respond_emails = [];
                    }
                 });
             },
@@ -183,7 +184,6 @@
             },
             getDate:function(unix){
                 var d = new Date(unix*1000);
-                console.log(d);
                 return d.getDate()+". "+d.getMonth()+". "+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes();
             },
             getNameShortcut:function(i){
@@ -218,6 +218,10 @@
                     }.bind(this));
                 }
 
+            },
+            close:function(){
+                this.newMsgShow.respond_emails = [];
+                this.newMsgShow.show = !this.newMsgShow.show;
             }
         },
         computed:{
