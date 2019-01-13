@@ -76,9 +76,11 @@ Vue.component('readmore', require('./components/Readmore.vue'));
 Vue.component('newcourse', require('./components/course/NewCourse.vue'));
 Vue.component('scchecker', require('./components/ShortcutChecker.vue'));
 Vue.component('editlectors', require('./components/course/EditLectors.vue'));
+Vue.component('editgroups',require('./components/course/EditGroups.vue'));
 Vue.component('ecset',require('./components/course/EditSettings'));
 Vue.component('editstudent',require('./components/group/editStudents'));
 Vue.component('newgroup',require('./components/group/newGroup'));
+Vue.component('moduleview',require('./components/module/ModuleViewer.vue'));
 const app = new Vue({
     el: '#app',
     mounted(){

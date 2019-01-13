@@ -1,5 +1,4 @@
 <template>
-
     <div class="col-md-8 mx-auto course_short m-top">
         <div>
             <div class="d-flex justify-content-between header align-items-center" >

@@ -21,7 +21,7 @@
                     <div slot="body" style="padding:0px">
                         <div class="form-group">
                             <label class="label">Přidat</label>
-                            <emailsel :existing="datas" v-model="modal_list" group="user"></emailsel>
+                            <emailsel :existing="g.students" v-model="modal_list" group="user"></emailsel>
                         </div>
                     </div>
                 </modal>
@@ -84,6 +84,7 @@
                     this.g.students = this.g.students.concat(this.modal_list);
                     this.changed= true;
                     this.sh_add = false;
+                    this.modal_list = null;
                 }
             },
             remove(i){

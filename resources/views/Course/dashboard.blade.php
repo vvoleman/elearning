@@ -77,7 +77,7 @@
                         <a href="{{route('group.newGroup')}}" title="Vytvořit novou třídu" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
                     @endif
                 </span>
-                <div slot="body" class="d-md-flex col-md-12">
+                <div slot="body" class="d-md-flex col-md-12 flex-wrap">
                     @foreach($groups as $g)
                     <div class="col-md-4 st">
                         <a class="no-a" href="{{route('group.group',$g->slug)}}">

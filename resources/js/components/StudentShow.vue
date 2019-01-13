@@ -1,9 +1,12 @@
 <template>
     <div>
-        <div v-for="(o,i) in students" class="send_to d-flex align-items-center justify-content-between col-md-12">
-            <div class="circle">{{o.firstname[0]+o.surname[0]}}</div>
-            <span>{{o.firstname}} {{o.surname}}</span>
-            <button class="btn btn-sm" @click="dropUser(i)"><i class="fas fa-times"></i></button>
+        <div class="d-md-flex flex-wrap">
+            <div class="col-md-6 st" v-for="(o,i) in students">
+                <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                    <span>{{o.firstname}} {{o.surname}}</span>
+                    <button type="button" class="btn btn-sm" @click="dropUser(i)"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 </template>

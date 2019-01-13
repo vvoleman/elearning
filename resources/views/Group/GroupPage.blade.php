@@ -21,11 +21,13 @@
             <hr>
         </div>
         <div>
-            @if(Auth::user()->ownCourse($g->slug))
+
             <hideable def_show="true">
                 <div slot="head-text">
                     <span>Studenti</span>
+                    @if(Auth::user()->ownGroup($g->slug))
                     <a href="{{route('group.editStudent',$g->slug)}}"><i style="font-size:18px;color:#ccc" class="fas fa-cog"></i></a>
+                    @endif
                 </div>
                 <div slot="body">
                     <div class="d-md-flex flex-wrap">
@@ -33,26 +35,26 @@
                             <div class="col-md-4 st">
                                 <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
                                     <span>{{$s->getFullname()}}</span>
-                                    <i class="fas fa-ellipsis-v"></i>
+                                    <a href="{{route('messages.replies',["id"=>$s->id_u])}}" class="no-a">
+                                        <i class="fas fa-envelope"></i>
+                                    </a>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
             </hideable>
-            @endif
             <hideable def_show="true">
                 <span slot="head-text">V kurzech</span>
                 <div slot="body">
                     <div class="d-md-flex flex-wrap">
                         @foreach($g->courses as $c)
                             <div class="col-md-4 st">
-                                <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
-                                    <span>{{$c->name}}</span>
-                                    @if(Auth::user()->hasRole('admin'))
-                                    <i class="fas fa-ellipsis-v"></i>
-                                    @endif
-                                </div>
+                                <a href="{{route('course.course',$c->slug)}}" class="no-a">
+                                    <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                        <span>{{$c->name}}</span>
+                                    </div>
+                                </a>
                             </div>
                         @endforeach
                     </div>

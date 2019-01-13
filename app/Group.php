@@ -25,4 +25,12 @@ class Group extends Model{
         }
         return true;
     }
+    public function hasPerms(User $user){
+        if(!$user->hasRole('admin')){
+            if($this->owner()->where('id_u',$user->id_u)->count() == 0){
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -9,6 +9,7 @@ use App\User;
 use App\Own\Toolkit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
@@ -77,6 +78,8 @@ class CourseController extends Controller
     }
     public function getEditGroups($id){
         $course = $this->checkIfHasPerm($id);
+        $course->groups = $this->toolkit->parseGroups($course->groups);
+        return view('Course/Edit/Groups',["c"=>$course]);
     }
     public function getEditModules($id){
 
@@ -90,23 +93,25 @@ class CourseController extends Controller
         ];
         return view('Course/Edit/Settings',["c"=>$course]);
     }
-    public function ajaxUpdateTeachers(Request $request){
+    public function ajaxUpdate(Request $request){
         $u = Auth::user();
         if($u->role->name != "student"){
             $data = $request->validate([
-                "lectors" => "nullable",
-                "course" => "required|numeric"
+                "data" => "required",
+                "type" => "required"
             ]);
-            $users = $this->toolkit->getUserModels($data["lectors"]);
-            $c = Course::find($data["course"]);
+            $c = Course::find($data["data"]["course"]);
             if(empty($c)){
                 return response()->json(["response"=>404]);
             }
-            if(sizeof($c->owners()->where('id_u',$u->id_u)->get()) > 0 || $u->role->name == "admin"){
-                if(empty($users)){
-                    $c->owners()->detach();
-                }else{
-                    $c->owners()->sync($users);
+            if($c->canAccess($u)){
+                switch($data["type"]){
+                    case "lectors":
+                        $c = $this->updateTeachers($data["data"],$c);
+                        break;
+                    case "groups":
+                        $c = $this->updateGroups($data["data"],$c);
+                        break;
                 }
                 if($c->save()){
                     return response()->json(["response"=>200]);
@@ -140,6 +145,7 @@ class CourseController extends Controller
     public function ajaxEditSettings(Request $request){
         dd($request);
     }
+
     private function checkIfHasPerm($id){
         $course = Course::where("slug",$id)->get();
         if(sizeof($course) == 0 || sizeof($course) > 1){
@@ -161,5 +167,17 @@ class CourseController extends Controller
             return $course;
         }
         abort(403);
+    }
+    private function updateTeachers($data,$c){
+        $users = $this->toolkit->getUserModels($data["items"]);
+        if(empty($users)){
+            $c->owners()->detach();
+        }else{
+            $c->owners()->sync($users);
+        }
+    }
+    private function updateGroups($data,$c){
+        $c->groups()->sync($this->toolkit->getUserModels($data["items"]));
+        return $c;
     }
 }

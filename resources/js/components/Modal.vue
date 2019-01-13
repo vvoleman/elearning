@@ -13,25 +13,35 @@
                 </div>
                 <div class="modal-footer">
                     <slot name="footer">
-                        <button class="btn btn-danger" @click="closeModal">
+                        <button type="button" class="btn btn-danger" @click="closeModal">
                             Zavřít
                         </button>
-                        <button class="btn btn-success" @click="$emit('send',true)">
+                        <button type="button" class="btn btn-success" @click="sendModal">
                             Odeslat
                         </button>
                     </slot>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
     export default {
+        data(){
+            return {
+              sent:false,
+            };
+        },
         methods:{
             closeModal:function(){
                 this.$emit('closeModal', 'true');
             },
+            sendModal(){
+                this.$emit('send',true);
+                this.sent = true;
+            }
         },
         mounted:function () {
             window.addEventListener('keyup', e => {

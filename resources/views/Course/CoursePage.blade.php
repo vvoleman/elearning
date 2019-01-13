@@ -10,9 +10,16 @@
                 <div class="d-flex">
                     <h4>Lektoři:</h4>
                     <ul>
-                        @foreach($c->owners as $o)
-                            <a @if($o->id_u != Auth::user()->id_u) href="{{route('messages.replies',["id"=>$o->id_u])}}"@endif><li>{{($o->id_u != Auth::user()->id_u) ? $o->getFullname() : "Vy"}}</li></a>
-                        @endforeach
+                        <div class="d-md-flex flex-wrap">
+                            @foreach($c->owners as $o)
+                                    <div class="col-md-12 student_box d-flex align-items-center justify-content-between" style="margin-bottom:10px">
+                                        <span>{{($o->id_u != Auth::user()->id_u) ? $o->getFullname() : "Vy"}}</span>
+                                        @if($o->id_u != Auth::user()->id_u)
+                                            <a class="no-a" href="{{route('messages.replies',["id"=>$o->id_u])}}"><i class="fas fa-envelope"></i></a>
+                                        @endif
+                                    </div>
+                            @endforeach
+                        </div>
                     </ul>
                 </div>
                 <div class="d-flex align-items-center">
@@ -32,14 +39,14 @@
             </div>
             <hideable def_show="true">
                 <span slot="head-text">Třídy</span>
-                <div slot="body" class="d-md-flex col-md-12 box_body" style="flex-wrap: wrap;">
-                    @foreach($c->groups as $course)
-                        <div class="col-md-4 wrap">
-                            <div class="course_shortcut ">
-                                <a href="{{route('group.group',$course->slug)}}">
-                                    <h5>{{$course->name}}</h5>
-                                </a>
-                            </div>
+                <div slot="body" class="d-md-flex col-md-12 flex-wrap">
+                    @foreach($c->groups as $g)
+                        <div class="col-md-4 st">
+                            <a class="no-a" href="{{route('group.group',$g->slug)}}">
+                                <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                    <span>{{$g->name}}</span>
+                                </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>
@@ -47,8 +54,16 @@
             @endif
             <hideable def_show="true">
                 <span slot="head-text">Moduly</span>
-                <div slot="body">
-                    baf
+                <div slot="body"  class="d-md-flex col-md-12 flex-wrap">
+                    @foreach($c->modules as $m)
+                        <div class="col-md-4 st">
+                            <a class="no-a" href="{{route('module.module',["slug"=>$c->slug,"order"=>$m->order])}}">
+                                <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                    <span>{{$m->order}}. {{$m->name}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </hideable>
         </div>

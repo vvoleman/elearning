@@ -17,16 +17,22 @@ Route::get('/about', 'HomeController@getAbout')->name('about');
 
 /* AJAX */
 Route::middleware(['isAjax'])->group(function (){
-    Route::post('/ajax/checkEmailExists/','AjaxController@postCheckExistingEmail')->middleware('auth');
-    Route::get('/ajax/getMessages','MessageController@getMessagesByAjax')->middleware('auth');
-    Route::post('/ajax/markMsgAsSeen','MessageController@postMarkAsSeen')->middleware('auth');
-    Route::post('/ajax/postMessage','MessageController@postMessage')->middleware('auth');
-    Route::get('/ajax/getUsersByName','AjaxController@getUsersByName')->middleware('auth');
-    Route::get('/ajax/getUsersByIds','AjaxController@getUsersByIds')->middleware('auth');
-    Route::get('/ajax/checkCourseSlug','AjaxController@getCheckCourseSlug')->middleware('auth');
-    Route::post('/ajax/updateTeachers','CourseController@ajaxUpdateTeachers')->middleware('hasRole:teacher,admin');
-    Route::post('/ajax/syncStudentsInGroup','GroupController@ajaxSyncStudentsInGroup')->middleware('hasRole:teacher,admin');
-    Route::get('/ajax/importStudents','GroupController@ajaxImportStudents')->middleware('hasRole:teacher,admin');
+    Route::middleware('auth')->group(function() {
+        Route::post('/ajax/checkEmailExists/', 'AjaxController@postCheckExistingEmail');
+        Route::get('/ajax/getMessages', 'MessageController@getMessagesByAjax');
+        Route::post('/ajax/markMsgAsSeen', 'MessageController@postMarkAsSeen');
+        Route::post('/ajax/postMessage', 'MessageController@postMessage');
+        Route::get('/ajax/getUsersByName', 'AjaxController@getUsersByName');
+        Route::get('/ajax/getUsersByIds', 'AjaxController@getUsersByIds');
+        Route::get('/ajax/checkCourseSlug', 'AjaxController@getCheckCourseSlug');
+    });
+    Route::middleware('hasRole:teacher,admin')->group(function(){
+        Route::post('/ajax/updateCourse','CourseController@ajaxUpdate');
+        Route::post('/ajax/syncStudentsInGroup','GroupController@ajaxSyncStudentsInGroup');
+        Route::get('/ajax/importStudents','GroupController@ajaxImportStudents');
+        Route::get('/ajax/getStudentsByGroups','GroupController@ajaxStudentsByGroups');
+    });
+
 });
 
 /* LOGIN */
@@ -76,7 +82,14 @@ Route::middleware('auth')->group(function(){
 /* GROUPS */
 Route::middleware('auth')->group(function(){
     Route::get('/group/new','GroupController@getNewGroup')->name('group.newGroup')->middleware('hasRole:teacher,admin');
+    Route::post('/group/new','GroupController@postNewGroup')->name('group.postNewGroup')->middleware('hasRole:teacher,admin');
     Route::get('/group/{id}','GroupController@getGroupPage')->name('group.group')->where('id', '[a-zA-Z0-9_]+');
     Route::get('/group/{id}/editstudent','GroupController@getEditStudent')->name('group.editStudent')->where('id', '[a-zA-Z0-9_]+')->middleware('hasRole:teacher,admin');
+});
+
+/* MODULES */
+Route::middleware('auth')->group(function(){
+    //Route::get('/course/{slug}/modules','ModuleController@getModules')->name('module.getModules')->where('slug', '[a-zA-Z0-9_]+');
+    Route::get('/course/{slug}/module/{order}','ModuleController@getModule')->name('module.module')->where('slug', '[a-zA-Z0-9_]+')->where('order','[0-9]+');
 });
 ?>

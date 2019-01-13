@@ -17,21 +17,21 @@
                 <hr>
             <div class="login_form_div">
                 <div class="form-group">
-                    <label>Jméno</label>
+                    <label class="label">Jméno</label>
                     <div class="d-flex align-items-center">
                         <input type="text" name="student_firstname" class="form-control">
                         <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Příjmení</label>
+                    <label class="label">Příjmení</label>
                     <div class="d-flex align-items-center">
                         <input type="text" name="student_surname" class="form-control">
                         <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
+                    <label class="label">Email</label>
                     <div class="d-flex align-items-center">
                         <input type="text" name="student_email" class="form-control">
                         <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>
@@ -39,11 +39,11 @@
                 </div>
                 @if($isAdmin)
                     <div class="form-group">
-                        {{Form::label('role','Role')}}
+                        <label class="label">Role</label>
                         {{Form::select('student_role', $roles->pluck("name", 'id_r'),null,["class"=>"form-control"])}}
                     </div>
                 @endif
-                <button class="btn btn-block">Přidat</button>
+                <button class="btn btn-block btn-success">Přidat</button>
             </div>
             {!! Form::close() !!}
         </div>
@@ -54,7 +54,7 @@
                 <hr>
                 <div class="login_form_div">
                     <div class="form-group">
-                        <label>Soubor</label>
+                        <label class="label">Soubor</label>
                         <div class="d-flex justify-content-between">
                             <input type="file" accept=".csv" name="students_file">
                             <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>

@@ -21,6 +21,18 @@ namespace App\Own;
             return $pass;
         }
 
+        public function parseGroups($groups){
+            $pass = [];
+            foreach ($groups as $g){
+                $pass[] = [
+                    "id"=>$g->id_g,
+                    "name" => $g->name,
+                    "students_amount" => $g->students()->count()
+                ];
+            }
+            return $pass;
+        }
+
         /**
          * Returns array with user IDs when parsed user array given (that array returned from above)
          * @param $data

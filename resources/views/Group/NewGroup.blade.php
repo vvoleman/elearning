@@ -2,6 +2,8 @@
 @section('title','Nová třída | ')
 @section('content')
     <div>
-        <newgroup></newgroup>
+        {!! Form::open(["route"=>'group.postNewGroup',"files"=>true]) !!}
+        <newgroup selective="{{Auth::user()->hasRole('admin')}}"></newgroup>
+        {!! Form::close() !!}
     </div>
 @stop

@@ -29,10 +29,42 @@ class GroupController extends Controller
         if($group === false){
             abort(404);
         }
-        if(Auth::user()->hasRole("user") || !$group->canAccess(Auth::user())){
+        if(Auth::user()->hasRole("user") || !$group->hasPerms(Auth::user())){
             abort(403);
         }
-        return view('Group/EditStudent',["g" => $this->parseGroups([$group])[0]]);
+        return view('Group/EditStudent',["g" => $this->parseGroupsFull([$group])[0]]);
+    }
+    public function getNewGroup(){
+        return view('Group/NewGroup');
+    }
+    public function postNewGroup(Request $request){
+        $data = $request->validate([
+            "users" => "nullable",
+            "teacher" => "nullable",
+            "name" => "nullable|min:8|max:32",
+            "csv" => "nullable|file|mimes:csv"
+        ]);
+        if(!empty($data["users"]) && !empty($data["name"]) && ((Auth::user()->hasRole('admin')) ? !empty($data["teacher"]) : true)){ //manual mode
+            $data["users"] = $this->t->getUserModels(json_decode($data["users"],true));
+            $data["teacher"] = (Auth::user()->hasRole('admin')) ? $this->t->getUserModels(json_decode($data["teacher"],true)[0]) : Auth::user()->id_u;
+            $group = new Group();
+            $group->name = $data["name"];
+            $group->owner_id = $data["teacher"];
+            $group->slug = substr(md5(mt_rand()), 0, 8);
+            if($group->save()){
+                $group->students()->attach($data["users"]);
+                if($group->save()){
+                    $request->session()->flash('success','Třída byla úspěšně vytvořena!');
+                    return redirect()->route('group.group',$group->slug);
+                }
+
+            }
+            $request->session()->flash('danger','Při vytváření se vyskytla chyba');
+            return redirect()->route('group.newGroup');
+        }else{ //csv mode
+
+        }
+
     }
     public function ajaxSyncStudentsInGroup(Request $request){
         $data = $request->validate([
@@ -64,19 +96,28 @@ class GroupController extends Controller
         }
         return response()->json(["response" => $err]);
     }
-    public function ajaxImportStudents(Request $request){
+    public function ajaxImportStudents(Request $request){ //it just returns similar
         $data = $request->validate([
-            "slug" => "required"
+            "name" => "required"
         ]);
-        $group = $this->checkIfExist($data["slug"]);
-        if($group === false){
-            return response()->json(["response" => 404]);
+        $groups = $this->t->parseGroups(Group::where('name','like','%'.$data["name"].'%')->get());
+        return response()->json(["data"=>$groups]);
+    }
+    public function ajaxStudentsByGroups(Request $request){
+        $data = $request->validate([
+            "groups" => "required"
+        ]);
+        $students = [];
+        for ($i=0;$i<sizeof($data["groups"]);$i++){
+            $students = $students + $this->t->parseUsers(Group::find($data["groups"][$i]["id"])->students);
         }
-        return response()->json(["data"=>$this->t->parseUsers($group->students)]);
+        if(empty($students)){
+            return response()->json(["response"=>500]);
+        }
+        return response()->json(["data" => $students]);
     }
-    public function getNewGroup(){
-        return view('Group/NewGroup');
-    }
+
+
     private function checkIfExist($slug){
         $group = Group::where("slug",$slug)->get();
         if(sizeof($group) != 1){
@@ -84,7 +125,7 @@ class GroupController extends Controller
         }
         return $group[0];
     }
-    private function parseGroups($groups){
+    private function parseGroupsFull($groups){
         $temp = [];
         foreach($groups as $g){
             $temp[] = [
@@ -98,5 +139,6 @@ class GroupController extends Controller
             ];
         }
         return $temp;
+
     }
 }

@@ -18,6 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $fillable = ['email', 'password'];
     public $timestamps = false;
+    protected $dates = ["registered","last_login","deact_date"];
     protected $hidden = ['password', 'remember_token'];
     protected $primaryKey = "id_u";
 
@@ -58,7 +59,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->belongsTo('App\Role',"role_id");
     }
     public function messages(){
-        return $this->belongsToMany('App\Message', 'mes_use','user_id','message_id')->withPivot('seen')->orderBy('seen','asc')->orderBy('sent_at', 'asc');
+        return $this->belongsToMany('App\Message', 'mes_use','user_id','message_id')->withPivot('seen')->orderBy('sent_at', 'desc');
     }
     public function inCourses(){
         $g = [];
@@ -76,7 +77,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }else if($this->hasRole('user')){
             return [];
         }
-        return $this->hasMany('App\Group',"owner_id");
+        return $this->hasMany('App\Group',"owner_id")->get();
     }
     public function inGroups(){
         return $this->belongsToMany('App\Group', 'use_gro','student_id','group_id')->withPivot('added');
@@ -103,6 +104,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             return false;
         }
         if(sizeof($this->ownCourses()->where('slug',$c_id)) > 0){
+            return true;
+        }
+        return false;
+    }
+    public function ownGroup($c_id){
+        $role = $this->role->name;
+        if($role == "admin"){
+            return true;
+        }else if($role == "student"){
+            return false;
+        }
+        if(sizeof($this->ownGroups()->where('slug',$c_id)->get()) > 0){
             return true;
         }
         return false;

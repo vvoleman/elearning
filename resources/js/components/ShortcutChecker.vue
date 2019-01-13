@@ -2,7 +2,7 @@
     <div class="input-group mb-3">
         <input :disabled="look" v-validate="{required:true,regex:/^[a-zA-Z0-9_]*$/,min:4,max:8}" :name="name" type="text" class="form-control" v-model="custom">
         <div class="input-group-prepend">
-            <button class="btn" type="button" @click="generateSlug" :disabled="c.length == 0 || look">Vygenerovat <i style="font-size:15px" class="fas fa-sync-alt fa-spin" v-if="look"></i></button>
+            <button class="btn btn-success" type="button" @click="generateSlug" :disabled="c.length == 0 || look">Vygenerovat <i style="font-size:15px" class="fas fa-sync-alt fa-spin" v-if="look"></i></button>
         </div>
     </div>
 </template>

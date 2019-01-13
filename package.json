@@ -24,6 +24,7 @@
         "npm": "^6.4.1",
         "v-tooltip": "^2.0.0-rc.33",
         "vee-validate": "^2.1.4",
+        "vue-affix": "^0.4.0",
         "vue-slide-toggle": "^1.1.0",
         "vuelidate": "^0.7.4"
     }

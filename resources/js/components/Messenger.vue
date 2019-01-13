@@ -62,16 +62,16 @@
             <h3 slot="header">Nová zpráva</h3>
             <div slot="body">
                 <div class="form-group">
-                    <label class="label" title="" :class="{bad:newMsgShow.errors.user.length>0,correct:newMsgShow.errors.user==-1}" :title="newMsgShow.errors.user">Adresát</label>
+                    <label class="label" title="" :class="{bad:newMsgShow.respond_emails.length == 0 && newMsgShow.respond_emails !== '',correct:newMsgShow.respond_emails.length > 0}" :title="newMsgShow.errors.user">Adresát</label>
                     <emailsel v-bind:replyto="reply" @input="setResponses"></emailsel>
                 </div>
                 <div class="form-group">
-                    <label class="label" :class="{bad:newMsgShow.errors.title.length>0,correct:newMsgShow.errors.title==-1}" :title="newMsgShow.errors.title">Předmět</label>
-                    <input type="text" name="title" class="form-control" v-model="newMsgShow.inputs.title">
+                    <label class="label" :class="{bad:errors.first('title') != null,correct:errors.first('title') == null && newMsgShow.inputs.title !== ''}" :title="errors.first('title')">Předmět</label>
+                    <input type="text" v-validate="{required:true,max:32}" name="title" class="form-control" v-model="newMsgShow.inputs.title">
                 </div>
                 <div class="form-group">
-                    <label class="label" :class="{bad:newMsgShow.errors.message.length>0,correct:newMsgShow.errors.message==-1}" :title="newMsgShow.errors.message">Zpráva</label>
-                    <textarea class="form-control" v-model="newMsgShow.inputs.message"></textarea>
+                    <label class="label"  :class="{bad:errors.first('msg') != null,correct:errors.first('msg') == null && newMsgShow.inputs.message !== ''}" :title="errors.first('msg')">Zpráva</label>
+                    <textarea v-validate="{required:true}" class="form-control" v-model="newMsgShow.inputs.message" name="msg"></textarea>
                 </div>
             </div>
         </modal>
@@ -104,8 +104,8 @@
         },
         mounted: function () {
             this.getMsgs();
-            if(this.replyto != null){
-                this.newMsg();
+            if(this.replyto != "" && this.replyto != null){
+                this.newMsg(parseInt(this.replyto));
             }
             $.ajaxSetup({
                 headers: {
@@ -117,32 +117,6 @@
             currMsg:function(){
                 if((typeof this.currMsg == "number") && this.messages[this.currMsg].seen == false){
                     this.markAsSeen(this.currMsg,true);
-                }
-            },
-            title:function(){
-                var s = this.newMsgShow.inputs.title;
-                if(s.length == 0){
-                    this.newMsgShow.errors.title = "Předmět musí být vyplněn!";
-                }else if(s.length > 32){
-                    this.newMsgShow.errors.title = "Předmět může mít max. 32 znaků!";
-                }else{
-                    this.newMsgShow.errors.title = -1;
-                }
-
-            },
-            message:function(){
-                var s = this.newMsgShow.inputs.message;
-                if(s.length == 0) {
-                    this.newMsgShow.errors.message = "Zpráva nemůže být prázdná!";
-                }else{
-                    this.newMsgShow.errors.message = -1;
-                }
-            },
-            receivers:function(){
-                if(this.newMsgShow.respond_emails.length > 0){
-                    this.newMsgShow.errors.user = -1;
-                }else{
-                    this.newMsgShow.errors.user = "Vyberte prosím, komu máme zprávu zaslat!";
                 }
             }
         },
@@ -156,12 +130,13 @@
                     });
                 }else{
                     alert("Nelze odeslat zprávu!");
-                    console.log(this.newMsgShow);
                 }
             },
             clearInputs:function(){
                 this.newMsgShow.inputs.message = "";
                 this.newMsgShow.inputs.title = "";
+                this.newMsgShow.respond_emails = "";
+                this.reply = null;
             },
             sendMail:function(d){
                 var temp = this;
@@ -170,7 +145,6 @@
                        temp.clearInputs();
                        alert('Zpráva byla úspěšně odeslána!');
                        temp.newMsgShow.show = false;
-                       temp.newMsgShow.respond_emails = [];
                    }
                 });
             },
@@ -183,8 +157,9 @@
                 });
             },
             getDate:function(unix){
-                var d = new Date(unix*1000);
-                return d.getDate()+". "+d.getMonth()+". "+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes();
+                var d = new Date((unix-3600)*1000);
+
+                return d.getDate()+". "+(d.getMonth()+1)+". "+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes();
             },
             getNameShortcut:function(i){
                 return this.messages[i].author.firstname[0]+this.messages[i].author.surname[0];
@@ -202,7 +177,6 @@
             },
             setResponses:function(value){
                 this.newMsgShow.respond_emails = value;
-                console.log(value);
             },
             getMsgs:function(){
                 this.messagesVis = false;
@@ -214,13 +188,12 @@
                     $.get('/ajax/getMessages', function (data) {
                         this.messages = data;
                         this.messagesVis = true;
-                        console.log(data);
                     }.bind(this));
                 }
 
             },
             close:function(){
-                this.newMsgShow.respond_emails = [];
+                this.clearInputs();
                 this.newMsgShow.show = !this.newMsgShow.show;
             }
         },
@@ -238,7 +211,7 @@
                 return this.newMsgShow.respond_emails;
             },
             rwegucci: function(){
-                return (this.newMsgShow.errors.message == -1 && this.newMsgShow.errors.title == -1 && this.newMsgShow.respond_emails.length > 0);
+                return (this.newMsgShow.respond_emails.length > 0 && this.errors.items != null && this.errors.items.length == 0);
             }
         }
     }

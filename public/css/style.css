@@ -1,3 +1,7 @@
+/* -------- Imports -------- */
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+/* ------ End Imports ------ */
+
 :root{
     --fancy-font:"Century Gothic";
     --footer-height:60px;
@@ -23,6 +27,30 @@ body{
     color:#ccc;
 }
 
+.modules a{
+    color:#666 !important;
+}
+.mv-toolbar{
+    background:#666;
+    color:#efefef;
+    font-family:Roboto;
+}
+.mv-toolbar a{
+    color:inherit !important;
+}
+
+.img_box{
+    padding-left:0px !important;
+    padding-right:0px !important;
+    border:3px solid #ccc;
+}
+.img_box .desc{
+    font-family:Roboto;
+    text-align: center;
+    padding:5px;
+    background:#242424;
+    color:white;
+}
 .big_text{
     font-size:100px;
 }
@@ -39,9 +67,9 @@ body{
     background:#E3E3E3;
     border:1px solid #C4C4C4;
 }
-.login_form_div button{
-    background:#35b03c;
-    color:white;
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
 }
 .form_div h3{
     text-align:center;
@@ -223,10 +251,14 @@ input:not([type=checkbox]),textarea{
     padding:10px;
 }
 .messenger .shortcut.new{
-    background: #f6a607;
+    background:rgba(246,166,7,0.8);
+
 }
 .messenger .shortcut.active{
     background: #CACBCC;
+}
+.messenger .shortcut.new:hover:not(.active){
+    background:#f6a607;
 }
 .messenger .shortcut:hover:not(.active){
     background:#DADBDD;
@@ -625,3 +657,26 @@ div{
         color: inherit;
     }
 }
+a.page-link{
+    background:#21252B;
+    color:white;
+    border:none;
+}
+.page-item.active .page-link{
+    background:#f6993f !important;
+    border-color:#f6993f !important;
+}
+.page-item.disabled .page-link{
+    background: #3e474e!important;
+    color:white !important;
+}
+.page-link:hover{
+    color:white !important;
+    background-color: #3a4046 !important;
+}
+.page-item{
+    margin:0px;
+}
+
+
+

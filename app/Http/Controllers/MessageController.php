@@ -6,6 +6,7 @@ use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use Illuminate\Support\Facades\Input;
 use App\Own\Toolkit;
 
 class MessageController extends Controller
@@ -16,13 +17,10 @@ class MessageController extends Controller
     {
         $this->toolkit = new Toolkit();
     }
-    public function getMessenger()
-    {
-        $this->getMessagesByAjax();
-        return view('messages/messenger');
+    public function getMessenger(){
+        return view('messages/messenger',["id"=>Input::get('id')]);
     }
-    private function parseMessages($msgs)
-    {
+    private function parseMessages($msgs){
         $pass = [];
         foreach ($msgs as $m) {
             $pass[] = [
@@ -38,8 +36,7 @@ class MessageController extends Controller
         }
         return $pass;
     }
-    public function getMessagesByAjax()
-    {
+    public function getMessagesByAjax(){
         try {
             $data = Auth::user()->messages;
             return response()->json($this->parseMessages($data));
@@ -47,8 +44,7 @@ class MessageController extends Controller
             return "This place is protected you scum!";
         }
     }
-    public function postMarkAsSeen(Request $r)
-    {
+    public function postMarkAsSeen(Request $r){
         $response = "";
         if (empty($r->msg_id) || empty($r->id) || empty($r->boolean)) {
             $response = 422;
@@ -71,8 +67,7 @@ class MessageController extends Controller
         }
         return response()->json(["response" => $response]);
     }
-    public function postMessage(Request $r)
-    {
+    public function postMessage(Request $r){
         $data = $r->data;
         if (empty($data["title"]) || strlen($data["title"]) > 32 || empty($data["message"]) || empty($data["receivers"])) {
             return response()->json(["response"=>422]);

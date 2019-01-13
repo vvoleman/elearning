@@ -21,8 +21,8 @@ class AccountController extends Controller
      */
     public function getAccountsListAdmin(Request $request){
         $user = new User();
-        $users = $user->select('id_u as id','deact_reason','deact_date','firstname','surname','email','registered','last_login','roles.name')->join('roles','users.role_id','=','roles.id_r')->orderBy('id','asc')->get();
-
+        $users = $user->select('id_u as id','deact_reason','deact_date','firstname','surname','email','registered','last_login','roles.name')->join('roles','users.role_id','=','roles.id_r')->orderBy('id','asc');
+        $users = $users->paginate(10);
         return view('Account/admin/accounts',["data"=>$users]);
     }
 

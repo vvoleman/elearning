@@ -6,7 +6,7 @@
         <div slot="body" style="padding:0px">
             <div class="form-group">
                 <label class="label">Přidat</label>
-                <emailsel v-model="modal_list" group="user"></emailsel>
+                <emailsel :existing="existing" v-model="modal_list" group="user"></emailsel>
             </div>
         </div>
     </modal>
@@ -15,6 +15,7 @@
 <script>
     export default {
         name: "addStudent",
+        props:['existing'],
         data(){
             return {
                 modal_list:[]
@@ -25,6 +26,9 @@
                 this.$emit('cancel',null);
             },
             post(){
+                if(this.modal_list.length == 0){
+                    return;
+                }
                 this.$emit('post',this.modal_list);
             }
         }

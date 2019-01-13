@@ -23,7 +23,7 @@
             <input type="checkbox" value="1" class="form-check-input" name="remember">
             <label class="form-check-label" for="remember">Zapamatovat</label>
         </div>
-        <button class="btn btn-block">Přihlásit</button>
+        <button class="btn btn-block btn-success">Přihlásit</button>
         <hr>
         <div>
             <a href="#">Zapomněli jste heslo?</a>

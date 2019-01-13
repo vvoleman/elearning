@@ -1,16 +1,17 @@
 <template>
-    <div>
-        <div class="d-md-flex justify-content-center col-md-10 mx-auto align-items-center">
+    <div class="col-md-10 mx-auto">
+        <h1 class="text-center m-top-2">Nový kurz</h1>
+        <div class="d-md-flex justify-content-center align-items-start">
             <div class="col-xl-4 col-md-6 login_form_div m-top-2">
                 <div class="col-md-11 mx-auto">
                     <h3>Povinné</h3>
                     <div class="form-group">
-                        <label class="label" :class="{bad:errors.first('name') != null,correct:errors.first('name') == null && name.length > 0}" :title="errors.first('name')">Název kurzu</label>
+                        <label v-b-tooltip.hover class="label" :class="{bad:errors.first('name') != null,correct:errors.first('name') == null && name.length > 0}" :title="errors.first('name')">Název kurzu</label>
                         <input type="text" class="form-control" v-model="name" name="name" v-validate="{required:true,max:32,min:4}">
                         <input type="hidden" v-bind:value="sel_lectors" name="lectors">
                     </div>
                     <div class="form-group">
-                        <label class="label" :class="{bad:sce != null && sce.length > 0,correct:slug.length > 0 && sce == null}" :title="sce">Zkratka kurzu</label>
+                        <label class="label" v-b-tooltip.hover :class="{bad:sce != null && sce.length > 0,correct:slug.length > 0 && sce == null}" :title="sce">Zkratka kurzu</label>
                         <scchecker name="shortcut" :c="name" v-on:change="usedStateChange"></scchecker>
                     </div>
                 </div>
@@ -24,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         <label class="label">Další lektoři</label>
-                        <emailsel @sel_users="moreLector"></emailsel>
+                        <emailsel @input="moreLector" group="teacher"></emailsel>
                     </div>
                 </div>
             </div>
@@ -88,7 +89,5 @@
     .bad{
         background: #f64954;
     }
-    .correct{
-        background: #46a851;
-    }
+
 </style>
