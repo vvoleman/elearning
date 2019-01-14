@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $fillable = ['email', 'password'];
     public $timestamps = false;
-    protected $dates = ["registered","last_login","deact_date"];
+    protected $dates = ["registered","deact_date"];
     protected $hidden = ['password', 'remember_token'];
     protected $primaryKey = "id_u";
 

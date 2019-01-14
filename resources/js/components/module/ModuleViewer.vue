@@ -1,5 +1,5 @@
 <template>
-    <div v-cloak>
+    <div v-if="datas != null">
         <div class="mv-toolbar col-12 sticky-top" style="padding-left:0;padding-right:0">
             <b-collapse id="toolbar" visible>
                 <div class="d-md-flex justify-content-between">
@@ -25,8 +25,8 @@
             <div v-for="(o,i) in module.data.chapters" :id="'chapter-'+i" class="container">
                 <h1>{{o.title}}</h1>
                 <div class="container">
-                    <div v-for="(p,j) in o.components">
-                        <component-translator :type="p.type" :context="p.context"></component-translator>
+                    <div v-for="(p,j) in o.rows">
+                        <layout-manager :type="p.type" :components="p.components"></layout-manager>
                     </div>
                 </div>
             </div>
@@ -35,12 +35,11 @@
 </template>
 
 <script>
-    import { Affix } from 'vue-affix';
-    import ComponentTranslator from "./ComponentTranslator";
+    import LayoutManager from "./LayoutManager";
     export default {
         name: "ModuleViewer",
         props:["datas"],
-        components: {ComponentTranslator, Affix},
+        components: {LayoutManager},
         data(){
             return {
                 selected:0,

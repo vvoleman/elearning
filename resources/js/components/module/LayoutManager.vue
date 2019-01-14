@@ -1,35 +1,32 @@
 <template>
-    <div ref="container"></div>
+    <div ref="container">
+
+    </div>
 </template>
 
 <script>
-    import Paragraph from "./comps/paragraph";
-    import Img from "./comps/Img";
+    import TwoCols from "./layouts/TwoCols";
     export default {
-        components: {Img, Paragraph},
-        props:["type","context"],
-        name: "ComponentTranslator",
+        components: {TwoCols},
+        props:["type","components"],
+        name: "LayoutManager",
         mounted(){
             var componentClass;
             switch (this.type) {
-                case "paragraph":
-                    componentClass = Vue.extend(Paragraph);
-                    break;
-                case "img":
-                    componentClass = Vue.extend(Img);
+                case "twocols":
+                    componentClass = Vue.extend(TwoCols);
                     break;
             }
             if(componentClass != null){
                 var instance = new componentClass({
                     propsData:{
-                        context:this.context
+                        components:this.components
                     }
                 });
                 instance.$mount(); // pass nothing
                 this.$refs.container.appendChild(instance.$el);
             }
         }
-
     }
 </script>
 

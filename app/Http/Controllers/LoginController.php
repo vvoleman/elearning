@@ -16,7 +16,7 @@ class LoginController extends Controller
     }
     public function verifyLogin(Request $request){
         if(Auth::check()) {
-            return redirect()->route('account.dashboard');
+            return redirect()->route('course.dashboard');
         } //checks if user is not logged
         $credentials = $request->validate([
             'email' => 'required|email',
