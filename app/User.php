@@ -71,6 +71,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return $g;
     }
+
+    /**
+     * Relationship between groups and user
+     * @return Group[]|array|\Illuminate\Database\Eloquent\Collection
+     */
     public function ownGroups(){
         if($this->hasRole('admin')){
             return Group::all();

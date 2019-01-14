@@ -20,8 +20,7 @@ class AccountController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getAccountsListAdmin(Request $request){
-        $user = new User();
-        $users = $user->select('id_u as id','deact_reason','deact_date','firstname','surname','email','registered','last_login','roles.name')->join('roles','users.role_id','=','roles.id_r')->orderBy('id','asc');
+        $users = User::select('id_u as id','deact_reason','deact_date','firstname','surname','email','registered','last_login','roles.name')->join('roles','users.role_id','=','roles.id_r')->orderBy('id','asc');
         $users = $users->paginate(10);
         return view('Account/admin/accounts',["data"=>$users]);
     }
@@ -32,8 +31,7 @@ class AccountController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getEditAccountAdmin($id){
-        $user = new User();
-        $user = $user->find($id);
+        $user = User::find($id);
         return view("Account/admin/accountEdit",["u" => $user,"roles" => Role::all()]);
     }
 
@@ -56,8 +54,7 @@ class AccountController extends Controller
             unset($data["deactivate"]);
             $data["deact_date"] = \Illuminate\Support\Facades\DB::raw("NOW()");
         }
-        $user = new User();
-        $user = $user->find($data["id_u"]);
+        $user = User::find($data["id_u"]);
         if(empty($data["deactivate"]) && !empty($user->deact_date)){
             $user->deact_date = null;
             $user->deact_reason = null;

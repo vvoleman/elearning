@@ -5,16 +5,20 @@
 </template>
 
 <script>
-    import TwoCols from "./layouts/TwoCols";
+    import Normal from "./layouts/Normal";
+    import Centered from "./layouts/Centered";
     export default {
-        components: {TwoCols},
+        components: {Centered, Normal},
         props:["type","components"],
         name: "LayoutManager",
         mounted(){
             var componentClass;
             switch (this.type) {
-                case "twocols":
-                    componentClass = Vue.extend(TwoCols);
+                case "normal":
+                    componentClass = Vue.extend(Normal);
+                    break;
+                case "center":
+                    componentClass = Vue.extend(Centered);
                     break;
             }
             if(componentClass != null){

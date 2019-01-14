@@ -1,12 +1,13 @@
 <template>
-    <div ref="container"></div>
+    <div ref="container" class="m-top"></div>
 </template>
 
 <script>
     import Paragraph from "./comps/paragraph";
     import Img from "./comps/Img";
+    import List from "./comps/List";
     export default {
-        components: {Img, Paragraph},
+        components: {List, Img, Paragraph},
         props:["type","context"],
         name: "ComponentTranslator",
         mounted(){
@@ -17,6 +18,9 @@
                     break;
                 case "img":
                     componentClass = Vue.extend(Img);
+                    break;
+                case "list":
+                    componentClass = Vue.extend(List);
                     break;
             }
             if(componentClass != null){

@@ -2,7 +2,7 @@
 @section('title','Login |')
 @section('content')
 {!! Form::open(['route'=>'login.verifyLogin'],['id'=>"test"]) !!}
-<div class="col-md-6 col-lg-3 mx-auto login_form_div" style="margin-top:10%">
+<div class="col-md-6 col-lg-3 mx-auto login_form_div m-top-2">
     <h3>Přihlášení</h3>
     <div class="m-top">
         <div class="form-group">

@@ -1,6 +1,5 @@
 <template>
-    <p>
-        {{context}}
+    <p v-html="context">
     </p>
 </template>
 

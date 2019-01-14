@@ -677,6 +677,11 @@ a.page-link{
 .page-item{
     margin:0px;
 }
+.list_style{
+    background:#ccc;
+    font-size:18px;
+    border:1px solid #aaa;
+}
 
 
 

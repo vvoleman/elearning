@@ -37,7 +37,7 @@
                                     <i data-toggle="tooltip" data-placement="right" title="Tento účet zatím nebyl aktivován!" class="fas fa-exclamation-triangle"></i>
                                 @endif
                             </td>
-                            <td><a href="{{route('admin.editAccount',$u->id)}}"><button class="btn-sm btn btn-primary">Upravit</button></a></td>
+                            <td><a href="{{route('admin.editAccount',$u->id)}}"><button class="btn-sm btn btn-gray">Upravit</button></a></td>
                         </tr>
                     @endforeach
                     </tbody>

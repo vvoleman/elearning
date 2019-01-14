@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex justify-content-between">
-        <component-translator v-for="item in components" :type="item.type" :key="item.type" :context="item.context"></component-translator>
+    <div class="d-flex justify-content-center flex-wrap">
+        <component-translator v-for="(o,i) in components" :type="o.type" :key="i" :context="o.context"></component-translator>
     </div>
 </template>
 
@@ -9,7 +9,7 @@
     export default {
         components: {ComponentTranslator},
         props:["components"],
-        name: "TwoCols"
+        name: "Centered"
     }
 </script>
 
