@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import Paragraph from "./comps/paragraph";
+    import Paragraph from "./comps/Paragraph";
     import Img from "./comps/Img";
     import List from "./comps/List";
     export default {

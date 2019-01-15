@@ -81,6 +81,8 @@ Vue.component('ecset',require('./components/course/EditSettings'));
 Vue.component('editstudent',require('./components/group/editStudents'));
 Vue.component('newgroup',require('./components/group/newGroup'));
 Vue.component('moduleview',require('./components/module/ModuleViewer.vue'));
+Vue.component('modulecreate',require('./components/module/ModuleCreater.vue'));
+
 const app = new Vue({
     el: '#app',
     mounted(){
