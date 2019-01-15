@@ -49,7 +49,7 @@
         data(){
             return {
                 selected:0,
-                data:JSON.parse(this.datas),
+                data: (typeof this.datas == "string") ? JSON.parse(this.datas) : this.datas,
                 module:[],
                 options:[],
                 resources:[]
