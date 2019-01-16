@@ -82927,7 +82927,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -82938,33 +82938,8 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createComps_Chapter__ = __webpack_require__(364);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createComps_Chapter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__createComps_Chapter__);
 //
 //
 //
@@ -83007,8 +82982,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "ModuleCreater",
+    components: { Chapter: __WEBPACK_IMPORTED_MODULE_0__createComps_Chapter___default.a },
     data: function data() {
         return {
             show: false,
@@ -83020,39 +82997,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 editChapter: {
                     curr: null,
                     name: ""
+                },
+                editRow: {
+                    coords: null,
+                    selected: null
                 }
             },
             module: {
-                "chapters": [{
-                    "title": "Seznámení",
-                    "rows": [{
-                        "type": "normal",
-                        "components": [{
-                            "type": "paragraph",
-                            "context": "Lorem ipsum dolor sit amet, <b>consectetur</b> adipisicing elit, <u title='Prostě podtrženej text, sestim smiř'>sed do eiusmod tempor incididunt</u> ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, <b>consectetur</b> adipisicing elit, <u title='Prostě podtrženej text, sestim smiř'>sed do eiusmod tempor incididunt</u> ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                        }, {
-                            "type": "img",
-                            "context": {
-                                "src": "https://static.ffx.io/images/$zoom_0.193%2C$multiply_1%2C$ratio_1.776846%2C$width_1059%2C$x_0%2C$y_97/t_crop_custom/w_768/t_sharpen%2Cq_auto%2Cf_auto%2Cdpr_auto/08b24b2389c24ff14ea66df016db5e664a791d01",
-                                "desc": "jenom trochu"
-                            }
-                        }]
-                    }, {
-                        "type": "normal",
-                        "components": [{
-                            "type": "paragraph",
-                            "context": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                        }]
-                    }]
-                }]
-            },
-            row_types: [{
-                type: "normal",
-                text: "Normální"
-            }, {
-                type: "centered",
-                text: "Zarovnat doprostřed"
-            }]
+                chapters: []
+            }
+
         };
     },
 
@@ -83064,30 +83018,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     rows: []
                 };
                 this.module.chapters.push(temp);
+                console.log(this.module.chapters);
                 this.modals.newChapter.show = false;
                 this.modals.newChapter.name = "";
             }
         },
+        removeChapter: function removeChapter(i) {
+            this.module.chapters.splice(i, 1);
+        },
         showEditChapter: function showEditChapter(i) {
-            var temp = this.module.chapters[i];
-            this.modals.editChapter.name = temp.title;
+            this.modals.editChapter.name = this.module.chapters[i].title;
             this.modals.editChapter.curr = i;
         },
         editChapter: function editChapter() {
             this.module.chapters[this.modals.editChapter.curr].title = this.modals.editChapter.name;
             this.modals.editChapter.name = "";
             this.modals.editChapter.curr = null;
-        },
-        removeChapter: function removeChapter(i) {
-            this.module.chapters.splice(i, 1);
-        },
-        addRow: function addRow(type, i) {
-            var temp = {
-                type: type,
-                components: []
-            };
-
-            this.module.chapters[i].rows.push(temp);
         }
     }
 });
@@ -83252,7 +83198,7 @@ var render = function() {
                 },
                 [
                   _c("span", [
-                    _vm._v("Kapitala " + _vm._s(i + 1) + ". "),
+                    _vm._v("Kapitola " + _vm._s(i + 1) + ". "),
                     _c("h3", [_vm._v(_vm._s(o.title))])
                   ]),
                   _vm._v(" "),
@@ -83304,111 +83250,24 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _c("b-collapse", { attrs: { id: "chapter-" + i } }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "container-fluid",
-                    staticStyle: { background: "#ddd" }
-                  },
-                  [
-                    _c(
-                      "div",
-                      [
-                        _c(
-                          "b-dropdown",
-                          {
-                            staticClass: "m-2",
-                            attrs: {
-                              variant: "success",
-                              id: "ddown-buttons",
-                              text: "Přidat řádek"
-                            }
-                          },
-                          _vm._l(_vm.row_types, function(rt, c) {
-                            return _c(
-                              "b-dropdown-item",
-                              {
-                                key: rt.type,
-                                on: {
-                                  click: function($event) {
-                                    _vm.addRow(rt.type, i)
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(rt.text))]
-                            )
-                          })
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("hr", { staticStyle: { "background-color": "black" } }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "container-fluid" },
-                      [
-                        _c("h4", [_vm._v("Řádky")]),
-                        _vm._v(" "),
-                        _vm._l(o.rows, function(p, j) {
-                          return _c(
-                            "div",
-                            {
-                              staticClass: "container-fluid m-top",
-                              staticStyle: {
-                                background: "#ccc",
-                                padding: "5px"
-                              }
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "d-flex justify-content-between align-items-center"
-                                },
-                                [
-                                  _c("span", [
-                                    _vm._v("Typ: " + _vm._s(p.type))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {},
-                                    [
-                                      _c(
-                                        "b-btn",
-                                        { attrs: { variant: "danger" } },
-                                        [_vm._v("-")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("b-btn", [
-                                        _vm._v("Přidat komponentu")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("b-btn", [_vm._v("Upravit")])
-                                    ],
-                                    1
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("div")
-                            ]
-                          )
-                        })
-                      ],
-                      2
-                    )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _vm.show
-                ? _c("moduleview", { attrs: { datas: { data: _vm.module } } })
-                : _vm._e()
+              _c(
+                "b-collapse",
+                { attrs: { id: "chapter-" + i } },
+                [
+                  _c("chapter", {
+                    key: i,
+                    attrs: { in: i },
+                    model: {
+                      value: _vm.module.chapters[i].rows,
+                      callback: function($$v) {
+                        _vm.$set(_vm.module.chapters[i], "rows", $$v)
+                      },
+                      expression: "module.chapters[i].rows"
+                    }
+                  })
+                ],
+                1
+              )
             ],
             1
           )
@@ -83433,6 +83292,407 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 363 */,
+/* 364 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(365)
+}
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(367)
+/* template */
+var __vue_template__ = __webpack_require__(368)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-aeeba4a4"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/module/createComps/Chapter.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-aeeba4a4", Component.options)
+  } else {
+    hotAPI.reload("data-v-aeeba4a4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 365 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(366);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("6288ec1a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-aeeba4a4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Chapter.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-aeeba4a4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Chapter.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 366 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 367 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "Chapter",
+    props: ['value', 'in'],
+    data: function data() {
+        return {
+            i: this.in,
+            rows: this.value,
+            modal: {
+                row: null,
+                selected: null
+            },
+            newComp: {},
+            row_types: [{
+                value: "normal",
+                text: "Normální"
+            }, {
+                value: "centered",
+                text: "Zarovnat doprostřed"
+            }]
+        };
+    },
+
+    methods: {
+        rewrite: function rewrite() {
+            this.i = this.in;
+            this.rows = this.value;
+        },
+        removeRow: function removeRow(index) {
+            this.rows.splice(index, 1);
+        },
+        addRow: function addRow(type) {
+            var temp = {
+                type: type,
+                components: []
+            };
+
+            this.rows.push(temp);
+        },
+        showEditRow: function showEditRow(row) {
+            this.modal.row = row;
+            this.modal.selected = this.rows[row].type;
+        },
+        editRow: function editRow() {
+            this.rows[this.modal.row].type = this.modal.selected;
+            this.modal.selected = this.modal.row = null;
+        }
+    },
+    watch: {
+        rows: function rows() {
+            this.$emit('input', this.rows);
+        },
+        value: function value() {
+            this.rewrite();
+        },
+        in: function _in() {
+            this.i = this.in;
+        }
+    }
+});
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container-fluid", staticStyle: { background: "#ddd" } },
+    [
+      _vm.modal.selected != null
+        ? _c(
+            "modal",
+            {
+              on: {
+                closeModal: function($event) {
+                  _vm.modal.selected = null
+                },
+                send: _vm.editRow
+              }
+            },
+            [
+              _c("h1", { attrs: { slot: "header" }, slot: "header" }, [
+                _vm._v("Úprava řádku")
+              ]),
+              _vm._v(" "),
+              _c("div", { attrs: { slot: "body" }, slot: "body" }, [
+                _c(
+                  "div",
+                  { staticClass: "form-group" },
+                  [
+                    _c("label", { staticClass: "label" }, [_vm._v("Typ")]),
+                    _vm._v(" "),
+                    _c("b-form-select", {
+                      attrs: { options: _vm.row_types },
+                      model: {
+                        value: _vm.modal.selected,
+                        callback: function($$v) {
+                          _vm.$set(_vm.modal, "selected", $$v)
+                        },
+                        expression: "modal.selected"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      false
+        ? _c("modal", [
+            _c("h1", { attrs: { slot: "header" }, slot: "header" }, [
+              _vm._v("Přidání komponenty")
+            ]),
+            _vm._v(" "),
+            _c("div", { attrs: { slot: "body" }, slot: "body" }, [
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", { staticClass: "label" }, [_vm._v("Typ")]),
+                  _vm._v(" "),
+                  _c("b-form-select", {
+                    attrs: { options: _vm.row_types },
+                    model: {
+                      value: _vm.modal.selected,
+                      callback: function($$v) {
+                        _vm.$set(_vm.modal, "selected", $$v)
+                      },
+                      expression: "modal.selected"
+                    }
+                  })
+                ],
+                1
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        [
+          _c(
+            "b-dropdown",
+            {
+              staticClass: "m-2",
+              attrs: {
+                variant: "success",
+                id: "ddown-buttons",
+                text: "Přidat řádek"
+              }
+            },
+            _vm._l(_vm.row_types, function(rt, c) {
+              return _c(
+                "b-dropdown-item",
+                {
+                  key: rt.value,
+                  on: {
+                    click: function($event) {
+                      _vm.addRow(rt.value)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(rt.text))]
+              )
+            })
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("hr", { staticStyle: { "background-color": "black" } }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "container-fluid" },
+        [
+          _c("h4", [_vm._v("Řádky")]),
+          _vm._v(" "),
+          _vm._l(_vm.rows, function(p, j) {
+            return _c(
+              "div",
+              {
+                staticClass: "container-fluid m-top",
+                staticStyle: { background: "#ccc", padding: "5px" }
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-between align-items-center"
+                  },
+                  [
+                    _c("span", [_vm._v("Typ: " + _vm._s(p.type))]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {},
+                      [
+                        _c(
+                          "b-btn",
+                          {
+                            attrs: { variant: "danger" },
+                            on: {
+                              click: function($event) {
+                                _vm.removeRow(j)
+                              }
+                            }
+                          },
+                          [_vm._v("-")]
+                        ),
+                        _vm._v(" "),
+                        _c("b-btn", [_vm._v("Přidat komponentu")]),
+                        _vm._v(" "),
+                        _c(
+                          "b-btn",
+                          {
+                            on: {
+                              click: function($event) {
+                                _vm.showEditRow(j)
+                              }
+                            }
+                          },
+                          [_vm._v("Upravit")]
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div")
+              ]
+            )
+          })
+        ],
+        2
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-aeeba4a4", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
