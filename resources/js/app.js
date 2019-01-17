@@ -82,6 +82,7 @@ Vue.component('editstudent',require('./components/group/editStudents'));
 Vue.component('newgroup',require('./components/group/newGroup'));
 Vue.component('moduleview',require('./components/module/ModuleViewer.vue'));
 Vue.component('modulecreate',require('./components/module/ModuleCreater.vue'));
+Vue.component('alert',require('./components/Alert.vue'));
 
 const app = new Vue({
     el: '#app',

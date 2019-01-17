@@ -1,5 +1,5 @@
 <template>
-    <p v-html="context">
+    <p v-html="context.text">
     </p>
 </template>
 

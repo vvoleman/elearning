@@ -11,24 +11,19 @@
         <i class="fas fa-bell"></i>
     </a>
 </li> !-->
-<li class="nav-item dropdown">
-    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+<b-dropdown variant="link" size="lg" no-caret right >
+    <template slot="button-content">
         <i class="fas fa-caret-down"></i>
-    </a>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        @switch(Auth::user()->role->name)
-            @case('admin')
-                <a class="dropdown-item" href="{{route('admin.accounts')}}">Účty</a>
-                @break
-            @case('teacher')
-                <a class="dropdown-item" href="#">Správa uživatelů</a>
-                @break
-            @case('user')
-                <a class="dropdown-item" href="#">Historie kurzů</a>
-                @break
-        @endswitch
-        <a class="dropdown-item" href="{{route('account.settings')}}">Nastavení</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{{route('login.logout')}}">Odhlásit</a>
-    </div>
-</li>
+    </template>
+    @switch(Auth::user()->role->name)
+        @case('admin')
+        <b-dropdown-item href="{{route('admin.accounts')}}">Účty</b-dropdown-item>
+        @break
+        @case('teacher')
+        <b-dropdown-item href="#">Správa účtů</b-dropdown-item>
+        @break
+    @endswitch
+    <b-dropdown-item href="{{route('account.settings')}}">Nastavení</b-dropdown-item>
+    <b-dropdown-divider></b-dropdown-divider>
+    <b-dropdown-item href="{{route('login.logout')}}">Odhlásit</b-dropdown-item>
+</b-dropdown>

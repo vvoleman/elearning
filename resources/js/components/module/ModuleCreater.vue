@@ -75,7 +75,6 @@
                         rows:[]
                     }
                     this.module.chapters.push(temp);
-                    console.log(this.module.chapters);
                     this.modals.newChapter.show = false;
                     this.modals.newChapter.name = "";
                 }

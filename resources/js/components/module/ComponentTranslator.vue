@@ -3,34 +3,52 @@
 </template>
 
 <script>
-    import Paragraph from "./comps/Paragraph";
-    import Img from "./comps/Img";
-    import List from "./comps/List";
+    import Paragraph from "./comps/Final/Paragraph";
+    import Img from "./comps/Final/Img";
+    import List from "./comps/Final/List";
+    import ParagraphCreate from "./comps/Creating/Paragraph";
     export default {
-        components: {List, Img, Paragraph},
-        props:["type","context"],
+        components: {ParagraphCreate, List, Img, Paragraph},
+        props:["type","context","value"],
         name: "ComponentTranslator",
+        data(){
+            return{
+                components: {
+                    paragraph:Paragraph,
+                    img:Img,
+                    list:List,
+                    paragraphcreate:ParagraphCreate
+                }
+            }
+        },
         mounted(){
             var componentClass;
-            switch (this.type) {
-                case "paragraph":
-                    componentClass = Vue.extend(Paragraph);
-                    break;
-                case "img":
-                    componentClass = Vue.extend(Img);
-                    break;
-                case "list":
-                    componentClass = Vue.extend(List);
-                    break;
-            }
-            if(componentClass != null){
+            if(this.components.hasOwnProperty(this.type)){
+                componentClass = Vue.extend(this.components[this.type]);
                 var instance = new componentClass({
                     propsData:{
-                        context:this.context
+                        context:this.context,
+                        value:this.value
                     }
                 });
+            }
+            instance.$on('remove',function(data){
+                this.$emit('remove',data);
+            });
+            instance.$on('input',function(data){
+                this.$emit('input',data);
+            }.bind(this));
+            if(componentClass != null){
+
                 instance.$mount(); // pass nothing
                 this.$refs.container.appendChild(instance.$el);
+            }
+        },
+        methods:{
+        },
+        watch:{
+            value(){
+                console.log(this.value);
             }
         }
 

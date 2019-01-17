@@ -1,9 +1,9 @@
 <html>
 @include('../partials/_head')
 <body>
-@include('../partials/_nav-account')
-@include('../partials/_flashmessages')
 <div id="app" v-cloak>
+    @include('../partials/_nav-account')
+    @include('../partials/_flashmessages')
     @yield('content')
 </div>
 @yield('prescript')

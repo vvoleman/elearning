@@ -1,16 +1,7 @@
-<div class="flash-message position-absolute col-12" style="padding:0;border-radius:0">
+<div class="flash-message position-absolute col-12" style="padding:0;border-radius:0;z-index:999">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
         @if(Session::has($msg))
-            <div class="alert fade text-center show alert-{{ $msg }}" style="z-index:5">
-                <span>{{ Session::get($msg) }}</span>
-            </div>
+            <alert type="{{$msg}}" msg="{{Session::get($msg)}}" count="5"></alert>
         @endif
     @endforeach
 </div>
-<script>
-    setTimeout(function(){
-        $('.alert').fadeOut(400, function () {
-            $('.alert').remove();
-        });
-    },2000);
-</script>

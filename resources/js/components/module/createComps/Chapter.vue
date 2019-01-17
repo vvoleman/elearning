@@ -29,14 +29,16 @@
                <div v-for="(p,j) in rows" class="container-fluid m-top" style="background:#ccc;padding:5px;">
                     <div class="d-flex justify-content-between align-items-center">
                          <span>Typ: {{p.type}}</span>
-                         <div class="">
+                         <div>
                               <b-btn variant="danger" @click="removeRow(j)">-</b-btn>
-                              <b-btn>Přidat komponentu</b-btn>
+                              <b-dropdown text="Přidat komponentu">
+                                   <b-dropdown-item @click="addComponent(j,item.type)" v-for="(item,key) in components" :key="key">{{item.value}}</b-dropdown-item>
+                              </b-dropdown>
                               <b-btn @click="showEditRow(j)">Upravit</b-btn>
                          </div>
                     </div>
                     <div>
-
+                         <component-translator @remove="remove(k)" v-for="(q,k) in p.components" style="background: #bbb;padding:5px" :key="k" :type="q.type+'create'" v-model="q.context"></component-translator>
                     </div>
                </div>
           </div>
@@ -44,8 +46,10 @@
 </template>
 
 <script>
+    import ComponentTranslator from "../ComponentTranslator";
     export default {
         name: "Chapter",
+        components: {ComponentTranslator},
         props: ['value','in'],
         data(){
             return {
@@ -67,10 +71,27 @@
                         value:"centered",
                         text:"Zarovnat doprostřed"
                     }
+                ],
+                components:[
+                    {
+                        type:"paragraph",
+                        value:"Odstavec"
+                    },
+                    {
+                        type:"img",
+                        value:"Obrázek"
+                    },
+                    {
+                        type:"list",
+                        value:"Seznam"
+                    },
                 ]
             }
         },
         methods:{
+            remove(i){
+                console.log(i);
+            },
             rewrite(){
                 this.i = this.in;
                 this.rows = this.value;
@@ -93,6 +114,14 @@
             editRow(){
                 this.rows[this.modal.row].type = this.modal.selected;
                 this.modal.selected = this.modal.row = null;
+            },
+            addComponent(row,comp){
+                var temp = {
+                    type:comp,
+                    context:{
+                    }
+                };
+                this.rows[row].components.push(temp);
             }
         },
         watch:{

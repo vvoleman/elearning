@@ -175,6 +175,7 @@ class CourseController extends Controller
         }else{
             $c->owners()->sync($users);
         }
+        return $c;
     }
     private function updateGroups($data,$c){
         $c->groups()->sync($this->toolkit->getUserModels($data["items"]));
