@@ -9,8 +9,13 @@
             <div class="col-12 mx-auto m-top-2 d-md-flex justify-content-around align-items-start">
                 <div class="d-flex">
                     <h4>Správce třídy:</h4>
-                    <ul>
-                        <span>{{(Auth::user()->id_u == $g->owner->id_u) ? "Vy" : $g->owner->getFullname()}}</span>
+                    <ul class="col-md-8">
+                        <div class="col-md-12 student_box d-flex align-items-center justify-content-between" style="margin-bottom:10px">
+                            <span>{{(Auth::user()->id_u == $g->owner->id_u) ? "Vy" : $g->owner->getFullname()}}</span>
+                            @if((Auth::user()->id_u != $g->owner->id_u))
+                                <a class="no-a" href="{{route('messages.replies',["id"=>$g->owner->id_u])}}"><i class="fas fa-envelope"></i></a>
+                            @endif
+                        </div>
                     </ul>
                 </div>
                 <div class="d-flex align-items-center">

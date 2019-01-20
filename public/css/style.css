@@ -590,7 +590,7 @@ div{
     box-shadow: 0px 0px 16px -1px rgba(0,0,0,0.25);
 }
 .student_box:hover{
-    background:#e1e1e1;
+    background:#ececec;
 }
 .student_box .fa-ellipsis-v{
     font-size:18px;
@@ -681,6 +681,11 @@ a.page-link{
     background:#ccc;
     font-size:18px;
     border:1px solid #aaa;
+}
+.component{
+    background: #bbb;
+    padding:5px;
+    word-wrap:break-word;
 }
 
 

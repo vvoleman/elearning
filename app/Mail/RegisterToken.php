@@ -28,6 +28,6 @@ class RegisterToken extends Mailable
      */
     public function build()
     {
-        return $this->view('emails/reg_token',["token"=>$this->data,"name"=>"Elearning shit"]);
+        return $this->subject('Potvrzení registrace')->view('emails/reg_token',["token"=>$this->data,"name"=>"Elearning platforma"]);
     }
 }

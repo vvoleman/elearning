@@ -29,6 +29,6 @@ class ChangedPassword extends Mailable
      */
     public function build()
     {
-        return $this->view('emails/changed_password',$this->data);
+        return $this->subject('Změna hesla')->view('emails/changed_password',$this->data);
     }
 }

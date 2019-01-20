@@ -2,10 +2,14 @@
     <div class="col-md-8 m-top-2 mx-auto">
         <div>
             <h1 class="text-center">Úprava studentů</h1>
+            <a :href="'/group/'+slug" class="no-a d-flex align-items-center">
+                <i class="fas fa-chevron-left"></i>
+                Zpět
+            </a>
             <hr class="m-top-2">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <b-btn variant="success" v-on:click="sh_add = !sh_add">Přidat studenta</b-btn>
+                        <b-btn class="btn-gray" v-on:click="sh_add = !sh_add">Přidat studenta</b-btn>
                     </div>
                     <div>
                         <button class="btn btn-gray" :disabled="!changed" @click="cancel">Zrušit změny</button>
@@ -32,13 +36,7 @@
                     <div class="col-md-4 st" v-for="(s,i) in g.students">
                         <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
                             <span>{{s.firstname}} {{s.surname}}</span>
-                            <b-dropdown variant="link" right size="lg" no-caret>
-                                <template slot="button-content">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </template>
-                                <b-dropdown-item href="#">Napsat zprávu</b-dropdown-item>
-                                <b-dropdown-item href="#"@click="remove(i)">Odebrat</b-dropdown-item>
-                            </b-dropdown>
+                            <i @click="remove(i)" class="fas fa-times pointer"></i>
                         </div>
                     </div>
                 </div>
@@ -51,7 +49,7 @@
 <script>
     export default {
         name: "editStudents",
-        props:["datas"],
+        props:["datas","slug"],
         data(){
             return {
                 test:"",

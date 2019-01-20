@@ -1,7 +1,8 @@
 @extends('mains/account_main')
 @section('title','Přidání studentů |')
 @section('content')
-    <div class="container col-lg-4 col-md-6 m-top mx-auto">
+    <div class="container col-lg-4 col-md-6 m-top-2 mx-auto">
+        <a href="{{route('admin.accounts')}}" class="no-a">< Zpět</a>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -60,7 +61,7 @@
                             <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>
                         </div>
                     </div>
-                    <button class="btn btn-block">Přidat</button>
+                    <button class="btn btn-block btn-success">Přidat</button>
                 </div>
             {!! Form::close() !!}
             </div>

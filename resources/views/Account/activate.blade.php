@@ -16,26 +16,26 @@
         {!! Form::open(["route"=>"account.saveActivation"]) !!}
             <input type="hidden" name="reg_token" value="{{$user->reg_token}}">
             <div class="form-group">
-                <label>Jméno</label>
+                <label class="label">Jméno</label>
                 <span class="low_opacity form-control">{{$user->firstname}}</span>
             </div>
             <div class="form-group">
-                <label>Příjmení</label>
+                <label class="label">Příjmení</label>
                 <span class="low_opacity form-control">{{$user->surname}}</span>
             </div>
             <div class="form-group">
-                <label>Email</label>
+                <label class="label">Email</label>
                 <span class="low_opacity form-control">{{$user->email}}</span>
             </div>
             <div class="form-group">
-                <label>Heslo</label>
+                <label class="label">Heslo</label>
                 <div class="d-flex align-items-center">
                     <input class="form-control" type="password" name="new_pass">
                     <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>
                 </div>
             </div>
             <div class="form-group">
-                <label>Heslo znovu:</label>
+                <label class="label">Heslo znovu:</label>
                 <div class="d-flex align-items-center">
                     <input id="password2" class="form-control" type="password" name="new_pass2">
                     <i data-toggle="tooltip" data-placement="right" title="Tato položka je povinná" class="fas fa-circle"></i>

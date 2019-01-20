@@ -145,6 +145,7 @@
                        temp.clearInputs();
                        alert('Zpráva byla úspěšně odeslána!');
                        temp.newMsgShow.show = false;
+                       temp.currMsg = "";
                    }
                 });
             },
@@ -157,9 +158,9 @@
                 });
             },
             getDate:function(unix){
-                var d = new Date((unix-3600)*1000);
+                var d = new Date(unix*1000);
 
-                return d.getDate()+". "+(d.getMonth()+1)+". "+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes();
+                return d.getDate()+". "+(d.getMonth()+1)+". "+d.getFullYear()+" "+d.getHours()+":"+((d.getMinutes() < 10) ? 0 : '') + d.getMinutes();
             },
             getNameShortcut:function(i){
                 return this.messages[i].author.firstname[0]+this.messages[i].author.surname[0];

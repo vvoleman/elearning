@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Module_context;
 
 class Module extends Model
 {
@@ -15,7 +16,7 @@ class Module extends Model
         return $this->hasMany('\App\Module_context','module_id');
     }
     public function currentVersion(){
-        return $this->hasOne('\App\Module_context','module_id','context_id');
+        return Module_context::find($this->context_id);
     }
     public function resources(){
         return $this->hasMany('\App\Resource','module_id');

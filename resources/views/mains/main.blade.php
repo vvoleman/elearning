@@ -1,7 +1,7 @@
 <html>
 @include('../partials/_head')
 <body>
-<div id="app">
+<div id="app" v-cloak>
     @include('../partials/_nav-public')
     @include('../partials/_flashmessages')
     @yield('content')

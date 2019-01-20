@@ -38,7 +38,12 @@
                 </a>
             </div>
             <hideable def_show="true">
-                <span slot="head-text">Třídy</span>
+                <div slot="head-text">
+                    Třídy
+                    @if($c->hasPerms(Auth::user()))
+                        <a href="{{route('course.editGroups',$c->slug)}}" title="Přidat třídu do kurzu" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                    @endif
+                </div>
                 <div slot="body" class="d-md-flex col-md-12 flex-wrap">
                     @foreach($c->groups as $g)
                         <div class="col-md-4 st">
@@ -53,13 +58,23 @@
             </hideable>
             @endif
             <hideable def_show="true">
-                <span slot="head-text">Moduly</span>
+                <div slot="head-text">
+                    Moduly
+                    @if($c->hasPerms(Auth::user()))
+                        <a href="{{route('module.newModule',$c->slug)}}" title="Vytvořit nový modul" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                    @endif
+                </div>
                 <div slot="body"  class="d-md-flex col-md-12 flex-wrap">
                     @foreach($c->modules as $m)
                         <div class="col-md-4 st">
                             <a class="no-a" href="{{route('module.module',["slug"=>$c->slug,"order"=>$m->order])}}">
                                 <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
                                     <span>{{$m->order}}. {{$m->name}}</span>
+                                    <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
+                                        @if(Auth::user()->role->name != "user")
+                                            <i class="fas fa-cog"></i>
+                                        @endif
+                                    </a>
                                 </div>
                             </a>
                         </div>

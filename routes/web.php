@@ -46,8 +46,8 @@ Route::post('/act','AccountController@postActivateAccount')->name('account.saveA
 Route::get('/settings','AccountController@getSettingsAccount')->middleware('auth')->name('account.settings');                       //Settings view
 Route::post('/settings','AccountController@postSettingsAccount')->middleware('auth')->name('account.settings');                     //Save new acc settings
 Route::get('/add','AccountController@getAddStudents')->middleware('hasRole:teacher,admin')->name('account.showAddUsers');           //Add view
+Route::get('/accounts','AccountController@getAccountsListAdmin')->name('admin.accounts');                                           //List of accounts view
 Route::middleware("hasRole:admin")->group(function(){                                                                       //ADMIN
-    Route::get('/accounts','AccountController@getAccountsListAdmin')->name('admin.accounts');                                       //List of accounts view
     Route::get('/accounts/edit/{id}','AccountController@getEditAccountAdmin')->where('id', '[0-9]+')->name('admin.editAccount');    //Edit acc's view
     Route::post('/accounts','AccountController@postEditAccountAdmin')->name('admin.saveEditAccount');                               //Saving editted acc
 });
@@ -91,5 +91,10 @@ Route::middleware('auth')->group(function(){
 Route::middleware('auth')->group(function(){
     //Route::get('/course/{slug}/modules','ModuleController@getModules')->name('module.getModules')->where('slug', '[a-zA-Z0-9_]+');
     Route::get('/course/{slug}/module/{order}','ModuleController@getModule')->name('module.module')->where('slug', '[a-zA-Z0-9_]+')->where('order','[0-9]+');
+    Route::get('/course/{slug}/module/{order}/edit','ModuleController@getEditModule')->name('module.editModule')->where('slug', '[a-zA-Z0-9_]+')->where('order','[0-9]+');
+    Route::post('/course/{slug}/module/{order}/edit','ModuleController@postEditModule')->name('module.postEditModule')->where('slug', '[a-zA-Z0-9_]+')->where('order','[0-9]+');
+    Route::get('/course/{slug}/module/new','ModuleController@getNewModule')->name('module.newModule')->where('slug', '[a-zA-Z0-9_]+');
+    Route::post('/course/{slug}/module/new','ModuleController@postNewModule')->name('module.postNewModule')->where('slug', '[a-zA-Z0-9_]+');
+
 });
 ?>

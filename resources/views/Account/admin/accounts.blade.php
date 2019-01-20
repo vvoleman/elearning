@@ -16,7 +16,9 @@
                     <th>Role</th>
                     <th>Registrace</th>
                     <th>Aktivní?</th>
+                    @if(Auth::user()->hasRole('admin'))
                     <th>Další</th>
+                    @endif
                     </thead>
                     <tbody>
                     @foreach($data as $u)
@@ -26,7 +28,7 @@
                             <td>{{$u->firstname}}</td>
                             <td>{{$u->email}}</td>
                             <td>{{ ucfirst(__('roles.'.$u->name)) }}</td>
-                            <td data-toggle="tooltip" data-placement="right" title="{{date('d.m.Y H:i',strtotime($u->registered))}}">{{$u->registered->diffForHumans()}}</td>
+                            <td data-toggle="tooltip" data-placement="right">{{date('d.m.Y H:i',strtotime($u->registered))}}</td>
                             <td>
                                 @if(empty($u->deact_date) && !empty($u->registered))
 
@@ -37,7 +39,9 @@
                                     <i data-toggle="tooltip" data-placement="right" title="Tento účet zatím nebyl aktivován!" class="fas fa-exclamation-triangle"></i>
                                 @endif
                             </td>
+                            @if(Auth::user()->hasRole('admin'))
                             <td><a href="{{route('admin.editAccount',$u->id)}}"><button class="btn-sm btn btn-gray">Upravit</button></a></td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>

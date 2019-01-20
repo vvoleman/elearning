@@ -21,6 +21,9 @@ class AccountController extends Controller
      */
     public function getAccountsListAdmin(Request $request){
         $users = User::select('id_u as id','deact_reason','deact_date','firstname','surname','email','registered','last_login','roles.name')->join('roles','users.role_id','=','roles.id_r')->orderBy('id','asc');
+        if(Auth::user()->hasRole('teacher')){
+            $users = $users->where('role_id',1);
+        }
         $users = $users->paginate(10);
         return view('Account/admin/accounts',["data"=>$users]);
     }
@@ -131,23 +134,31 @@ class AccountController extends Controller
         $formator = new CSVFormator();
         $cols  = ["student_firstname","student_surname","student_email"];
         if(\Auth::user()->hasRole('admin')){
-            $cols[] = ["student_role",true];
+            $cols[] = ["student_role",false];
         }
         $plebs = $formator->csvToArray($request->file('students_file'),$cols);
         $error = [];
-        foreach ($plebs as $p){
-            try{
-                if(empty($p["student_role"])){
-                    $p["student_role"] = Role::where('name','user')->get()[0]->id_r;
-                }else{
-                    $p["student_role"] = Role::where('name',$p["student_role"])->get()[0]->id_r;
+        if($plebs !== false){
+            foreach ($plebs as $p){
+                try{
+                    if(empty($p["student_role"])){
+                        $p["student_role"] = Role::where('name','user')->get()[0]->id_r;
+                    }else{
+                        $p["student_role"] = Role::where('name',$p["student_role"])->get()[0]->id_r;
+                    }
+                    if(!$this->registerStudent($p)){
+                        if(empty($p["student_firstname"]) || empty($p["student_surname"]) || empty($p["student_email"])){
+                            $error[] = "Neplatné údaje - nebyla vynechána položka?";
+                        }else{
+                            $error[] = "Uživatel ".$p["student_firstname"]." ".$p["student_surname"]." již existuje!";
+                        }
+                    }
+                }catch (\Exception $e) {
+                    $error[] = "Problém se strukturou souboru - není středník tam, kde být nemá?";
                 }
-                if(!$this->registerStudent($p)){
-                    $error[] = "Uživatel ".$p["student_firstname"]." ".$p["student_surname"]." již nejspíše existuje!";
-                }
-            }catch (\Exception $e) {
-                $error[] = "Problém se strukturou souboru - není středník tam, kde být nemá?";
             }
+        }else{
+            $error[] = "Neplatné údaje - nebyla vynechána položka?";
         }
         if(empty($error)){
             Session::flash('success','Úspěšně přidáno '.sizeof($plebs).' studentů!');
@@ -184,7 +195,6 @@ class AccountController extends Controller
         }catch(\Exception $exception){
 
         }
-
         return false;
     }
 

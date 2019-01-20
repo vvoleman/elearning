@@ -22,7 +22,7 @@
                 }else{
                     $temp = $columns[$i];
                 }
-                if(empty($temp[0]) && $temp[1]){
+                if(empty($splited[$i]) && $temp[1]){
                     return false;
                 }else{
                     $returnAr[$temp[0]] = htmlspecialchars((empty($splited[$i]))?"":$splited[$i]);

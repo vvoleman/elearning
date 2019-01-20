@@ -7,8 +7,10 @@
     import Img from "./comps/Final/Img";
     import List from "./comps/Final/List";
     import ParagraphCreate from "./comps/Creating/Paragraph";
+    import ImgCreate from "./comps/Creating/Img";
+    import ListCreate from "./comps/Creating/List";
     export default {
-        components: {ParagraphCreate, List, Img, Paragraph},
+        components: {ListCreate, ParagraphCreate, ImgCreate, List, Img, Paragraph},
         props:["type","context","value"],
         name: "ComponentTranslator",
         data(){
@@ -17,7 +19,9 @@
                     paragraph:Paragraph,
                     img:Img,
                     list:List,
-                    paragraphcreate:ParagraphCreate
+                    paragraphcreate:ParagraphCreate,
+                    imgcreate:ImgCreate,
+                    listcreate:ListCreate
                 }
             }
         },
@@ -28,18 +32,16 @@
                 var instance = new componentClass({
                     propsData:{
                         context:this.context,
-                        value:this.value
                     }
                 });
+                instance.$on('remove',function(data){
+                    this.$emit('remove',data);
+                }.bind(this));
+                instance.$on('update',function(data){
+                    this.$emit('update',data);
+                }.bind(this));
             }
-            instance.$on('remove',function(data){
-                this.$emit('remove',data);
-            });
-            instance.$on('input',function(data){
-                this.$emit('input',data);
-            }.bind(this));
             if(componentClass != null){
-
                 instance.$mount(); // pass nothing
                 this.$refs.container.appendChild(instance.$el);
             }

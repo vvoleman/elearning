@@ -24,6 +24,6 @@ class ChangedMail extends Mailable
      */
     public function build()
     {
-        return $this->view("emails/changed_mail",$this->data);
+        return $this->subject('Změna emailové adresy')->view("emails/changed_mail",$this->data);
     }
 }

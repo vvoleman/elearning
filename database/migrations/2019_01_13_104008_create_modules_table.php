@@ -17,7 +17,7 @@ class CreateModulesTable extends Migration
             $table->increments('id_m');
             $table->string('name',32);
             $table->unsignedInteger('order');
-            $table->text('desc');
+            $table->text('desc')->nullable();
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('context_id')->nullable();
             $table->foreign('course_id')->references('id_c')->on('courses');

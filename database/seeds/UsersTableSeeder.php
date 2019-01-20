@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder
             'role_id'=>2,
             'firstname' => "Vojtěch",
             'surname' => "Voleman",
-            'email' => "vojtavol@email.cz",
+            'email' => "vojtavol69s@email.cz",
             'registered' => \Illuminate\Support\Facades\DB::raw("NOW()"),
             'password' => bcrypt("heslo"),
         ]);

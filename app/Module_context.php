@@ -10,7 +10,7 @@ class Module_context extends Model
     public $timestamps = false;
 
     public function module(){
-        return $this->belongsTo('\App\Module','module_id');
+        return $this->belongsTo('\App\Module','module_id','id_mc');
     }
 
 }

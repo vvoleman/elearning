@@ -11,15 +11,20 @@
         components: {Centered, Normal},
         props:["type","components"],
         name: "LayoutManager",
+        data(){
+            return {
+                layouts:{
+                    normal: Normal,
+                    centered: Centered
+                }
+            }
+
+        },
         mounted(){
             var componentClass;
-            switch (this.type) {
-                case "normal":
-                    componentClass = Vue.extend(Normal);
-                    break;
-                case "center":
-                    componentClass = Vue.extend(Centered);
-                    break;
+            console.log("běžím "+this.type);
+            if(this.layouts.hasOwnProperty(this.type)){
+                componentClass = Vue.extend(this.layouts[this.type]);
             }
             if(componentClass != null){
                 var instance = new componentClass({

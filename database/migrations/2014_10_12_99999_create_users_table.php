@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->integer("role_id")->unsigned();
             $table->foreign('role_id')->references('id_r')->on("roles");
             $table->rememberToken();
-            $table->dateTime('registered')->nullable();
+            $table->dateTime('registered')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('last_login')->nullable();
             $table->string('deact_reason')->nullable();
             $table->string('reg_token')->nullable();

@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex justify-content-center flex-wrap">
-        <component-translator v-for="(o,i) in components" :type="o.type" :key="i" :context="o.context"></component-translator>
+    <div class="d-md-flex justify-content-center flex-wrap">
+        <component-translator class="col-md-8" v-for="(o,i) in components" :type="o.type" :key="i" :context="o.context"></component-translator>
     </div>
 </template>
 

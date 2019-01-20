@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-alert class="text-center" style="border-radius:0" v-if="count == null" dismissible fade :variant="type">{{msg}}</b-alert>
-        <b-alert class="text-center" style="border-radius:0" v-else :show="dismissCountDown" dismissible fade :variant="type" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
+        <b-alert class="text-center" style="border-radius:0" v-else :show="dismissCountDown" dismissible fade :variant="type" @dismissed="dismissCountDown=0" @dismiss-count-down="countDown">
             {{msg}}
         </b-alert>
     </div>
@@ -13,12 +13,12 @@
         props:["count","msg","type"],
         data () {
             return {
-                dismissCountDown: this.count
+                dismissCountDown: parseInt(this.count)
             }
         },
         methods: {
-            countDownChanged(dismissCountDown) {
-                this.dismissCountDown = dismissCountDown
+            countDown(dismissCountDown) {
+                this.dismissCountDown = dismissCountDown;
             }
         }
     }
