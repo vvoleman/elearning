@@ -20,5 +20,10 @@ class DatabaseSeeder extends Seeder
         $this->call(use_couTableSeeder::class);
         $this->call(gro_couTableSeeder::class);
         $this->call(use_groTableSeeder::class);
+        $this->call(QuizesTableSeeder::class);
+        $this->call(QuestionTypesTableSeeder::class);
+        $this->call(QuestionsTableSeeder::class);
+        $this->call(OptionsTableSeeder::class);
+        $this->call(que_ansTableSeeder::class);
     }
 }

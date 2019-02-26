@@ -72,7 +72,6 @@ Vue.component('messenger',require('./components/Messenger'));
 Vue.component('modal', require('./components/Modal.vue'));
 Vue.component('emailsel', require('./components/EmailSel.vue'));
 Vue.component('hideable', require('./components/Hideable.vue'));
-Vue.component('readmore', require('./components/Readmore.vue'));
 Vue.component('newcourse', require('./components/course/NewCourse.vue'));
 Vue.component('scchecker', require('./components/ShortcutChecker.vue'));
 Vue.component('editlectors', require('./components/course/EditLectors.vue'));
@@ -83,6 +82,7 @@ Vue.component('newgroup',require('./components/group/newGroup'));
 Vue.component('moduleview',require('./components/module/ModuleViewer.vue'));
 Vue.component('modulecreate',require('./components/module/ModuleCreater.vue'));
 Vue.component('alert',require('./components/Alert.vue'));
+Vue.component('showquiz',require('./components/quiz/Quiz.vue'));
 
 const app = new Vue({
     el: '#app',

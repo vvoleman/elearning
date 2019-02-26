@@ -33,6 +33,45 @@ namespace App\Own;
             return $pass;
         }
 
+        public function parseQuiz($quiz){
+            $ret = [];
+            foreach($quiz->questions as $q){
+                $ret[] = [
+                    "id" => $q->id_quest,
+                    "question" => $q->question,
+                    "type" => $q->question_type->name,
+                    "order" => $q->order,
+                    "options" => $this->parseOptions($q->options)
+                ];
+            }
+            $data = [
+                "name" => $quiz->name,
+                "course" => [
+                    "name" => $quiz->course->name,
+                    "url" => route('course.course',$quiz->course->slug),
+                    "module" => [
+                        "name" => (!empty($quiz->referencesModule)) ? $quiz->referencesModule->name : null,
+                        "url" => (!empty($quiz->referencesModule)) ? route('module.module',["slug"=>$quiz->course->slug,"order"=>$quiz->referencesModule->order]) : null
+                    ]
+                ],
+                "minutesAvailable" => $quiz->minutesAvailable,
+                "randomOrder" => $quiz->randomOrder,
+                "questions" => $ret
+            ];
+            return $data;
+        }
+
+        public function parseOptions($options){
+            $ret = [];
+            foreach($options as $o){
+                $ret[] = [
+                    "id" => $o->id_o,
+                    "value" => $o->value
+                ];
+            }
+            return $ret;
+        }
+
         /**
          * Returns array with user IDs when parsed user array given (that array returned from above)
          * @param $data
@@ -58,5 +97,6 @@ namespace App\Own;
         private function makeItSecret($string,$offset){
             return $string[0]."xxxxx".substr($string,strlen($string)-1-$offset,strlen($string)-1);
         }
+
     }
 ?>

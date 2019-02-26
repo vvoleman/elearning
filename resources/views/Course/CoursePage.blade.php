@@ -30,6 +30,7 @@
                 <p>{{$c->desc}}</p>
             <hr>
         </div>
+        <!-------------------------------------------------------------------------------------------------------------!-->
         <div>
             @if(Auth::user()->ownCourse($c->slug))
             <div class="d-flex justify-content-end mx-auto col-md-8">
@@ -55,7 +56,7 @@
                         </div>
                     @endforeach
                 </div>
-            </hideable>
+            </hideable> <!-- Groups !-->
             @endif
             <hideable def_show="true">
                 <div slot="head-text">
@@ -80,7 +81,52 @@
                         </div>
                     @endforeach
                 </div>
-            </hideable>
+            </hideable> <!-- Modules !-->
+            <hideable def_show="true">
+                    <div slot="head-text">
+                        Testy
+                        @if($c->hasPerms(Auth::user()))
+                            <a href="{{route('module.newModule',$c->slug)}}" title="Vytvořit nový modul" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                        @endif
+                    </div>
+                    <div slot="body">
+                        <b>Nutné otevření</b>
+                        <div class="d-md-flex col-md-12 flex-wrap">
+                            @foreach($c->getQuizes(true) as $m)
+                                <div class="col-md-4 st">
+                                    <a class="no-a" href="{{route('quiz.quiz',["id"=>$m->uuid])}}">
+                                        <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                            <span>{{$m->name}}</span>
+                                            <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
+                                                @if(Auth::user()->role->name != "user")
+                                                    <i class="fas fa-cog"></i>
+                                                @endif
+                                            </a>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                        <hr>
+                        <b>Volné</b>
+                        <div class="d-md-flex col-md-12 flex-wrap">
+                            @foreach($c->getQuizes() as $m)
+                                <div class="col-md-4 st">
+                                    <a class="no-a" href="{{route('module.module',["slug"=>$c->slug,"order"=>$m->order])}}">
+                                        <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                            <span>{{$m->order}}. {{$m->name}}</span>
+                                            <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
+                                                @if(Auth::user()->role->name != "user")
+                                                    <i class="fas fa-cog"></i>
+                                                @endif
+                                            </a>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </hideable> <!-- Quizes !-->
         </div>
     </div>
 @stop

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Question;
 use Illuminate\Http\Request;
 use App\Group;
 use App\Course;
@@ -36,7 +37,6 @@ class CourseController extends Controller
     }
     public function getCoursePage($id){
         $course = $this->checkIfCanAccess($id);
-
         return view('Course/CoursePage',["c"=>$course]);
     }
     public function getNewCourse(){

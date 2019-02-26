@@ -97,4 +97,9 @@ Route::middleware('auth')->group(function(){
     Route::post('/course/{slug}/module/new','ModuleController@postNewModule')->name('module.postNewModule')->where('slug', '[a-zA-Z0-9_]+');
 
 });
+
+/* QUIZES */
+Route::middleware('auth')->group(function(){
+    Route::get('/quiz/{id}','QuizController@getQuiz')->name('quiz.quiz')->where('id','[a-z0-9^-]+');
+});
 ?>

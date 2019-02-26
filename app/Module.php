@@ -21,5 +21,8 @@ class Module extends Model
     public function resources(){
         return $this->hasMany('\App\Resource','module_id');
     }
+    public function belongingQuizes(){
+        return $this->hasMany('\App\Quiz','referencedModule');
+    }
 
 }

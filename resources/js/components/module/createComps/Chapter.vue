@@ -31,7 +31,7 @@
                               <b-btn v-b-toggle="'row-'+i+'-'+j">Skrýt/Zobrazit</b-btn>
                          </div>
                     </div>
-                    <b-collapse :id="'row-'+i+'-'+j">
+                    <b-collapse :id="'row-'+i+'-'+j"  visible>
                          <div class="d-md-flex flex-wrap col-12">
                               <div v-for="(q,k) in p.components" :key="k+new Date().getTime()" class="col-md-4">
                                    <component-translator class="col-md-12 component" @update="(data) => { updateComponent(data,j,k); }" @remove="removeComponent(j,k)" :type="q.type+'create'" :context="q.context"></component-translator>

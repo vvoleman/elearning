@@ -19,6 +19,9 @@ class Course extends Model{
     public function modules(){
         return $this->hasMany('\App\Module','course_id');
     }
+    public function quizes(){
+        return $this->hasMany("\App\Quiz","course_id");
+    }
 
     public function canAccess(User $user){
         if(!$user->hasRole('admin')){
@@ -43,5 +46,8 @@ class Course extends Model{
             }
         }
         return true;
+    }
+    public function getQuizes($private = false,$includeEditMode = false){
+        return $this->quizes->where('isPrivate',$private);
     }
 }
