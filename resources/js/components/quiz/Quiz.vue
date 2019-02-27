@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="m-top sticky-top login_form_div col-12 d-flex justify-content-between" v-if="start">
-            <div>čas</div>
+            <div>čas <Timer v-on:countDown="timeChange" :time="minutesAvailable*60"></Timer>{{toMinutes(timeLeft)}}</div>
             <div><button>Ukončit</button></div>
         </div>
 
@@ -27,9 +27,10 @@
 
 <script>
     import QuizFrame from "./QuizFrame";
+    import Timer from "./Timer";
     export default {
         name: "Quiz",
-        components: {QuizFrame},
+        components: {QuizFrame,Timer},
         props:["datas"],
         data(){
             return {
@@ -45,7 +46,8 @@
                 },
                 minutesAvailable:"",
                 randomOrder:"",
-                questions:[]
+                questions:[],
+                timeLeft:0
             }
         },
         mounted(){
@@ -60,7 +62,14 @@
             startQuiz(){
                 if(confirm("Spustit test? Máš na to "+this.minutesAvailable+" minut!")){
                     this.start = true;
+
                 }
+            },
+            timeChange(data){
+                this.timeLeft=data;
+            },
+            toMinutes(t){
+                return ""+(Math.floor(t/60))+":"+((t%60 <10) ? "0" : "")+(t%60);
             }
         }
     }

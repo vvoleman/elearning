@@ -1,5 +1,5 @@
 <template>
-    <div class="m-top-2">
+    <div class="m-top-2 quiz">
         <div v-for="(o,i) in questions">
             <TypeTranslator :question="o" :order="i+1"></TypeTranslator>
         </div>
