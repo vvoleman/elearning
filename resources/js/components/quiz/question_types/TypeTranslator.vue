@@ -7,7 +7,7 @@
     export default {
         name: "TypeTranslator",
         components: {Radio},
-        props:["question","order"],
+        props:["question","order","value"],
         data(){
             return {
                 components:{
@@ -26,10 +26,14 @@
                             context:{
                                 question:this.question,
                                 order:this.order
-                            }
+                            },
+                            value:this.value
                         },
                     }
                 });
+                instance.$on('input',function(data){
+                    this.$emit('input',data);
+                }.bind(this));
                 if(componentClass != null){
                     instance.$mount(); // pass nothing
                     this.$refs.container.appendChild(instance.$el);

@@ -1,7 +1,7 @@
 <template>
     <div class="m-top-2 quiz">
         <div v-for="(o,i) in questions">
-            <TypeTranslator :question="o" :order="i+1"></TypeTranslator>
+            <TypeTranslator v-model="answers[i]" :question="o" :order="i+1"></TypeTranslator>
         </div>
     </div>
 </template>
@@ -11,7 +11,18 @@
     export default {
         name: "QuizFrame",
         components: {TypeTranslator},
-        props:["questions"]
+        props:["questions","value"],
+        data(){
+            return {
+                answers:[]
+            };
+        },
+        watch:{
+            answers(){
+                console.log("teď");
+                this.$emit('input',this.answers);
+            }
+        }
     }
 </script>
 

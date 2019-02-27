@@ -5,15 +5,15 @@
 <script>
     export default {
         name: "Timer",
-        props:["time"],
+        props:["startDate","time"],
         data(){
             return {
-                dateStart:new Date(),
+                endDate:new Date(this.startDate.getTime()+(this.time*60*1000)),
                 start:false
             }
         },
         mounted(){
-          this.startTimer();
+            this.startTimer();
         },
         methods:{
             startTimer(){
@@ -25,12 +25,12 @@
             },
             countDown(){
                 if(this.start){
-                    var timeLeft = (this.dateStart.getTime()-new Date().getTime())*1000;
+                    var timeLeft = Math.floor((this.endDate.getTime()-new Date().getTime())/1000);
                     if(timeLeft > 0){
                         this.$emit('countDown',timeLeft);
                         setTimeout(()=>{
                             this.countDown();
-                        },1000);
+                        },300);
                     }else{
                         this.$emit('end',true);
                     }

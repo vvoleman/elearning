@@ -34110,7 +34110,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(83);
-module.exports = __webpack_require__(407);
+module.exports = __webpack_require__(412);
 
 
 /***/ }),
@@ -85222,7 +85222,7 @@ var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(390)
 /* template */
-var __vue_template__ = __webpack_require__(406)
+var __vue_template__ = __webpack_require__(411)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85308,8 +85308,11 @@ exports.push([module.i, "\n.dotted[data-v-4503dcb4]{\n    border-bottom: solid 1
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__QuizFrame__ = __webpack_require__(391);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__QuizFrame___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__QuizFrame__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Timer__ = __webpack_require__(409);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Timer__ = __webpack_require__(406);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Timer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Timer__);
+//
+//
+//
 //
 //
 //
@@ -85346,8 +85349,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ["datas"],
     data: function data() {
         return {
+            load: false,
             start: false,
             name: "",
+            uuid: "",
             course: {
                 url: "",
                 name: "",
@@ -85359,7 +85364,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             minutesAvailable: "",
             randomOrder: "",
             questions: [],
-            timeLeft: 0
+            startDateTime: null,
+            timeLeft: 0,
+            answers: []
         };
     },
     mounted: function mounted() {
@@ -85369,6 +85376,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.randomOrder = json.randomOrder;
         this.questions = json.questions;
         this.course = json.course;
+        this.uuid = json.uuid;
+        this.startDateTime = new Date();
     },
 
     methods: {
@@ -85382,6 +85391,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toMinutes: function toMinutes(t) {
             return "" + Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + t % 60;
+        },
+        timeOut: function timeOut() {
+            this.submitQuiz();
+        },
+        submitQuiz: function submitQuiz() {
+            console.log(this.answers);
+            this.load = true;
+            this.start = null;
+            $.post('/quiz/' + this.uuid, { data: { answers: this.answers, startDateTime: Math.floor(this.startDateTime.getTime() / 1000) } }, function (data) {
+                console.log(data);
+                this.load = false;
+            }.bind(this));
         }
     }
 });
@@ -85498,7 +85519,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "QuizFrame",
     components: { TypeTranslator: __WEBPACK_IMPORTED_MODULE_0__question_types_TypeTranslator___default.a },
-    props: ["questions"]
+    props: ["questions", "value"],
+    data: function data() {
+        return {
+            answers: []
+        };
+    },
+
+    watch: {
+        answers: function answers() {
+            console.log("teď");
+            this.$emit('input', this.answers);
+        }
+    }
 });
 
 /***/ }),
@@ -85587,7 +85620,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -85609,7 +85642,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "TypeTranslator",
     components: { Radio: __WEBPACK_IMPORTED_MODULE_0__radio___default.a },
-    props: ["question", "order"],
+    props: ["question", "order", "value"],
     data: function data() {
         return {
             components: {
@@ -85628,10 +85661,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         context: {
                             question: this.question,
                             order: this.order
-                        }
+                        },
+                        value: this.value
                     }
                 }
             });
+            instance.$on('input', function (data) {
+                this.$emit('input', data);
+            }.bind(this));
             if (componentClass != null) {
                 instance.$mount(); // pass nothing
                 this.$refs.container.appendChild(instance.$el);
@@ -85727,7 +85764,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -85753,7 +85790,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "radio",
-    props: ["context"],
+    props: ["context", "value"],
+    data: function data() {
+        return {
+            answer: this.value
+        };
+    },
     mounted: function mounted() {
         console.log(this.context);
     },
@@ -85761,6 +85803,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         question: function question() {
             return this.context.context.question;
+        }
+    },
+    watch: {
+        answer: function answer() {
+            this.$emit('input', { id: this.question.id, answer: [this.answer] });
         }
     }
 });
@@ -85788,9 +85835,22 @@ var render = function() {
       _vm._l(_vm.question.options, function(p, j) {
         return _c("div", { staticClass: "form-check col-12" }, [
           _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.answer,
+                expression: "answer"
+              }
+            ],
             staticClass: "form-check-input",
             attrs: { type: "radio", name: _vm.question.id },
-            domProps: { value: p.id }
+            domProps: { value: p.id, checked: _vm._q(_vm.answer, p.id) },
+            on: {
+              change: function($event) {
+                _vm.answer = p.id
+              }
+            }
           }),
           _vm._v(" "),
           _c("label", { staticClass: "form-check-label" }, [
@@ -85845,7 +85905,18 @@ var render = function() {
     _vm._l(_vm.questions, function(o, i) {
       return _c(
         "div",
-        [_c("TypeTranslator", { attrs: { question: o, order: i + 1 } })],
+        [
+          _c("TypeTranslator", {
+            attrs: { question: o, order: i + 1 },
+            model: {
+              value: _vm.answers[i],
+              callback: function($$v) {
+                _vm.$set(_vm.answers, i, $$v)
+              },
+              expression: "answers[i]"
+            }
+          })
+        ],
         1
       )
     })
@@ -85865,12 +85936,173 @@ if (false) {
 /* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(407)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(409)
+/* template */
+var __vue_template__ = __webpack_require__(410)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-25d0c414"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/quiz/Timer.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-25d0c414", Component.options)
+  } else {
+    hotAPI.reload("data-v-25d0c414", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 407 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(408);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("bf3a022a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-25d0c414\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Timer.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-25d0c414\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Timer.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 408 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 409 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "Timer",
+    props: ["startDate", "time"],
+    data: function data() {
+        return {
+            endDate: new Date(this.startDate.getTime() + this.time * 60 * 1000),
+            start: false
+        };
+    },
+    mounted: function mounted() {
+        this.startTimer();
+    },
+
+    methods: {
+        startTimer: function startTimer() {
+            this.start = true;
+            this.countDown();
+        },
+        stopTimer: function stopTimer() {
+            this.start = false;
+        },
+        countDown: function countDown() {
+            var _this = this;
+
+            if (this.start) {
+                var timeLeft = Math.floor((this.endDate.getTime() - new Date().getTime()) / 1000);
+                if (timeLeft > 0) {
+                    this.$emit('countDown', timeLeft);
+                    setTimeout(function () {
+                        _this.countDown();
+                    }, 300);
+                } else {
+                    this.$emit('end', true);
+                }
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 410 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-25d0c414", module.exports)
+  }
+}
+
+/***/ }),
+/* 411 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    !_vm.start
+    _vm.start == false
       ? _c("div", { staticClass: "m-top-2 login_form_div col-md-6 mx-auto" }, [
           _c("h1", [_vm._v(_vm._s(_vm.name))]),
           _vm._v(" "),
@@ -85930,7 +86162,11 @@ var render = function() {
               [
                 _vm._v("čas "),
                 _c("Timer", {
-                  attrs: { time: _vm.minutesAvailable * 60 },
+                  attrs: {
+                    end: _vm.timeOut,
+                    "start-date": _vm.startDateTime,
+                    time: _vm.minutesAvailable
+                  },
                   on: { countDown: _vm.timeChange }
                 }),
                 _vm._v(_vm._s(_vm.toMinutes(_vm.timeLeft)))
@@ -85938,29 +86174,37 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _c("div", [
+              _c("button", { on: { click: _vm.timeOut } }, [_vm._v("Odeslat")])
+            ])
           ]
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.start
+    _vm.start == true
       ? _c(
           "div",
           { staticClass: "col-md-6 mx-auto" },
-          [_c("quiz-frame", { attrs: { questions: _vm.questions } })],
+          [
+            _c("quiz-frame", {
+              attrs: { questions: _vm.questions },
+              model: {
+                value: _vm.answers,
+                callback: function($$v) {
+                  _vm.answers = $$v
+                },
+                expression: "answers"
+              }
+            })
+          ],
           1
         )
-      : _vm._e()
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.load ? _c("div", [_vm._v("\n        Načítám...\n    ")]) : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("button", [_vm._v("Ukončit")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -85971,172 +86215,10 @@ if (false) {
 }
 
 /***/ }),
-/* 407 */
+/* 412 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 408 */,
-/* 409 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(410)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(412)
-/* template */
-var __vue_template__ = __webpack_require__(413)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-25d0c414"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/quiz/Timer.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-25d0c414", Component.options)
-  } else {
-    hotAPI.reload("data-v-25d0c414", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 410 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(411);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("bf3a022a", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-25d0c414\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Timer.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-25d0c414\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Timer.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 411 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 412 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: "Timer",
-    props: ["time"],
-    data: function data() {
-        return {
-            dateStart: new Date(),
-            start: false
-        };
-    },
-    mounted: function mounted() {
-        this.startTimer();
-    },
-
-    methods: {
-        startTimer: function startTimer() {
-            this.start = true;
-            this.countDown();
-        },
-        stopTimer: function stopTimer() {
-            this.start = false;
-        },
-        countDown: function countDown() {
-            var _this = this;
-
-            if (this.start) {
-                var timeLeft = (this.dateStart.getTime() - new Date().getTime()) * 1000;
-                if (timeLeft > 0) {
-                    this.$emit('countDown', timeLeft);
-                    setTimeout(function () {
-                        _this.countDown();
-                    }, 1000);
-                } else {
-                    this.$emit('end', true);
-                }
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 413 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div")
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-25d0c414", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

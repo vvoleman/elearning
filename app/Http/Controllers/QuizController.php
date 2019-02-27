@@ -17,6 +17,16 @@ class QuizController extends Controller
        $data = collect($this->toolkit->parseQuiz($q))->toJson();
        return view('Quiz/Quiz',["q"=>$q,"json"=>$data]);
     }
+    public function postQuiz(Request $r,$id){ //dodělat zabezpečení
+        $q = $this->checkUUID($id);
+        $isItSaved = $q->checkAnswers((empty($r->data["answers"])) ? [] : $r->data["answers"],$r->data["startDateTime"]);
+        if($isItSaved != false){
+            return response()->json(["response"=>200,"perc"=>$isItSaved]);
+        }else{
+            $res = 500;
+        }
+
+    }
     private function checkUUID($uuid){
         $q = Quiz::where('uuid',$uuid);
         if($q->count() == 1){

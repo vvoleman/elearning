@@ -100,6 +100,7 @@ Route::middleware('auth')->group(function(){
 
 /* QUIZES */
 Route::middleware('auth')->group(function(){
+    Route::post('/quiz/{id}','QuizController@postQuiz')->name('quiz.postQuiz')->where('id','[a-z0-9^-]+');
     Route::get('/quiz/{id}','QuizController@getQuiz')->name('quiz.quiz')->where('id','[a-z0-9^-]+');
 });
 ?>

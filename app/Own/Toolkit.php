@@ -46,6 +46,7 @@ namespace App\Own;
             }
             $data = [
                 "name" => $quiz->name,
+                "uuid" => $quiz->uuid,
                 "course" => [
                     "name" => $quiz->course->name,
                     "url" => route('course.course',$quiz->course->slug),
