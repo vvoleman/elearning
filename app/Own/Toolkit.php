@@ -45,16 +45,8 @@ namespace App\Own;
                 ];
             }
             $data = [
-                "name" => $quiz->name,
-                "uuid" => $quiz->uuid,
-                "course" => [
-                    "name" => $quiz->course->name,
-                    "url" => route('course.course',$quiz->course->slug),
-                    "module" => [
-                        "name" => (!empty($quiz->referencesModule)) ? $quiz->referencesModule->name : null,
-                        "url" => (!empty($quiz->referencesModule)) ? route('module.module',["slug"=>$quiz->course->slug,"order"=>$quiz->referencesModule->order]) : null
-                    ]
-                ],
+                "submitTo" => route('quiz.postQuiz',["id"=>$quiz->uuid]),
+                "csrf" => csrf_token(),
                 "minutesAvailable" => $quiz->minutesAvailable,
                 "randomOrder" => $quiz->randomOrder,
                 "questions" => $ret

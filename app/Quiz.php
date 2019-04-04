@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\QuizOpen;
+use App\Group;
 
 class Quiz extends Model
 {
@@ -20,6 +22,19 @@ class Quiz extends Model
     }
     public function referencesModule(){
         return $this->belongsTo('\App\Module','referencedModule');
+    }
+    public function canAccess($user){
+        $boo = false;
+        if(!empty($user->inGroups)){
+            $group = $user->inGroups;
+            foreach($group as $g){
+                if($g->opened_quizes[0]->isActive()){
+                    $boo = true;
+                    break;
+                }
+            }
+        }
+        return $boo;
     }
     public function saveResult($results,$startedAt){
         $qr = new QuizResult();

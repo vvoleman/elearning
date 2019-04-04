@@ -14,6 +14,7 @@ class CreateQuizesOpenTable extends Migration
     public function up()
     {
         Schema::create('quizes_open', function (Blueprint $table) {
+            $table->increments('id_qo');
             $table->unsignedInteger('quiz_id');
             $table->unsignedInteger('group_id');
             $table->dateTime('opened_at')->default(\DB::raw('CURRENT_TIMESTAMP'));

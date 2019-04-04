@@ -56,8 +56,6 @@
     </div>
 @stop
 @section('customjs')
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-    <script src="{{ URL::to('js/vue/app.js')}}"></script>
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

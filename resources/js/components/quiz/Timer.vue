@@ -26,7 +26,7 @@
             countDown(){
                 if(this.start){
                     var timeLeft = Math.floor((this.endDate.getTime()-new Date().getTime())/1000);
-                    if(timeLeft > 0){
+                    if(timeLeft >= 0){
                         this.$emit('countDown',timeLeft);
                         setTimeout(()=>{
                             this.countDown();

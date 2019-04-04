@@ -7,29 +7,27 @@
     export default {
         name: "TypeTranslator",
         components: {Radio},
-        props:["question","order","value"],
+        props:["value"],
         data(){
             return {
                 components:{
                     radio:Radio
-                },
-                instance:null
+                }
             }
         },
         mounted(){
             var componentClass;
-            console.log(this.question)
-            if(this.components.hasOwnProperty(this.question.type)){
-                componentClass = Vue.extend(this.components[this.question.type]);
+            console.log(this.value);
+            if(this.components.hasOwnProperty(this.value.type)){
+                componentClass = Vue.extend(this.components[this.value.type]);
                 var instance = new componentClass({
                     propsData:{
                         context:{
                             context:{
-                                question:this.question,
-                                order:this.order
-                            },
-                            value:this.value
+                                question:this.value.type,
+                            }
                         },
+                        value:this.value
                     }
                 });
                 instance.$on('input',function(data){
@@ -39,11 +37,7 @@
                     instance.$mount(); // pass nothing
                     this.$refs.container.appendChild(instance.$el);
                 }
-                this.instance = instance;
             }
-        },
-        watch(){
-
         }
 
     }

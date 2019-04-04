@@ -100,7 +100,10 @@ Route::middleware('auth')->group(function(){
 
 /* QUIZES */
 Route::middleware('auth')->group(function(){
-    Route::post('/quiz/{id}','QuizController@postQuiz')->name('quiz.postQuiz')->where('id','[a-z0-9^-]+');
+    Route::get('/course/{slug}/quiz/new','QuizController@getNewQuiz')->name('quiz.newQuiz')->middleware('hasRole:teacher,admin')->where('slug', '[a-zA-Z0-9_]+');
     Route::get('/quiz/{id}','QuizController@getQuiz')->name('quiz.quiz')->where('id','[a-z0-9^-]+');
+    Route::post('/quiz/{id}','QuizController@postQuiz')->name('quiz.postQuiz')->where('id','[a-z0-9^-]+');
+    Route::get('/quiz/{id}/info','QuizController@getInfoQuiz')->name('quiz.infoQuiz')->where('id','[a-z0-9^-]+');
+    Route::post('/quiz/{id}/info','QuizController@postInfoQuiz')->name('quiz.postInfoQuiz')->where('id','[a-z0-9^-]+');
 });
 ?>

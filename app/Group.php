@@ -17,6 +17,9 @@ class Group extends Model{
     public function courses(){
         return $this->belongsToMany('App\Course','gro_cou','group_id','course_id')->withPivot('expirate_at');
     }
+    public function opened_quizes(){
+        return $this->hasMany('App\QuizOpen','group_id');
+    }
     public function canAccess($user){
         if(!$user->hasRole('admin')){
             if(($user->hasRole('user') && sizeof($this->students->where('id_u',$user->id_u)) != 1) || ($user->hasRole('teacher') && $this->owner->id_u != $user->id_u)){

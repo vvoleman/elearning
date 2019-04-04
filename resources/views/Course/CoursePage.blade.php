@@ -86,7 +86,7 @@
                     <div slot="head-text">
                         Testy
                         @if($c->hasPerms(Auth::user()))
-                            <a href="{{route('module.newModule',$c->slug)}}" title="Vytvořit nový modul" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                            <a href="{{route('quiz.newQuiz',$c->slug)}}" title="Vytvořit nový modul" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
                         @endif
                     </div>
                     <div slot="body">
@@ -94,7 +94,7 @@
                         <div class="d-md-flex col-md-12 flex-wrap">
                             @foreach($c->getQuizes(true) as $m)
                                 <div class="col-md-4 st">
-                                    <a class="no-a" href="{{route('quiz.quiz',["id"=>$m->uuid])}}">
+                                    <a class="no-a" href="{{route('quiz.infoQuiz',["id"=>$m->uuid])}}">
                                         <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
                                             <span>{{$m->name}}</span>
                                             <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
