@@ -1,18 +1,12 @@
 <template>
     <div>
-        <div class="col-12 d-md-flex justify-content-end align-items-center">
-            <div class="d-flex align-items-center clickable" @click="addOption()">
-                <i class="fas fa-plus"></i>
-                Přidat možnost
-            </div>
-        </div>
         <div class="col-12">
             <div v-for="(p,j) in question.options" class="option d-md-flex justify-content-between">
                 <span><b>{{j+1}}.</b> <small v-if="p.text.length == 0"><i>Odpověď nevyplněna</i></small><span v-else>{{p.text}}</span></span>
                 <div>
                     <i class="fas fa-pen clickable" @click="editOption(j)"></i>
                     <i class="fas fa-times clickable" @click="deleteOption(j)"></i>
-                    <span><i class="fas fa-check-circle not_active" disabled></i><span v-if="checkIfOptionAnswer(j) != -1">Správná odpověď</span></span>
+                    <span @click="setAsCorrect(j)"><i class="fas fa-check-circle not_active" :class="{c_active:(p.isAnswer)}" disabled></i></span>
                 </div>
             </div>
         </div>
@@ -25,6 +19,12 @@
                 </div>
             </div>
         </modal>
+        <div class="col-12 d-md-flex justify-content-end align-items-center">
+            <div class="d-flex align-items-center clickable" @click="addOption()">
+                <i class="fas fa-plus"></i>
+                Přidat možnost
+            </div>
+        </div>
     </div>
 </template>
 
@@ -39,30 +39,24 @@
                     option:"",
                     show:false,
                     selected:null,
-                }
+                },
+                max_answers:1
             }
         },
         mounted(){
-            console.log("vvv");
         },
         methods:{
             deleteOption(j){
                 if(confirm('Opravdu chcete možnost smazat?')){
-                    var temp = this.checkIfOptionAnswer(j); //index of option in answers (if any)
-                    if(temp != (-1)){
-                        this.question.answers.splice(temp,1);
-                    }
                     this.question.options.splice(j,1);
                     //this.questions[i].splice(i,1);
                 }
             },
             addOption(){
                 this.question.options.push({
-                    text:""
+                    text:"",
+                    isAnswer:false
                 });
-            },
-            checkIfOptionAnswer(j){
-                return this.question.answers.indexOf(j);
             },
             editOption(j){
                 this.edit_modal.selected = j;
@@ -73,6 +67,25 @@
                 this.question.options[this.edit_modal.selected].text = this.edit_modal.option;
                 this.edit_modal.selected = null;
                 this.edit_modal.show = false;
+            },
+            setAsCorrect(j){
+                if(this.question.options[j].isAnswer){
+                    this.question.options[j].isAnswer = false;
+                    return;
+                }
+
+                var counter = 0;
+                for(var i = 0;i<this.question.options.length;i++){
+                    if(this.question.options[i].isAnswer){
+                        counter++;
+                    }
+                }
+                console.log(counter);
+                if(counter >= this.max_answers){
+                    alert('Je již použit maximální počet odpovědí!');
+                }else{
+                    this.question.options[j].isAnswer = true;
+                }
             }
         },
         watch:{
@@ -87,5 +100,7 @@
 </script>
 
 <style scoped>
-
+    .c_active {
+        color: #46a851 !important;
+    }
 </style>

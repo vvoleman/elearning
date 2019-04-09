@@ -1,20 +1,23 @@
 <template>
     <div class="container m-top-2">
+        <input type="hidden" name="json" :value="JSON.stringify(dataJSON)">
         <div>
-            <h3>Nový test</h3>
+            <div class="d-md-flex justify-content-between align-items-center">
+                <h3>Nový test</h3>
+                <button type="submit" class="btn btn-gray" :disabled="!readyToSubmit">Vytvořit</button>
+            </div>
             <hr>
             <div class="d-md-flex">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="label">Název</label>
-                        <input type="text" class="form-control" v-model="inputs.name">
+                        <input type="text" class="form-control" v-model="inputs.name" name="name">
                     </div>
-
                     <div class="form-group">
                         <label class="label">Časový limit (minuty)</label>
                         <input type="number" class="form-control" min="1" v-model="inputs.minutesAvailable">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group disabledbutton" title="Již brzy!">
                         <label class="label">Odkazuje se na modul</label>
                         <input type="number" class="form-control" min="1">
                     </div>
@@ -144,18 +147,8 @@
                         answers:-1
                     }
                 ],
-                questions:[
-                    {
-                        type:"radio",
-                        question:"Máš hlad?",
-                        options:[],
-                        answers:[]
-                    }
-                ],
+                questions:[{"type":"radio","question":"Máš hlad?","options":[{"text":"ano","isAnswer":true},{"text":"ne","isAnswer":false}]}]
             }
-        },
-        mounted(){
-          //alert('Udělej to přes ten translator, jinak tu budeš mít bordel');
         },
         methods:{
             newQuestion(){
@@ -165,8 +158,7 @@
                 this.questions.push({
                     type:this.q_types[this.inputs.modals.new.type].name,
                     question:this.inputs.modals.new.question,
-                    options:[],
-                    answers:[]
+                    options:[]
                 });
 
                 this.modals.newQuestion = false;
@@ -177,6 +169,7 @@
                 console.log(type);
                 for(var i = 0; i<this.q_types.length; i++){
                     if(this.q_types[i].name == type){
+                        console.log(i);
                         return i;
                     }
                 }
@@ -196,17 +189,40 @@
             },
             editQuestion(){
                 var i = this.inputs.modals.edit;
-                this.questions[i.editedQuestion].type = this.q_types[i.type];
+                this.questions[i.editedQuestion].type = this.q_types[i.type].name;
                 this.questions[i.editedQuestion].question = i.question;
                 this.modals.edit_question = false;
             },
-            addOption(i){
-                this.questions[i].options.push({
-                    text:""
-                });
+            controlQuestions(){
+                var cond = false;
+                for(var i = 0; i<this.questions.length;i++){
+                    if(this.typeExists(this.questions[i].type) && (this.questions[i].question.length > 0)){
+                        cond = true;
+                    }
+                }
+                return cond;
             },
-            checkIfOptionAnswer(i,j){
-                return this.questions[i].answers.indexOf(j);
+            typeExists(type){
+                for(var i = 0; i<this.q_types.length;i++){
+                    if(this.q_types[i].name == type){
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
+        computed:{
+            readyToSubmit(){
+                return this.controlQuestions() && (this.inputs.name.length > 0) && this.inputs.minutesAvailable > 0 && this.questions.length > 0;
+            },
+            dataJSON(){
+                return {
+                    questions:this.questions,
+                    name:this.inputs.name,
+                    minutesAvailable: this.inputs.minutesAvailable,
+                    isPrivate: this.inputs.isPrivate,
+                    random: this.inputs.random
+                }
             }
         }
     }

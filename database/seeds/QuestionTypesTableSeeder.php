@@ -14,5 +14,8 @@ class QuestionTypesTableSeeder extends Seeder
         DB::table('question_types')->insert([
             "name" => "radio"
         ]);
+        DB::table('question_types')->insert([
+            "name" => "checkbox"
+        ]);
     }
 }

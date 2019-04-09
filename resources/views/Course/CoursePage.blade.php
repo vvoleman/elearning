@@ -86,7 +86,7 @@
                     <div slot="head-text">
                         Testy
                         @if($c->hasPerms(Auth::user()))
-                            <a href="{{route('quiz.newQuiz',$c->slug)}}" title="Vytvořit nový modul" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
+                            <a href="{{route('quiz.newQuiz',$c->slug)}}" title="Vytvořit nový test" style="color:inherit"><i class="plusbtn fas fa-plus"></i></a>
                         @endif
                     </div>
                     <div slot="body">

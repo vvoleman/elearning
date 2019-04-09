@@ -7,7 +7,7 @@
             <ul>
                 <li>Časový limit: <b>{{$q->minutesAvailable}} minut</b></li>
                 <li>Počet otázek: <b>{{$q->questions->count()}}</b></li>
-                <li>Kurz: <a href="{{route('course.course',["slug"=>$q->slug])}}">{{$q->course->name}}</a></li>
+                <li>Kurz: <a href="{{route('course.course',["slug"=>$q->course->slug])}}">{{$q->course->name}}</a></li>
                 @if(!empty($q->referencesModule))<li>Test pro modul: <a href="{{route("module.module",["slug"=>$q->course->slug,"order"=>$q->referencesModule->order])}}">{{$q->referencesModule->name}}</a></li>@endif
             </ul>
             <div>

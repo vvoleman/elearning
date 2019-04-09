@@ -1,7 +1,7 @@
 <template>
     <form method="post" :action="submitTo" id="form">
         <input type="hidden" name="_token" :value="csrf">
-        <input type="hidden" name="data" :value="JSON.stringify(answers)"/>
+        <input type="hidden" name="data" :value="JSON.stringify(toSubmit)"/>
         <div v-if="start">
             <div class="sticky-top login_form_div col-12 d-flex justify-content-between">
                 <div>čas: {{timeLeft}}
@@ -44,6 +44,7 @@
             this.minutesAvailable = json.minutesAvailable;
             this.randomOrder = json.randomOrder;
             this.questions = json.questions;
+            console.log(this.questions);
             this.startDateTime = new Date();
             this.submitTo = json.submitTo;
             this.csrf = json.csrf;
@@ -61,6 +62,14 @@
             end(){
                 document.getElementById("form").submit();
                 alert('Vaše výsledky se nyní zpracují!');
+            }
+        },
+        computed:{
+            toSubmit(){
+                return {
+                    answers:this.answers,
+                    startdatetime:this.startDateTime.getTime()
+                }
             }
         }
     }

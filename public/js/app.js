@@ -85357,6 +85357,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.minutesAvailable = json.minutesAvailable;
         this.randomOrder = json.randomOrder;
         this.questions = json.questions;
+        console.log(this.questions);
         this.startDateTime = new Date();
         this.submitTo = json.submitTo;
         this.csrf = json.csrf;
@@ -85375,6 +85376,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         end: function end() {
             document.getElementById("form").submit();
             alert('Vaše výsledky se nyní zpracují!');
+        }
+    },
+    computed: {
+        toSubmit: function toSubmit() {
+            return {
+                answers: this.answers,
+                startdatetime: this.startDateTime.getTime()
+            };
         }
     }
 });
@@ -85497,6 +85506,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             answers: []
         };
     },
+    mounted: function mounted() {
+        console.log("!!!");
+        console.log(this.questions);
+    },
 
     watch: {
         answers: function answers() {
@@ -85592,7 +85605,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -85605,10 +85618,13 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__radio__ = __webpack_require__(399);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__radio___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__radio__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__checkbox__ = __webpack_require__(434);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__checkbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__checkbox__);
 //
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -85618,7 +85634,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             components: {
-                radio: __WEBPACK_IMPORTED_MODULE_0__radio___default.a
+                radio: __WEBPACK_IMPORTED_MODULE_0__radio___default.a,
+                checkbox: __WEBPACK_IMPORTED_MODULE_1__checkbox___default.a
             },
             instance: null
         };
@@ -85795,7 +85812,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { if: "context" } }, [
-    _c("h4", [
+    _c("h5", [
       _vm._v(
         _vm._s(_vm.context != null ? _vm.context.context.order : "") +
           ". " +
@@ -85879,6 +85896,7 @@ var render = function() {
     _vm._l(_vm.questions, function(o, i) {
       return _c(
         "div",
+        { staticClass: "m-top-2" },
         [
           _c("TypeTranslator", {
             attrs: { question: o, order: i + 1 },
@@ -86086,7 +86104,7 @@ var render = function() {
       _vm._v(" "),
       _c("input", {
         attrs: { type: "hidden", name: "data" },
-        domProps: { value: JSON.stringify(_vm.answers) }
+        domProps: { value: JSON.stringify(_vm.toSubmit) }
       }),
       _vm._v(" "),
       _vm.start
@@ -86355,6 +86373,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -86398,16 +86419,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 name: "string",
                 answers: -1
             }],
-            questions: [{
-                type: "radio",
-                question: "Máš hlad?",
-                options: [],
-                answers: []
-            }]
+            questions: [{ "type": "radio", "question": "Máš hlad?", "options": [{ "text": "ano", "isAnswer": true }, { "text": "ne", "isAnswer": false }] }]
         };
-    },
-    mounted: function mounted() {
-        //alert('Udělej to přes ten translator, jinak tu budeš mít bordel');
     },
 
     methods: {
@@ -86418,8 +86431,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.questions.push({
                 type: this.q_types[this.inputs.modals.new.type].name,
                 question: this.inputs.modals.new.question,
-                options: [],
-                answers: []
+                options: []
             });
 
             this.modals.newQuestion = false;
@@ -86430,6 +86442,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log(type);
             for (var i = 0; i < this.q_types.length; i++) {
                 if (this.q_types[i].name == type) {
+                    console.log(i);
                     return i;
                 }
             }
@@ -86449,17 +86462,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         editQuestion: function editQuestion() {
             var i = this.inputs.modals.edit;
-            this.questions[i.editedQuestion].type = this.q_types[i.type];
+            this.questions[i.editedQuestion].type = this.q_types[i.type].name;
             this.questions[i.editedQuestion].question = i.question;
             this.modals.edit_question = false;
         },
-        addOption: function addOption(i) {
-            this.questions[i].options.push({
-                text: ""
-            });
+        controlQuestions: function controlQuestions() {
+            var cond = false;
+            for (var i = 0; i < this.questions.length; i++) {
+                if (this.typeExists(this.questions[i].type) && this.questions[i].question.length > 0) {
+                    cond = true;
+                }
+            }
+            return cond;
         },
-        checkIfOptionAnswer: function checkIfOptionAnswer(i, j) {
-            return this.questions[i].answers.indexOf(j);
+        typeExists: function typeExists(type) {
+            for (var i = 0; i < this.q_types.length; i++) {
+                if (this.q_types[i].name == type) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    },
+    computed: {
+        readyToSubmit: function readyToSubmit() {
+            return this.controlQuestions() && this.inputs.name.length > 0 && this.inputs.minutesAvailable > 0 && this.questions.length > 0;
+        },
+        dataJSON: function dataJSON() {
+            return {
+                questions: this.questions,
+                name: this.inputs.name,
+                minutesAvailable: this.inputs.minutesAvailable,
+                isPrivate: this.inputs.isPrivate,
+                random: this.inputs.random
+            };
         }
     }
 });
@@ -86550,7 +86586,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -86563,10 +86599,13 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__radio__ = __webpack_require__(420);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__radio___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__radio__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__checkbox__ = __webpack_require__(429);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__checkbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__checkbox__);
 //
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -86576,7 +86615,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             components: {
-                radio: __WEBPACK_IMPORTED_MODULE_0__radio___default.a
+                radio: __WEBPACK_IMPORTED_MODULE_0__radio___default.a,
+                checkbox: __WEBPACK_IMPORTED_MODULE_1__checkbox___default.a
             }
         };
     },
@@ -86692,7 +86732,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.c_active[data-v-c2234796] {\n    color: #46a851 !important;\n}\n", ""]);
 
 // exports
 
@@ -86744,31 +86784,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 option: "",
                 show: false,
                 selected: null
-            }
+            },
+            max_answers: 1
         };
     },
-    mounted: function mounted() {
-        console.log("vvv");
-    },
+    mounted: function mounted() {},
 
     methods: {
         deleteOption: function deleteOption(j) {
             if (confirm('Opravdu chcete možnost smazat?')) {
-                var temp = this.checkIfOptionAnswer(j); //index of option in answers (if any)
-                if (temp != -1) {
-                    this.question.answers.splice(temp, 1);
-                }
                 this.question.options.splice(j, 1);
                 //this.questions[i].splice(i,1);
             }
         },
         addOption: function addOption() {
             this.question.options.push({
-                text: ""
+                text: "",
+                isAnswer: false
             });
-        },
-        checkIfOptionAnswer: function checkIfOptionAnswer(j) {
-            return this.question.answers.indexOf(j);
         },
         editOption: function editOption(j) {
             this.edit_modal.selected = j;
@@ -86779,6 +86812,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.question.options[this.edit_modal.selected].text = this.edit_modal.option;
             this.edit_modal.selected = null;
             this.edit_modal.show = false;
+        },
+        setAsCorrect: function setAsCorrect(j) {
+            if (this.question.options[j].isAnswer) {
+                this.question.options[j].isAnswer = false;
+                return;
+            }
+
+            var counter = 0;
+            for (var i = 0; i < this.question.options.length; i++) {
+                if (this.question.options[i].isAnswer) {
+                    counter++;
+                }
+            }
+            console.log(counter);
+            if (counter >= this.max_answers) {
+                alert('Je již použit maximální počet odpovědí!');
+            } else {
+                this.question.options[j].isAnswer = true;
+            }
         }
     },
     watch: {
@@ -86802,30 +86854,6 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "div",
-        {
-          staticClass: "col-12 d-md-flex justify-content-end align-items-center"
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass: "d-flex align-items-center clickable",
-              on: {
-                click: function($event) {
-                  _vm.addOption()
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-plus" }),
-              _vm._v("\n            Přidat možnost\n        ")
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
       _c(
         "div",
         { staticClass: "col-12" },
@@ -86861,15 +86889,23 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("span", [
-                  _c("i", {
-                    staticClass: "fas fa-check-circle not_active",
-                    attrs: { disabled: "" }
-                  }),
-                  _vm.checkIfOptionAnswer(j) != -1
-                    ? _c("span", [_vm._v("Správná odpověď")])
-                    : _vm._e()
-                ])
+                _c(
+                  "span",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.setAsCorrect(j)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-check-circle not_active",
+                      class: { c_active: p.isAnswer },
+                      attrs: { disabled: "" }
+                    })
+                  ]
+                )
               ])
             ]
           )
@@ -86921,7 +86957,31 @@ var render = function() {
               ])
             ]
           )
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "col-12 d-md-flex justify-content-end align-items-center"
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "d-flex align-items-center clickable",
+              on: {
+                click: function($event) {
+                  _vm.addOption()
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "fas fa-plus" }),
+              _vm._v("\n            Přidat možnost\n        ")
+            ]
+          )
+        ]
+      )
     ],
     1
   )
@@ -86965,8 +87025,28 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container m-top-2" }, [
+    _c("input", {
+      attrs: { type: "hidden", name: "json" },
+      domProps: { value: JSON.stringify(_vm.dataJSON) }
+    }),
+    _vm._v(" "),
     _c("div", [
-      _c("h3", [_vm._v("Nový test")]),
+      _c(
+        "div",
+        { staticClass: "d-md-flex justify-content-between align-items-center" },
+        [
+          _c("h3", [_vm._v("Nový test")]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-gray",
+              attrs: { type: "submit", disabled: !_vm.readyToSubmit }
+            },
+            [_vm._v("Vytvořit")]
+          )
+        ]
+      ),
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
@@ -86985,7 +87065,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
-              attrs: { type: "text" },
+              attrs: { type: "text", name: "name" },
               domProps: { value: _vm.inputs.name },
               on: {
                 input: function($event) {
@@ -87445,14 +87525,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { staticClass: "label" }, [_vm._v("Odkazuje se na modul")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "number", min: "1" }
-      })
-    ])
+    return _c(
+      "div",
+      {
+        staticClass: "form-group disabledbutton",
+        attrs: { title: "Již brzy!" }
+      },
+      [
+        _c("label", { staticClass: "label" }, [_vm._v("Odkazuje se na modul")]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { type: "number", min: "1" }
+        })
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -87469,6 +87556,565 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 428 */,
+/* 429 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(430)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(432)
+/* template */
+var __vue_template__ = __webpack_require__(433)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-2923be79"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/quiz/edit/checkbox.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2923be79", Component.options)
+  } else {
+    hotAPI.reload("data-v-2923be79", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 430 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(431);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("55aa2134", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2923be79\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./checkbox.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2923be79\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./checkbox.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 431 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.c_active[data-v-2923be79] {\n    color: #46a851 !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 432 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['value'],
+    name: "checkbox",
+    data: function data() {
+        return {
+            question: this.value,
+            edit_modal: {
+                option: "",
+                show: false,
+                selected: null
+            }
+        };
+    },
+
+    methods: {
+        deleteOption: function deleteOption(j) {
+            if (confirm('Opravdu chcete možnost smazat?')) {
+                this.question.options.splice(j, 1);
+                //this.questions[i].splice(i,1);
+            }
+        },
+        addOption: function addOption() {
+            this.question.options.push({
+                text: "",
+                isAnswer: false
+            });
+        },
+        editOption: function editOption(j) {
+            this.edit_modal.selected = j;
+            this.edit_modal.option = this.question.options[j].text;
+            this.edit_modal.show = true;
+        },
+        editOptionSave: function editOptionSave() {
+            this.question.options[this.edit_modal.selected].text = this.edit_modal.option;
+            this.edit_modal.selected = null;
+            this.edit_modal.show = false;
+        },
+        setAsCorrect: function setAsCorrect(j) {
+            if (this.question.options[j].isAnswer) {
+                this.question.options[j].isAnswer = false;
+                return;
+            }
+
+            var counter = 0;
+            for (var i = 0; i < this.question.options.length; i++) {
+                if (this.question.options[i].isAnswer) {
+                    counter++;
+                }
+            }
+            this.question.options[j].isAnswer = true;
+        }
+    },
+    watch: {
+        options: function options() {
+            this.$emit('input', this.question.options);
+        },
+        answers: function answers() {
+            this.$emit('answers', this.question.answers);
+        }
+    }
+});
+
+/***/ }),
+/* 433 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        { staticClass: "col-12" },
+        _vm._l(_vm.question.options, function(p, j) {
+          return _c(
+            "div",
+            { staticClass: "option d-md-flex justify-content-between" },
+            [
+              _c("span", [
+                _c("b", [_vm._v(_vm._s(j + 1) + ".")]),
+                _vm._v(" "),
+                p.text.length == 0
+                  ? _c("small", [_c("i", [_vm._v("Odpověď nevyplněna")])])
+                  : _c("span", [_vm._v(_vm._s(p.text))])
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("i", {
+                  staticClass: "fas fa-pen clickable",
+                  on: {
+                    click: function($event) {
+                      _vm.editOption(j)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("i", {
+                  staticClass: "fas fa-times clickable",
+                  on: {
+                    click: function($event) {
+                      _vm.deleteOption(j)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.setAsCorrect(j)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-check-circle not_active",
+                      class: { c_active: p.isAnswer },
+                      attrs: { disabled: "" }
+                    })
+                  ]
+                )
+              ])
+            ]
+          )
+        })
+      ),
+      _vm._v(" "),
+      _vm.edit_modal.show
+        ? _c(
+            "modal",
+            {
+              on: {
+                send: _vm.editOptionSave,
+                closeModal: function($event) {
+                  _vm.edit_modal.show = false
+                }
+              }
+            },
+            [
+              _c("h3", { attrs: { slot: "header" }, slot: "header" }, [
+                _vm._v("Upravit odpověď")
+              ]),
+              _vm._v(" "),
+              _c("div", { attrs: { slot: "body" }, slot: "body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "label" }, [_vm._v("Odpověď")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.edit_modal.option,
+                        expression: "edit_modal.option"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.edit_modal.option },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.edit_modal, "option", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "col-12 d-md-flex justify-content-end align-items-center"
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "d-flex align-items-center clickable",
+              on: {
+                click: function($event) {
+                  _vm.addOption()
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "fas fa-plus" }),
+              _vm._v("\n            Přidat možnost\n        ")
+            ]
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2923be79", module.exports)
+  }
+}
+
+/***/ }),
+/* 434 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(435)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(437)
+/* template */
+var __vue_template__ = __webpack_require__(438)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-19703223"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/quiz/question_types/checkbox.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-19703223", Component.options)
+  } else {
+    hotAPI.reload("data-v-19703223", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 435 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(436);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("24ab895c", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19703223\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./checkbox.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19703223\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./checkbox.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 436 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 437 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "checkbox",
+    props: ["context", "value"],
+    data: function data() {
+        return {
+            answer: this.value
+        };
+    },
+    mounted: function mounted() {
+        console.log(this.context);
+    },
+
+    computed: {
+        question: function question() {
+            return this.context.context.question;
+        }
+    },
+    watch: {
+        answer: function answer() {
+            console.log(this.answer);
+            this.$emit('input', { id: this.question.id, answer: [this.answer] });
+        }
+    }
+});
+
+/***/ }),
+/* 438 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { if: "context" } }, [
+    _c("h5", [
+      _vm._v(
+        _vm._s(_vm.context != null ? _vm.context.context.order : "") +
+          ". " +
+          _vm._s(_vm.question.question)
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticStyle: { "padding-left": "10px" } },
+      _vm._l(_vm.question.options, function(p, j) {
+        return _c("div", { staticClass: "form-check col-12" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.answer,
+                expression: "answer"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: { type: "checkbox", name: "q_" + _vm.context.context.order },
+            domProps: {
+              value: p.id,
+              checked: Array.isArray(_vm.answer)
+                ? _vm._i(_vm.answer, p.id) > -1
+                : _vm.answer
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.answer,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = p.id,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.answer = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.answer = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.answer = $$c
+                }
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "form-check-label" }, [
+            _vm._v(_vm._s(p.value))
+          ])
+        ])
+      })
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-19703223", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

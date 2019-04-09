@@ -28,9 +28,13 @@ class Quiz extends Model
         if(!empty($user->inGroups)){
             $group = $user->inGroups;
             foreach($group as $g){
-                if($g->opened_quizes[0]->isActive()){
-                    $boo = true;
-                    break;
+                $og = $g->opened_quizes;
+                for($i=0;$i<sizeof($og);$i++){
+                    if($og[$i]->quiz_id == $this->id_q){
+                        if($og[$i]->isActive()){
+                            $boo = true;
+                        }
+                    }
                 }
             }
         }
@@ -60,11 +64,11 @@ class Quiz extends Model
         for($i=0;$i<$this->questions->count();$i++){
             $q = $this->questions[$i];
             $good = 1;
-            if(empty($answers[$i]["answer"][0])){
+            if(empty($answers[$i]->answer[0])){
                 $good = 0;
             }else{
                 foreach($q->correct_opts as $opt){
-                    if($opt->id_o != $answers[$i]["answer"][0]){
+                    if($opt->id_o != $answers[$i]->answer[0]){
                         $good = 0;
                         break;
                     }

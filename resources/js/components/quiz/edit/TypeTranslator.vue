@@ -4,6 +4,7 @@
 
 <script>
     import Radio from "./radio";
+    import Checkbox from "./checkbox";
     export default {
         name: "TypeTranslator",
         components: {Radio},
@@ -11,7 +12,8 @@
         data(){
             return {
                 components:{
-                    radio:Radio
+                    radio:Radio,
+                    checkbox:Checkbox
                 }
             }
         },
