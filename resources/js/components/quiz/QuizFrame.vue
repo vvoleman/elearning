@@ -18,7 +18,6 @@
             };
         },
         mounted(){
-            console.log("!!!");
             console.log(this.questions);
         },
         watch:{

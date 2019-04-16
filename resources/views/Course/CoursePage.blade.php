@@ -99,7 +99,14 @@
                                             <span>{{$m->name}}</span>
                                             <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
                                                 @if(Auth::user()->role->name != "user")
-                                                    <i class="fas fa-cog"></i>
+                                                    <b-dropdown variant="link" size="lg" no-caret right>
+                                                        <template slot="button-content"><i class="fas fa-ellipsis-v"></i></template>
+
+                                                        <b-dropdown-item href="{{route('quiz.passmanage',["id"=>$m->uuid])}}">Správa přístupu</b-dropdown-item>
+                                                        <b-dropdown-item href="#">Upravit</b-dropdown-item>
+                                                        <b-dropdown-item href="#">Smazat</b-dropdown-item>
+                                                    </b-dropdown>
+
                                                 @endif
                                             </a>
                                         </div>
@@ -112,9 +119,9 @@
                         <div class="d-md-flex col-md-12 flex-wrap">
                             @foreach($c->getQuizes() as $m)
                                 <div class="col-md-4 st">
-                                    <a class="no-a" href="{{route('module.module',["slug"=>$c->slug,"order"=>$m->order])}}">
+                                    <a class="no-a" href="{{route('quiz.infoQuiz',["id"=>$m->uuid])}}">
                                         <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
-                                            <span>{{$m->order}}. {{$m->name}}</span>
+                                            <span>{{$m->name}}</span>
                                             <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
                                                 @if(Auth::user()->role->name != "user")
                                                     <i class="fas fa-cog"></i>

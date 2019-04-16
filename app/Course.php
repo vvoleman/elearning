@@ -23,7 +23,7 @@ class Course extends Model{
         return $this->hasMany("\App\Quiz","course_id");
     }
 
-    public function canAccess(User $user){
+    public function canAccess(User $user){ //if user CAN SEE course (for example students)
         if(!$user->hasRole('admin')){
             if($user->hasRole('teacher')){
                 return $this->owners()->where('id_u',$user->id_u)->count() > 0;
@@ -39,7 +39,7 @@ class Course extends Model{
         }
         return true;
     }
-    public function hasPerms(User $user){
+    public function hasPerms(User $user){ //if user is allowed to make changes (teachers which owns the course)
         if(!$user->hasRole('admin')){
             if(sizeof($this->owners()->where('id_u',$user->id_u)->get()) == 0){
                 return false;

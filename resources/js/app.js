@@ -84,6 +84,7 @@ Vue.component('modulecreate',require('./components/module/ModuleCreater.vue'));
 Vue.component('alert',require('./components/Alert.vue'));
 Vue.component('showquiz',require('./components/quiz/Quiz.vue'));
 Vue.component('newquiz',require('./components/quiz/NewQuiz'));
+Vue.component('passmanage',require('./components/quiz/PassManage.vue'));
 
 const app = new Vue({
     el: '#app',

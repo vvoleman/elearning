@@ -23,6 +23,9 @@ class Quiz extends Model
     public function referencesModule(){
         return $this->belongsTo('\App\Module','referencedModule');
     }
+    public function openedFor(){
+        return $this->hasMany('\App\QuizOpen','quiz_id');
+    }
     public function canAccess($user){
         $boo = false;
         if(!empty($user->inGroups)){

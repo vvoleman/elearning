@@ -69,7 +69,11 @@ class CourseController extends Controller
     }
     public function getEditCourse($id){
         $course = $this->checkIfHasPerm($id);
-        return view('Course/Edit/EditCourse',["c"=>$course]);
+        $students = 0;
+        foreach($course->groups as $g){
+            $students += $g->students->count();
+        }
+        return view('Course/Edit/EditCourse',["c"=>$course,"students" => $students]);
     }
     public function getEditLectors($id){
         $course = $this->checkIfHasPerm($id);

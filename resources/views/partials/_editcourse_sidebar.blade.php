@@ -29,14 +29,6 @@
                 <span class="offset-0">Třídy</span>
             </div>
         </a>
-        <a href="{{route('course.editModules',$c->slug)}}">
-            <div class="d-flex align-items-center box">
-                <div class="d-flex justify-content-center col-3">
-                    <i class="fas fa-book"></i>
-                </div>
-                <span class="offset-0">Moduly</span>
-            </div>
-        </a>
         <a href="{{route('course.editSettings',$c->slug)}}">
             <div class="d-flex align-items-center box">
                 <div class="d-flex justify-content-center col-3">
