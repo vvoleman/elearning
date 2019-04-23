@@ -24,7 +24,14 @@ class Quiz extends Model
         return $this->belongsTo('\App\Module','referencedModule');
     }
     public function openedFor(){
-        return $this->hasMany('\App\QuizOpen','quiz_id');
+        return $this->hasMany('\App\QuizOpen','quiz_id')->orderBy('closing_at','asc');
+    }
+    public function getOpenedFor($active = true){
+        if($active){
+            return $this->openedFor->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now());
+        }else{
+            return $this->openedFor->where('opened_at','>=',Carbon::now())->where('closing_at','<=',Carbon::now());
+        }
     }
     public function canAccess($user){
         $boo = false;

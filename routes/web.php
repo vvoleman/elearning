@@ -31,6 +31,8 @@ Route::middleware(['isAjax'])->group(function (){
         Route::post('/ajax/syncStudentsInGroup','GroupController@ajaxSyncStudentsInGroup');
         Route::get('/ajax/importStudents','GroupController@ajaxImportStudents');
         Route::get('/ajax/getStudentsByGroups','GroupController@ajaxStudentsByGroups');
+        Route::post('/ajax/openQuizForGroup','QuizOpenController@ajaxCreateOpen');
+        Route::get('/ajax/getGroupsForOpen','QuizOpenController@ajaxGroupsForOpen');
     });
 
 });

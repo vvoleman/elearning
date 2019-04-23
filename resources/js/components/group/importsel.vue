@@ -23,7 +23,7 @@
     import StudentShow from "../StudentShow";
     export default {
         name: "ImportSel",
-        props:["value","custom"],
+        props:["value","custom","quiz"],
         components: {StudentShow},
         data:function () {
             return{
@@ -32,10 +32,14 @@
                 selected:0,
                 looking:false,
                 sel_groups:this.value,
-
+                urls:["/ajax/importStudents","/ajax/getGroupsForOpen"],
+                q:this.quiz
             }
         },
         mounted:function(){
+            if(this.q == null){
+                this.q = false;
+            }
         },
         methods:{
             isEmpty(val){
@@ -74,7 +78,13 @@
                 if(this.name.length >= 4) {
                     var temp = this;
                     this.looking = true;
-                    $.get("/ajax/importStudents", {name: temp.name}, function (data) {
+                    var par = {
+                        name:temp.name
+                    }
+                    if(this.quiz != false){
+                        par.quiz = this.quiz;
+                    }
+                    $.get((temp.quiz === false) ? temp.urls[0] : temp.urls[1], par, function (data) {
                         var test = [];
                         temp.selected = 0;
                         data = data.data;

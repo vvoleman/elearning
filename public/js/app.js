@@ -79236,7 +79236,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -79274,7 +79274,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "ImportSel",
-    props: ["value", "custom"],
+    props: ["value", "custom", "quiz"],
     components: { StudentShow: __WEBPACK_IMPORTED_MODULE_0__StudentShow___default.a },
     data: function data() {
         return {
@@ -79282,11 +79282,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             name_list: "",
             selected: 0,
             looking: false,
-            sel_groups: this.value
-
+            sel_groups: this.value,
+            urls: ["/ajax/importStudents", "/ajax/getGroupsForOpen"],
+            q: this.quiz
         };
     },
-    mounted: function mounted() {},
+    mounted: function mounted() {
+        if (this.q == null) {
+            this.q = false;
+        }
+    },
     methods: {
         isEmpty: function isEmpty(val) {
             return val == null || val.length == 0;
@@ -79325,7 +79330,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.name.length >= 4) {
                 var temp = this;
                 this.looking = true;
-                $.get("/ajax/importStudents", { name: temp.name }, function (data) {
+                var par = {
+                    name: temp.name
+                };
+                if (this.quiz != false) {
+                    par.quiz = this.quiz;
+                }
+                $.get(temp.quiz === false ? temp.urls[0] : temp.urls[1], par, function (data) {
                     var test = [];
                     temp.selected = 0;
                     data = data.data;
@@ -88206,6 +88217,40 @@ exports.push([module.i, "\n.bar-header[data-v-70155d75]{\n    border-radius: 5px
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__group_importsel__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__group_importsel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__group_importsel__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -88220,18 +88265,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "PassManage",
-    props: ["datas", "quiz"],
+    components: { ImportSel: __WEBPACK_IMPORTED_MODULE_0__group_importsel___default.a },
+    props: ["datas", "q"],
     data: function data() {
         return {
             passes: [],
-            quiz: []
+            quiz: [],
+            selected_groups: []
         };
     },
     mounted: function mounted() {
         this.passes = JSON.parse(this.datas);
-        this.quiz = JSON.parse(this.quiz);
+        this.quiz = JSON.parse(this.q);
+    },
+
+    methods: {
+        formateDate: function formateDate(timestamp) {
+            var date = new Date(timestamp);
+            return date.toLocaleDateString() + " " + this.checkForZero(date.getHours()) + ":" + this.checkForZero(date.getMinutes());
+        },
+        checkForZero: function checkForZero(number) {
+            return (number < 10 ? '0' : '') + number;
+        },
+        createOpen: function createOpen() {
+            $.post('/ajax/openQuizForGroup', { group: 1, quiz: this.quiz.uuid, closing_at: 1556661599, opened_at: 1555840571 }, function (data) {
+                console.log(data);
+            });
+        }
     }
 });
 
@@ -88243,24 +88306,128 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "m-top-2 col-md-10 mx-auto" }, [
-    _c("div", {}, [
+  return _c(
+    "div",
+    { staticClass: "m-top-2 col-md-10 mx-auto" },
+    [
       _c("h3", [_vm._v("Správa přístupu")]),
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
-      _c("span", [
-        _c("b", [_vm._v("Test:")]),
-        _vm._v(" " + _vm._s(_vm.quiz.name))
+      _c("div", { staticClass: "d-md-flex justify-content-between" }, [
+        _c("span", [
+          _c("b", [_vm._v("Test:")]),
+          _vm._v(" " + _vm._s(_vm.quiz.name))
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12 mx-auto m-top-2" }, [
+        _c("table", { staticClass: "table table-striped" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.passes, function(o, i) {
+              return _c("tr", [
+                _c("td", [_vm._v(_vm._s(o.group.name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.formateDate(o.opened_at * 1000)))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(_vm._s(_vm.formateDate(o.closing_at * 1000)))
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(
+                      Math.floor(
+                        (o.closing_at * 1000 - new Date().getTime()) / 86400000
+                      )
+                    )
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-primary",
+                      on: { click: _vm.createOpen }
+                    },
+                    [_vm._v("Prodloužit")]
+                  ),
+                  _c("button", { staticClass: "btn btn-sm btn-danger" }, [
+                    _vm._v("Smazat")
+                  ])
+                ])
+              ])
+            })
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("modal", [
+        _c("h3", { attrs: { slot: "header" }, slot: "header" }, [
+          _vm._v("Vytvořit")
+        ]),
+        _vm._v(" "),
+        _c("div", { attrs: { slot: "body" }, slot: "body" }, [
+          _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("label", { staticClass: "label" }, [_vm._v("Třída")]),
+              _vm._v(" "),
+              _c("import-sel", {
+                attrs: { quiz: _vm.quiz.uuid },
+                model: {
+                  value: _vm.selected_groups,
+                  callback: function($$v) {
+                    _vm.selected_groups = $$v
+                  },
+                  expression: "selected_groups"
+                }
+              })
+            ],
+            1
+          )
+        ])
       ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "bar-header col-md-8 mx-auto" }, [
-      _vm._v("\n        ff\n    ")
-    ])
-  ])
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "d-flex align-items-center" }, [
+      _c("i", { staticClass: "fas fa-plus" }),
+      _vm._v("\n            Přidat\n        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Třída")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Datum otevření")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Datum uzavření")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Zbývá dní")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Další")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
