@@ -94826,6 +94826,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -94837,7 +94846,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             passes: [],
             quiz: [],
             selected_groups: [],
-            create_sel: false
+            create_sel: false,
+            create_time: {
+                start: null,
+                end: null
+            }
         };
     },
     mounted: function mounted() {
@@ -94846,6 +94859,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        timeLeft: function timeLeft(seconds) {
+            var only_days = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+            var to_return = "";
+            if (seconds % 86400 > 0) {
+                var temp = Math.floor(seconds / 86400);
+                var string;
+                if (temp == 1) {
+                    string = "den";
+                } else if (temp >= 2 && temp < 5) {
+                    string = "dny";
+                } else {
+                    string = "dní";
+                }
+                to_return += temp + " " + string;
+                seconds %= 86400;
+            }
+            if (only_days) {
+                return to_return;
+            }
+            if (seconds % 3600 > 0) {
+                var temp = Math.floor(seconds / 3600);
+                var string;
+                if (temp == 1) {
+                    string = "hodina";
+                } else if (temp >= 2 && temp < 5) {
+                    string = "hodiny";
+                } else {
+                    string = "hodin";
+                }
+                to_return += " " + temp + " " + string;
+                seconds %= 3600;
+            }
+            if (seconds % 60 > 0) {
+                var temp = Math.floor(seconds / 60);
+                var string;
+                if (temp == 1) {
+                    string = "minuta";
+                } else if (temp >= 2 && temp < 5) {
+                    string = "minuty";
+                } else {
+                    string = "minut";
+                }
+                to_return += " " + temp + " " + string;
+                seconds %= 60;
+            }
+            if (seconds > 0) {
+                var temp = seconds;
+                var string;
+                if (temp == 1) {
+                    string = "vteřina";
+                } else if (temp >= 2 && temp < 5) {
+                    string = "vteřiny";
+                } else {
+                    string = "vteřin";
+                }
+                to_return += " " + temp + " " + string;
+            }
+            return to_return;
+        },
         formateDate: function formateDate(timestamp) {
             var date = new Date(timestamp);
             return date.toLocaleDateString() + " " + this.checkForZero(date.getHours()) + ":" + this.checkForZero(date.getMinutes());
@@ -94857,6 +94930,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $.post('/ajax/openQuizForGroup', { group: 1, quiz: this.quiz.uuid, closing_at: 1556661599, opened_at: 1555840571 }, function (data) {
                 console.log(data);
             });
+        }
+    },
+    computed: {
+        timeleft_com: function timeleft_com(closing_at) {
+            return this.timeLeft(closing_at - Math.floor(new Date().getTime() / 1000));
         }
     }
 });
@@ -94916,15 +94994,7 @@ var render = function() {
                   _vm._v(_vm._s(_vm.formateDate(o.closing_at * 1000)))
                 ]),
                 _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    _vm._s(
-                      Math.floor(
-                        (o.closing_at * 1000 - new Date().getTime()) / 86400000
-                      )
-                    )
-                  )
-                ]),
+                _c("td", [_vm._v(_vm._s(_vm.timeleft_com(o.closing_at)))]),
                 _vm._v(" "),
                 _c(
                   "td",
@@ -94998,7 +95068,63 @@ var render = function() {
                     })
                   ],
                   1
-                )
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "label" }, [
+                    _vm._v("Datum otevření")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.create_time.start,
+                        expression: "create_time.start"
+                      }
+                    ],
+                    attrs: { type: "date" },
+                    domProps: { value: _vm.create_time.start },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.create_time, "start", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "label" }, [
+                    _vm._v("Datum uzavření")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.create_time.start,
+                        expression: "create_time.start"
+                      }
+                    ],
+                    attrs: { type: "date" },
+                    domProps: { value: _vm.create_time.start },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.create_time, "start", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("h5", [_vm._v("Celková doba otevření: ")])
               ])
             ]
           )
@@ -95020,7 +95146,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Datum uzavření")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Zbývá dní")]),
+        _c("th", [_vm._v("Zbývající čas")]),
         _vm._v(" "),
         _c("th", [_vm._v("Další")])
       ])

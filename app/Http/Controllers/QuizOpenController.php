@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Group;
+use App\Own\Toolkit;
 use Carbon\Carbon;
 use function foo\func;
 use Illuminate\Http\Request;
@@ -115,11 +116,14 @@ class QuizOpenController extends Controller
             return response()->json(["response"=>422]);
         }
         $quiz = $this->checkQuiz($data["quiz"]);
-        $group = $quiz->course->groups;
-        return response()->json($quiz->isGroupActive($group[0]));
-        $group = $quiz->course->groups->where("(opened_at > ? &&  closing_at > ?) OR (opened_at < ? && closing_at < ?)")->get();
-        dd($group);
-
-
+        $group = $quiz->course->groups()->where('name','like','%'.$data["name"].'%')->get();
+        $return = [];
+        foreach($group as $g){
+            if(!$quiz->isGroupActive($g)){
+                $return[] = $g;
+            }
+        }
+        $t = new Toolkit();
+        return response()->json(["data"=>$t->parseGroups($return )]);
     }
 }
