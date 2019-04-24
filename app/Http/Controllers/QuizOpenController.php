@@ -114,9 +114,11 @@ class QuizOpenController extends Controller
         }catch(\Exception $e){
             return response()->json(["response"=>422]);
         }
-        $g = $this->checkQuiz($data["quiz"]);
-        dd($g->getOpenedFor(false));
-        dd($g);
+        $quiz = $this->checkQuiz($data["quiz"]);
+        $group = $quiz->course->groups;
+        return response()->json($quiz->isGroupActive($group[0]));
+        $group = $quiz->course->groups->where("(opened_at > ? &&  closing_at > ?) OR (opened_at < ? && closing_at < ?)")->get();
+        dd($group);
 
 
     }

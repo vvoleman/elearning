@@ -4,7 +4,7 @@
         <hr>
         <div class="d-md-flex justify-content-between">
             <span><b>Test:</b> {{quiz.name}}</span>
-            <span class="d-flex align-items-center">
+            <span class="d-flex align-items-center pointer" @click="create_sel = true">
                 <i class="fas fa-plus"></i>
                 Přidat
             </span>
@@ -26,12 +26,18 @@
                         <td>{{formateDate(o.opened_at * 1000)}}</td>
                         <td>{{formateDate(o.closing_at * 1000)}}</td>
                         <td>{{Math.floor(((o.closing_at*1000)-new Date().getTime())/86400000)}}</td>
-                        <td><button class="btn btn-sm btn-primary" @click="createOpen">Prodloužit</button><button class="btn btn-sm btn-danger">Smazat</button></td>
+                        <td>
+                            <b-dropdown variant="link" size="lg" no-caret>
+                                <template slot="button-content"><i class="fas fa-ellipsis-v" style="font-size:18px"></i></template>
+                                <b-dropdown-item href="#" @click="createOpen">Prodloužit</b-dropdown-item>
+                                <b-dropdown-item>Smazat</b-dropdown-item>
+                            </b-dropdown>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <modal>
+        <modal v-if="create_sel" @closeModal="create_sel = null">
             <h3 slot="header">Vytvořit</h3>
             <div slot="body">
                 <div class="form-group">
@@ -53,7 +59,8 @@
             return {
                 passes:[],
                 quiz:[],
-                selected_groups:[]
+                selected_groups:[],
+                create_sel:false
             }
         },
         mounted(){

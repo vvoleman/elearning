@@ -30,7 +30,14 @@ class Quiz extends Model
         if($active){
             return $this->openedFor->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now());
         }else{
-            return $this->openedFor->where('opened_at','>=',Carbon::now())->where('closing_at','<=',Carbon::now());
+            return $this->openedFor->where('opened_at','>=',Carbon::now())->where('closing_at','<=',Carbon::now())->orWhere('');
+        }
+    }
+    public function isGroupActive($group){
+        try{
+            return (QuizOpen::where('quiz_id',$this->id_q)->where('group_id',$group->id_g)->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->count() > 0);
+        }catch(\Exception $e){
+            return true;
         }
     }
     public function canAccess($user){
