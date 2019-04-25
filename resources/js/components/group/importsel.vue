@@ -1,18 +1,18 @@
 <template>
     <div style="padding-left: 0px;padding-right: 0px" class="col-12 selusers">
         <div v-click-outside="closeSearch" style="z-index:11">
-            <div class="d-flex  justify-content-between">
-                <input v-on:keydown.enter.prevent='keyUp' @click="looking = true" type="text" v-model="name" class="form-control">
+            <div class="d-flex  justify-content-between" v-on:keyup="keyUp">
+                <input @click="looking = true" type="text" v-model="name" class="form-control" :disabled="sel_groups.length >= limit">
             </div>
             <div v-if="looking" class="results d-block col-12 position-absolute" style="padding-left:0;padding-right:0">
-                <div class="d-flex align-items-center box" v-for="(o,i) in name_list" :class="{selected:i==selected}" v-on:click="selectUser">{{o.name}}, žáků: {{o.students_amount}}</div>
+                <div class="d-flex align-items-center box" v-for="(o,i) in name_list" :class="{selected:i==selected}" v-on:click="selectUser(i)">{{o.name}}, žáků: {{o.students_amount}}</div>
             </div>
         </div>
         <div class="d-md-flex flex-wrap" v-if="!custom">
             <div class="col-md-6 st" v-for="(o,i) in sel_groups">
                 <div class="col-md-12 student_box d-flex align-items-center justify-content-between" :title="'Počet studentů: '+o.students_amount">
                     <span>{{o.name}}</span>
-                    <button class="btn btn-sm" @click="dropUser(i)"><i class="fas fa-times"></i></button>
+                    <button class="btn btn-sm" @click="dropUser(i)" type="button"><i class="fas fa-times"></i></button>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
     import StudentShow from "../StudentShow";
     export default {
         name: "ImportSel",
-        props:["value","custom","quiz"],
+        props:["value","custom","quiz","limit"],
         components: {StudentShow},
         data:function () {
             return{
@@ -39,6 +39,8 @@
         mounted:function(){
             if(this.q == null){
                 this.q = false;
+            }else{
+                console.log(this.quiz);
             }
         },
         methods:{
@@ -49,14 +51,14 @@
                 this.sel_groups.splice(i,1);
                 console.log(i);
             },
-            selectUser: function(){
+            selectUser: function(i){
                 if(this.name_list == null || this.name_list.length == 0){
                     return;
                 }
                 if(!Array.isArray(this.sel_groups)){
                     this.sel_groups = [];
                 }
-                this.sel_groups.push(this.name_list[this.selected]);
+                this.sel_groups.push(this.name_list[i]);
                 this.selected = 0;
                 this.name = "";
                 this.name_list = null;
@@ -68,23 +70,27 @@
                     if(e.keyCode == 38){
                         temp = -1;
                     }
+                    console.log((this.selected+temp+this.name_list.length)%this.name_list.length);
                     this.selected = (this.selected+temp+this.name_list.length)%this.name_list.length;
                 }else if(e.keyCode == 13){
-                    this.selectUser();
+                    this.selectUser(this.selected);
                 }
                 return false;
             },
             startProcess: function(){
+                if(this.sel_groups.length >= this.limit){
+                    return;
+                }
                 if(this.name.length >= 4) {
                     var temp = this;
                     this.looking = true;
                     var par = {
                         name:temp.name
                     }
-                    if(this.quiz != false){
-                        par.quiz = this.quiz;
+                    if(this.q != false){
+                        par.quiz = this.q;
                     }
-                    $.get((temp.quiz === false) ? temp.urls[0] : temp.urls[1], par, function (data) {
+                    $.get((this.q == false) ? temp.urls[0] : temp.urls[1], par, function (data) {
                         var test = [];
                         temp.selected = 0;
                         data = data.data;
@@ -104,7 +110,7 @@
                             }
                             temp.name_list = test;
                         }
-                    });
+                    }.bind(this));
                 }else if(this.name_list != null){
                     this.name_list = "";
                 }

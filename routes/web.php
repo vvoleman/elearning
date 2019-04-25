@@ -33,6 +33,8 @@ Route::middleware(['isAjax'])->group(function (){
         Route::get('/ajax/getStudentsByGroups','GroupController@ajaxStudentsByGroups');
         Route::post('/ajax/openQuizForGroup','QuizOpenController@ajaxCreateOpen');
         Route::get('/ajax/getGroupsForOpen','QuizOpenController@ajaxGroupsForOpen');
+        Route::get('/ajax/getQuizOpenings','QuizOpenController@ajaxLoadOpens');
+        Route::post('/ajax/removeQuizOpen','QuizOpenController@ajaxRemoveOpen');
     });
 
 });

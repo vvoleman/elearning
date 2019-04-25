@@ -25,34 +25,35 @@
                         <td>{{o.group.name}}</td>
                         <td>{{formateDate(o.opened_at * 1000)}}</td>
                         <td>{{formateDate(o.closing_at * 1000)}}</td>
-                        <td>{{timeleft_com(o.closing_at)}}</td>
+                        <td></td>
                         <td>
                             <b-dropdown variant="link" size="lg" no-caret>
                                 <template slot="button-content"><i class="fas fa-ellipsis-v" style="font-size:18px"></i></template>
-                                <b-dropdown-item href="#" @click="createOpen">Prodloužit</b-dropdown-item>
-                                <b-dropdown-item>Smazat</b-dropdown-item>
+                                <b-dropdown-item>Prodloužit</b-dropdown-item>
+                                <b-dropdown-item @click="remove(i)">Smazat</b-dropdown-item>
                             </b-dropdown>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <modal v-if="create_sel" @closeModal="create_sel = null">
+        <modal v-if="create_sel" @closeModal="create_sel = null" @send="createOpen">
             <h3 slot="header">Vytvořit</h3>
             <div slot="body">
                 <div class="form-group">
                     <label class="label">Třída</label>
-                    <import-sel v-model="selected_groups" :quiz="quiz.uuid"></import-sel>
+                    <import-sel limit="1" v-model="selected_groups" :quiz="quiz.uuid"></import-sel>
                 </div>
                 <div class="form-group">
                     <label class="label">Datum otevření</label>
-                    <input type="date" v-model="create_time.start">
+                    <datetime type="datetime" v-model="create_time.start"></datetime>
                 </div>
                 <div class="form-group">
                     <label class="label">Datum uzavření</label>
-                    <input type="date" v-model="create_time.start">
+                    <datetime type="datetime" v-model="create_time.end"></datetime>
                 </div>
-                <h5>Celková doba otevření: </h5>
+                <h5>Celková doba otevření:</h5>
+                <span>{{timespan}}</span>
             </div>
         </modal>
     </div>
@@ -71,8 +72,14 @@
                 selected_groups:[],
                 create_sel:false,
                 create_time:{
-                    start:null,
-                    end:null,
+                    start:"2019-04-25T14:49:00.000Z",
+                    end:"2019-04-27T14:49:00.000Z",
+                },
+                date:null,
+                alert:{
+                    show:false,
+                    text:"",
+
                 }
             }
         },
@@ -81,9 +88,42 @@
             this.quiz = JSON.parse(this.q);
         },
         methods:{
+            createOpen(){
+                if(this.selected_groups.length > 0 && this.create_time.start != null && this.create_time.end != null){
+                    $.post('/ajax/openQuizForGroup',{group:this.selected_groups[0].id,quiz:this.quiz.uuid,closing_at:this.end.getTime()/1000,opened_at:this.start.getTime()/1000},(data)=>{
+                        if(data.response == 200){
+                            this.loadData();
+                            this.create_sel = true;
+                            this.selected_groups = [];
+                            this.create_time.start = null;
+                            this.create_time.end = null;
+                        }
+                    });
+                }
+            },
+            remove(i){
+                if(this.passes[i] != null){
+                    $.post('/ajax/removeQuizOpen',{id:this.passes[i].id},(data)=>{
+                        if(data.response == 200){
+
+                        }else{
+
+                        }
+                    });
+                }
+            },
+            loadData(){
+                $.get('/ajax/getQuizOpenings',{quiz:this.quiz.uuid},(data)=>{
+                    if(data.data != null){
+                        this.passes = data.data;
+                    }else{
+                        alert("Načítání se nezdařilo");
+                    }
+                });
+            },
             timeLeft(seconds,only_days = false){
                 var to_return = "";
-                if(seconds%86400 > 0){
+                if(seconds/86400 >= 0){
                     var temp = Math.floor(seconds/86400);
                     var string;
                     if(temp == 1){
@@ -99,7 +139,7 @@
                 if(only_days){
                     return to_return;
                 }
-                if(seconds%3600 > 0){
+                if(seconds/3600 >= 0){
                     var temp = Math.floor(seconds/3600);
                     var string;
                     if(temp == 1){
@@ -112,7 +152,7 @@
                     to_return +=" "+temp+" "+string;
                     seconds %= 3600;
                 }
-                if(seconds%60 > 0){
+                if(seconds/60 >= 0){
                     var temp = Math.floor(seconds/60);
                     var string;
                     if(temp == 1){
@@ -138,7 +178,6 @@
                     to_return +=" "+temp+" "+string;
                 }
                 return to_return;
-
             },
             formateDate(timestamp){
                 var date = new Date(timestamp);
@@ -146,16 +185,19 @@
             },
             checkForZero(number){
                 return ((number < 10) ? '0' : '')+number;
-            },
-            createOpen(){
-                $.post('/ajax/openQuizForGroup',{group:1,quiz:this.quiz.uuid,closing_at:1556661599,opened_at:1555840571},(data)=>{
-                    console.log(data);
-                });
             }
         },
         computed:{
-            timeleft_com(closing_at){
-                return this.timeLeft(closing_at-(Math.floor(new Date().getTime()/1000)));
+            timespan(){
+                if(this.create_time.start != null && this.create_time.end != null){
+                    return this.timeLeft((this.end.getTime()-this.start.getTime())/1000);
+                }
+            },
+            start(){
+                return new Date(this.create_time.start);
+            },
+            end(){
+                return new Date(this.create_time.end);
             }
         }
     }

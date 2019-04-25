@@ -8,6 +8,7 @@ class QuizOpen extends Model
 {
     protected $table = "quizes_open";
     public $timestamps = false;
+    protected $primaryKey = "id_qo";
     protected $dates = ['opened_at','closing_at'];
     public function quiz(){
         return $this->belongsTo('App\Quiz','quiz_id');

@@ -3,6 +3,8 @@ import VeeValidate from 'vee-validate';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import Datetime from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -15,6 +17,7 @@ require('./bootstrap');
 
 Vue.use(VeeValidate);
 Vue.use(BootstrapVue);
+Vue.use(Datetime);
 
 /**
  *

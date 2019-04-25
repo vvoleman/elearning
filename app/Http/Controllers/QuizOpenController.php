@@ -47,6 +47,7 @@ class QuizOpenController extends Controller
         $return = [];
         foreach($data as $q){
             $return[] = [
+                "id"=>$q->id_qo,
                 "opened_at"=>$q->opened_at->timestamp,
                 "closing_at"=>$q->closing_at->timestamp,
                 "group"=>[
@@ -61,7 +62,19 @@ class QuizOpenController extends Controller
         }
         return $return;
     }
-
+    public function ajaxLoadOpens(Request $r)
+    {
+        try {
+            $data = $r->validate([
+                "quiz" => "required|exists:quizes,uuid"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(["response" => 422]);
+        }
+        $q = Quiz::where('uuid',$data["quiz"])->get()[0];
+        $this->canAccess($q,Auth::user());
+        return response()->json(["data"=>$this->prepareQuizOpens($q->getOpenedFor())]);
+    }
     public function ajaxCreateOpen(Request $r){
         try{
             $data = $r->validate([
@@ -87,8 +100,7 @@ class QuizOpenController extends Controller
         //////////////////////////////////////////////
         $q = Quiz::where('uuid',$data["quiz"])->get()[0];
         $this->canAccess($q,Auth::user());
-
-        $collides = QuizOpen::where('quiz_id',$q->id_q)->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereBetween('opened_at',[$data["opened_at"],$data["closing_at"]])->orWhereBetween('closing_at',[$data["opened_at"],$data["closing_at"]])->get();
+        $collides = QuizOpen::where('quiz_id',$q->id_q)->where('group_id',$data["group"])->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereBetween('opened_at',[$data["opened_at"],$data["closing_at"]])->orWhereBetween('closing_at',[$data["opened_at"],$data["closing_at"]])->get();
         if(sizeof($collides) != 0){
             $ids = [];
             foreach($collides as $c){
@@ -105,6 +117,22 @@ class QuizOpenController extends Controller
         if($qo->save()){
             return response()->json(["response"=>200]);
         }
+    }
+    public function ajaxRemoveOpen(Request $r){
+        try{
+            $data = $r->validate([
+                "id" => "required|exists:quizes_open,id_qo"
+            ]);
+        }catch(Exception $e){
+            return response()->json(["response"=>422]);
+        }
+        $qo = QuizOpen::destroy($data["id"]);
+        if($qo){
+            $ret = 200;
+        }else{
+            $ret = 500;
+        }
+        return response()->json(["response"=>$ret]);
     }
     public function ajaxGroupsForOpen(Request $r){
         try{
