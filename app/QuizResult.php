@@ -14,9 +14,6 @@ class QuizResult extends Model
         return $this->belongsTo('\App\User','student_id');
     }
     public function quiz(){
-        return $this->belongsTo('\App\Quiz','quiz_id');
-    }
-    public function group(){
-        return $this->belongsTo('\App\Group','group_id');
+        return $this->belongsTo('\App\QuizOpen','open_id');
     }
 }

@@ -35,6 +35,7 @@ Route::middleware(['isAjax'])->group(function (){
         Route::get('/ajax/getGroupsForOpen','QuizOpenController@ajaxGroupsForOpen');
         Route::get('/ajax/getQuizOpenings','QuizOpenController@ajaxLoadOpens');
         Route::post('/ajax/removeQuizOpen','QuizOpenController@ajaxRemoveOpen');
+        Route::post('/ajax/updateOpenTime','QuizOpenController@ajaxUpdateTimeOpen');
     });
 
 });
@@ -110,7 +111,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/quiz/{id}','QuizController@postQuiz')->name('quiz.postQuiz')->where('id','[a-z0-9^-]+');
     Route::get('/quiz/{id}/info','QuizController@getInfoQuiz')->name('quiz.infoQuiz')->where('id','[a-z0-9^-]+');
     Route::post('/quiz/{id}/info','QuizController@postInfoQuiz')->name('quiz.postInfoQuiz')->where('id','[a-z0-9^-]+');
-
+    Route::get('/results','QuizController@studentResults')->name('student.results')->middleware('hasRole:user');
     Route::get('/quiz/{id}/passmanage','QuizOpenController@getManager')->name('quiz.passmanage')->middleware('hasRole:teacher,admin')->where('id','[a-z0-9^-]+');
 });
 ?>

@@ -16,6 +16,9 @@ class QuizOpen extends Model
     public function group(){
         return $this->belongsTo('App\Group','group_id');
     }
+    public function results(){
+        return $this->hasMany('\App\QuizResult','open_id')->orderBy('submitted_at','asc');
+    }
     public function isActive(){
         $this->opened_at->isPast();
         return $this->opened_at->isPast() && !$this->closing_at->isPast();

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class Course extends Model{
     public $timestamps = false;
@@ -46,6 +47,20 @@ class Course extends Model{
             }
         }
         return true;
+    }
+
+    /**
+     * Is user in the quiz more than once?
+     * @param \App\User $user
+     * @return boolean
+     */
+    public function oneStudentMoreGroups(User $user){
+        $groups = DB::table('gro_cou')->join('use_gro','gro_cou.group_id','=','use_gro.group_id')->select('gro_cou.course_id')->where('use_gro.student_id','=',$user->id_u)->where('gro_cou.course_id','=',$this->id_c)->get();
+        //dd(DB::table('gro_cou')->join('use_gro','gro_cou.group_id','=','use_gro.group_id')->join('users','use_gro.student_id','=','users.id_u')->select('users.email')->where('use_gro.student_id','=',$user->id_u)->where('gro_cou.course_id','=',$this->id_c)->get());
+        if(sizeof($groups) > 1){
+            return true;
+        }
+        return false;
     }
     public function getQuizes($private = false,$includeEditMode = false){
         return $this->quizes->where('isPrivate',$private);

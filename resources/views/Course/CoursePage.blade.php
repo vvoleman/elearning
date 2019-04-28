@@ -93,10 +93,11 @@
                         <b>Nutné otevření</b>
                         <div class="d-md-flex col-md-12 flex-wrap">
                             @foreach($c->getQuizes(true) as $m)
+                                @if($m->canAccess(Auth::user()) || $c->hasPerms(Auth::user()))
                                 <div class="col-md-4 st">
-                                    <a class="no-a" href="{{route('quiz.infoQuiz',["id"=>$m->uuid])}}">
+                                    <a class="no-a" @if(!$c->hasPerms(Auth::user()))href="{{route('quiz.infoQuiz',["id"=>$m->uuid])}}"@endif>
                                         <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
-                                            <span>{{$m->name}}</span>
+                                            <span>{{$m->name}} <small>(3.ITA 2018/19)</small></span>
                                             <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
                                                 @if(Auth::user()->role->name != "user")
                                                     <b-dropdown variant="link" size="lg" no-caret right>
@@ -112,6 +113,7 @@
                                         </div>
                                     </a>
                                 </div>
+                                @endif
                             @endforeach
                         </div>
                         <hr>

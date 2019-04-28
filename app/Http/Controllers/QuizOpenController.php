@@ -26,7 +26,7 @@ class QuizOpenController extends Controller
                 "slug"=>$q->course->slug
             ]
         ];
-        return view('QuizOpen/QuizOpen',["q"=>$quiz,"data"=>$this->prepareQuizOpens($q->getOpenedFor())]);
+        return view('QuizOpen/QuizOpen',["q"=>$quiz,"data"=>$this->prepareQuizOpens($q->openedFor()->where('closing_at','>',Carbon::now())->get())]);
     }
     private function checkQuiz($uuid){
         $q = Quiz::where('uuid',$uuid)->get();
@@ -73,7 +73,7 @@ class QuizOpenController extends Controller
         }
         $q = Quiz::where('uuid',$data["quiz"])->get()[0];
         $this->canAccess($q,Auth::user());
-        return response()->json(["data"=>$this->prepareQuizOpens($q->getOpenedFor())]);
+        return response()->json(["data"=>$this->prepareQuizOpens($q->openedFor()->where('closing_at','>',Carbon::now())->get())]);
     }
     public function ajaxCreateOpen(Request $r){
         try{
@@ -116,6 +116,8 @@ class QuizOpenController extends Controller
         $qo->closing_at = $data["closing_at"];
         if($qo->save()){
             return response()->json(["response"=>200]);
+        }else{
+            return response()->json(["response"=>500]);
         }
     }
     public function ajaxRemoveOpen(Request $r){
@@ -153,5 +155,54 @@ class QuizOpenController extends Controller
         }
         $t = new Toolkit();
         return response()->json(["data"=>$t->parseGroups($return )]);
+    }
+    public function ajaxUpdateTimeOpen(Request $r){
+        try{
+            $data = $r->validate([
+                "id" => "required|exists:quizes_open,id_qo",
+                "opened_at" => "required|integer",
+                "closing_at" => "required|integer"
+
+            ]);
+        }catch (\Exception $e){
+            return response()->json(["response"=>422]);
+        }
+        $qo = QuizOpen::where('id_qo',$data["id"])->get()[0];
+        $this->canAccess($qo->quiz,Auth::user());
+        $temp = false;
+        if(!$qo->isActive()){
+            $time = time();
+            if($data["opened_at"] < $time){
+                $data["opened_at"] = $time;
+                $temp = $time;
+            }
+        }elseif($qo->isActive() && ($data["opened_at"] < $qo->opened_at->timestamp)){
+            $data["opened_at"] = $qo->opened_at->timestamp;
+            $temp = $qo->opened_at->timestamp;
+        }
+        $data["opened_at"] = ($qo->isActive() && ($data["opened_at"] < $temp)) ? $temp : $data["opened_at"];
+        if($data["closing_at"] <= $temp || $data["opened_at"] >= $data["closing_at"]){
+            dd([$temp,$data["opened_at"],$data["closing_at"]]);
+            return response()->json(["response" => 422]);
+        }
+        $data["closing_at"] = Carbon::createFromTimestamp($data["closing_at"]);
+        $data["opened_at"] = Carbon::createFromTimestamp($data["opened_at"]);
+        //////////////////////////////////////////////
+        $collides = QuizOpen::where('id_qo','!=',$qo->id_qo)->where('quiz_id',$qo->quiz->id_q)->where('group_id',$qo->group->id_g)->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereRaw('((opened_at BETWEEN ? AND ?) OR (closing_at BETWEEN ? AND ?))',[$data["opened_at"],$data["closing_at"],$data["opened_at"],$data["closing_at"]])->get();
+        if(sizeof($collides) != 0){
+            $ids = [];
+            foreach($collides as $c){
+                $ids[] = $c->id_qo;
+            }
+            return response()->json(["response"=>500,"quizes"=>$ids]);
+        }
+        ///////////////////////////////////////
+        $qo->opened_at = $data["opened_at"];
+        $qo->closing_at = $data["closing_at"];
+        if($qo->save()){
+            return response()->json(["response"=>200]);
+        }else{
+            return response()->json(["response"=>500]);
+        }
     }
 }

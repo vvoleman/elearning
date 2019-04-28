@@ -22,6 +22,9 @@
         @case('teacher')
         <b-dropdown-item href="{{route('admin.accounts')}}">Účty</b-dropdown-item>
         @break
+        @case('user')
+        <b-dropdown-item href="{{route('student.results')}}">Výsledky testů</b-dropdown-item>
+        @break
     @endswitch
     <b-dropdown-item href="{{route('account.settings')}}">Nastavení</b-dropdown-item>
     <b-dropdown-divider></b-dropdown-divider>

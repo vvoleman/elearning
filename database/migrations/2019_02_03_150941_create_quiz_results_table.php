@@ -15,17 +15,15 @@ class CreateQuizResultsTable extends Migration
     {
         Schema::create('quiz_results', function (Blueprint $table) {
             $table->increments('id_qr');
-            $table->unsignedInteger('quiz_id');
+            $table->unsignedInteger('open_id');
             $table->unsignedInteger('student_id');
-            $table->unsignedInteger('group_id');
             $table->dateTime('started_at');
             $table->dateTime('submitted_at');
             $table->tinyInteger('percentage');
             $table->text('context');
 
-            $table->foreign('quiz_id')->references('id_q')->on('quizes');
+            $table->foreign('open_id')->references('id_qo')->on('quizes_open');
             $table->foreign('student_id')->references('id_u')->on('users');
-            $table->foreign('group_id')->references('id_g')->on('groups');
         });
     }
 

@@ -60,8 +60,7 @@ class Quiz extends Model
     public function saveResult($results,$startedAt){
         $qr = new QuizResult();
         $qr->student_id = Auth::user()->id_u;
-        $qr->group_id = 1;
-        $qr->quiz_id = $this->id_q;
+        $qr->open_id = "????";
         $qr->started_at = Carbon::createFromTimestamp($startedAt)->toDateTimeString();
         $qr->submitted_at = Carbon::createFromTimestamp(time())->toDateTimeString();
         $sum = 0;

@@ -7,6 +7,7 @@ use App\Course;
 use App\QuestionType;
 use App\Option;
 use App\Question;
+use App\QuizResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Own\Toolkit;
@@ -39,6 +40,11 @@ class QuizController extends Controller
             $res = 500;
         }
 
+    }
+    public function studentResults(){
+        $user = Auth::user();
+        $results = QuizResult::where('student_id',$user->id_u)->get();
+        dd($results);
     }
     public function getNewQuiz($slug){
         if(Course::where('slug',$slug)->count() > 0){
