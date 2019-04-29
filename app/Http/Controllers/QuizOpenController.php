@@ -100,7 +100,9 @@ class QuizOpenController extends Controller
         //////////////////////////////////////////////
         $q = Quiz::where('uuid',$data["quiz"])->get()[0];
         $this->canAccess($q,Auth::user());
-        $collides = QuizOpen::where('quiz_id',$q->id_q)->where('group_id',$data["group"])->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereBetween('opened_at',[$data["opened_at"],$data["closing_at"]])->orWhereBetween('closing_at',[$data["opened_at"],$data["closing_at"]])->get();
+        //return response()->json(["data"=>$data]);
+        $collides = QuizOpen::where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereBetween('opened_at',[$data["opened_at"],$data["closing_at"]])->orWhereBetween('closing_at',[$data["opened_at"],$data["closing_at"]])->where('quiz_id',$q->id_q)->where('group_id',$data["group"])->get();
+
         if(sizeof($collides) != 0){
             $ids = [];
             foreach($collides as $c){
@@ -128,8 +130,9 @@ class QuizOpenController extends Controller
         }catch(Exception $e){
             return response()->json(["response"=>422]);
         }
-        $qo = QuizOpen::destroy($data["id"]);
-        if($qo){
+        $qo = QuizOpen::find($data["id"]);
+        $qo->deleted = true;
+        if($qo->save()){
             $ret = 200;
         }else{
             $ret = 500;

@@ -204,7 +204,7 @@ input:not([type=checkbox]),textarea{
     padding: 22px 18px;
     border-radius:0px !important;
     transition: 0.3s;
- }
+}
 .btn-gray{
     background: #272C33 !important;
     color:white !important;
@@ -501,10 +501,10 @@ input:checked + .slider:before {
     box-shadow: 3px 0px 13px 0px rgba(0,0,0,0.5);
 }
 .editc .sidebar hr{
-background-color:#CECECE;
+    background-color:#CECECE;
 }
 .editc{
-font-family:"Century Gothic";
+    font-family:"Century Gothic";
 
 }
 .editc .sidebar .list{
@@ -704,5 +704,14 @@ a.page-link{
 .fa-check-circle.not_active{
     color:#333;
 }
-.btn-d
-
+.result_perc{
+    height:150px;
+    background: #b91d19;
+    width:50px;
+    margin:10px;
+}
+.perc_cont{
+    position: relative;
+    background: #1b4b72;
+    width: 50px;
+}

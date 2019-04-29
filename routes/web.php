@@ -105,13 +105,14 @@ Route::middleware('auth')->group(function(){
 
 /* QUIZES */
 Route::middleware('auth')->group(function(){
+    Route::get('/quiz/{id}/passmanage','QuizOpenController@getManager')->name('quiz.passmanage')->middleware('hasRole:teacher,admin')->where('id','[a-z0-9^-]+');
     Route::get('/course/{slug}/quiz/new','QuizController@getNewQuiz')->name('quiz.newQuiz')->middleware('hasRole:teacher,admin')->where('slug', '[a-zA-Z0-9_]+');
     Route::post('/course/{slug}/quiz/new','QuizController@postNewQuiz')->name('quiz.postNewQuiz')->middleware('hasRole:teacher,admin')->where('slug', '[a-zA-Z0-9_]+');
-    Route::get('/quiz/{id}','QuizController@getQuiz')->name('quiz.quiz')->where('id','[a-z0-9^-]+');
-    Route::post('/quiz/{id}','QuizController@postQuiz')->name('quiz.postQuiz')->where('id','[a-z0-9^-]+');
-    Route::get('/quiz/{id}/info','QuizController@getInfoQuiz')->name('quiz.infoQuiz')->where('id','[a-z0-9^-]+');
-    Route::post('/quiz/{id}/info','QuizController@postInfoQuiz')->name('quiz.postInfoQuiz')->where('id','[a-z0-9^-]+');
+    Route::get('/quiz/{id}/{open_id}','QuizController@getQuiz')->name('quiz.quiz')->where('id','[a-z0-9^-]+');
+    Route::post('/quiz/{id}/{open_id}','QuizController@postQuiz')->name('quiz.postQuiz')->where('id','[a-z0-9^-]+')->where('open_id','[0-9]+');
+    Route::get('/quiz/{id}/{open_id}/info','QuizController@getInfoQuiz')->name('quiz.infoQuiz')->where('id','[a-z0-9^-]+')->where('open_id','[0-9]+');
+    Route::post('/quiz/{id}/{open_id}/info','QuizController@postInfoQuiz')->name('quiz.postInfoQuiz')->where('id','[a-z0-9^-]+')->where('open_id','[0-9]+');
     Route::get('/results','QuizController@studentResults')->name('student.results')->middleware('hasRole:user');
-    Route::get('/quiz/{id}/passmanage','QuizOpenController@getManager')->name('quiz.passmanage')->middleware('hasRole:teacher,admin')->where('id','[a-z0-9^-]+');
+    Route::get('/results/{open_id}','QuizController@getQuizResult')->name('quiz.getQuizResult')->where('open_id','[0-9]+');
 });
 ?>

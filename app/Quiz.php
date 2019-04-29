@@ -3,10 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\QuizOpen;
 use App\Group;
+use Illuminate\Support\Facades\DB;
 
 class Quiz extends Model
 {
@@ -24,7 +26,7 @@ class Quiz extends Model
         return $this->belongsTo('\App\Module','referencedModule');
     }
     public function openedFor(){
-        return $this->hasMany('\App\QuizOpen','quiz_id')->orderBy('closing_at','asc');
+        return $this->hasMany('\App\QuizOpen','quiz_id')->where('deleted',false)->orderBy('closing_at','asc');
     }
     public function getOpenedFor($active = true){
         if($active){
@@ -32,6 +34,14 @@ class Quiz extends Model
         }else{
             return $this->openedFor->where('opened_at','>=',Carbon::now())->where('closing_at','<=',Carbon::now())->orWhere('');
         }
+    }
+    public function maxPoints(){
+        $sum = 0;
+        $data = $this->questions;
+        foreach($data as $d){
+            $sum += DB::table('que_ans')->where('question_id',$d->id_quest)->count();
+        }
+        return $sum;
     }
     public function isGroupActive($group){
         try{
@@ -48,7 +58,8 @@ class Quiz extends Model
                 $og = $g->opened_quizes;
                 for($i=0;$i<sizeof($og);$i++){
                     if($og[$i]->quiz_id == $this->id_q){
-                        if($og[$i]->isActive()){
+                        $qr = QuizResult::where('open_id',$og[$i]->id_qo)->where('student_id',$user->id_u)->count();
+                        if(($qr == 0) && $og[$i]->isActive()){
                             $boo = true;
                         }
                     }
@@ -57,10 +68,10 @@ class Quiz extends Model
         }
         return $boo;
     }
-    public function saveResult($results,$startedAt){
+    public function saveResult($results,$startedAt,$open){
         $qr = new QuizResult();
         $qr->student_id = Auth::user()->id_u;
-        $qr->open_id = "????";
+        $qr->open_id = $open;
         $qr->started_at = Carbon::createFromTimestamp($startedAt)->toDateTimeString();
         $qr->submitted_at = Carbon::createFromTimestamp(time())->toDateTimeString();
         $sum = 0;
@@ -68,14 +79,15 @@ class Quiz extends Model
             $sum+=$r["result"];
         }
         $qr->percentage = floor(100/sizeof($results)*$sum*100)/100;
-        $qr->context = "";
+        $c = new Collection(["points"=>$sum]);
+        $qr->context = $c->toJSON();
         if($qr->save()){
             return $qr->percentage;
         }else{
             return false;
         }
     }
-    public function checkAnswers($answers,$startedAt){
+    public function checkAnswers($answers,$startedAt,$open){
         $results = [];
         for($i=0;$i<$this->questions->count();$i++){
             $q = $this->questions[$i];
@@ -97,6 +109,6 @@ class Quiz extends Model
 
         }
         //$question = $this->questions->find($answers[0]["id"]);
-        return $this->saveResult($results,$startedAt);
+        return $this->saveResult($results,$startedAt,$open);
     }
 }

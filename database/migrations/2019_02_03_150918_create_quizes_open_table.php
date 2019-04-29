@@ -19,6 +19,7 @@ class CreateQuizesOpenTable extends Migration
             $table->unsignedInteger('group_id');
             $table->dateTime('opened_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('closing_at');
+            $table->boolean('deleted')->default(false);
 
 
 

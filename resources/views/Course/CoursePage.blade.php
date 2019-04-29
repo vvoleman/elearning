@@ -92,18 +92,41 @@
                     <div slot="body">
                         <b>Nutné otevření</b>
                         <div class="d-md-flex col-md-12 flex-wrap">
-                            @foreach($c->getQuizes(true) as $m)
-                                @if($m->canAccess(Auth::user()) || $c->hasPerms(Auth::user()))
+                            @if($c->hasPerms(Auth::user()))
+                                @foreach($c->getNormalQuizes(true) as $m)
+                                        <div class="col-md-4 st">
+                                            <a class="no-a">
+                                                <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                                    <span>{{$m->name}}</span>
+                                                    <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
+                                                        @if(Auth::user()->role->name != "user")
+                                                            <b-dropdown variant="link" size="lg" no-caret right>
+                                                                <template slot="button-content"><i class="fas fa-ellipsis-v"></i></template>
+
+                                                                <b-dropdown-item href="{{route('quiz.passmanage',["id"=>$m->uuid])}}">Správa přístupu</b-dropdown-item>
+                                                                <b-dropdown-item href="#">Upravit</b-dropdown-item>
+                                                                <b-dropdown-item href="#">Smazat</b-dropdown-item>
+                                                            </b-dropdown>
+
+                                                        @endif
+                                                    </a>
+                                                </div>
+                                            </a>
+                                        </div>
+                                @endforeach
+                            @else
+                            @foreach($c->getQuizesOpen(true) as $m)
+                                @if(($m->quiz->canAccess(Auth::user()) && !$m->didSubmit(Auth::user())) || $c->hasPerms(Auth::user()))
                                 <div class="col-md-4 st">
-                                    <a class="no-a" @if(!$c->hasPerms(Auth::user()))href="{{route('quiz.infoQuiz',["id"=>$m->uuid])}}"@endif>
+                                    <a class="no-a" @if(!$c->hasPerms(Auth::user()))href="{{route('quiz.infoQuiz',["id"=>$m->quiz->uuid,"open_id"=>$m->id_qo])}}"@endif>
                                         <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
-                                            <span>{{$m->name}} <small>(3.ITA 2018/19)</small></span>
-                                            <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->order])}}" class="no-a">
+                                            <span>{{$m->quiz->name}} <small>({{$m->group->name}})</small></span>
+                                            <a href="{{route('module.editModule',["slug"=>$c->slug,"order"=>$m->quiz->order])}}" class="no-a">
                                                 @if(Auth::user()->role->name != "user")
                                                     <b-dropdown variant="link" size="lg" no-caret right>
                                                         <template slot="button-content"><i class="fas fa-ellipsis-v"></i></template>
 
-                                                        <b-dropdown-item href="{{route('quiz.passmanage',["id"=>$m->uuid])}}">Správa přístupu</b-dropdown-item>
+                                                        <b-dropdown-item href="{{route('quiz.passmanage',["id"=>$m->quiz->uuid])}}">Správa přístupu</b-dropdown-item>
                                                         <b-dropdown-item href="#">Upravit</b-dropdown-item>
                                                         <b-dropdown-item href="#">Smazat</b-dropdown-item>
                                                     </b-dropdown>
@@ -115,11 +138,12 @@
                                 </div>
                                 @endif
                             @endforeach
+                                @endif
                         </div>
                         <hr>
                         <b>Volné</b>
                         <div class="d-md-flex col-md-12 flex-wrap">
-                            @foreach($c->getQuizes() as $m)
+                            @foreach($c->getQuizesOpen() as $m)
                                 <div class="col-md-4 st">
                                     <a class="no-a" href="{{route('quiz.infoQuiz',["id"=>$m->uuid])}}">
                                         <div class="col-md-12 student_box d-flex align-items-center justify-content-between">

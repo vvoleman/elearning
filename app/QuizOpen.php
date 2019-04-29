@@ -20,7 +20,10 @@ class QuizOpen extends Model
         return $this->hasMany('\App\QuizResult','open_id')->orderBy('submitted_at','asc');
     }
     public function isActive(){
-        $this->opened_at->isPast();
         return $this->opened_at->isPast() && !$this->closing_at->isPast();
+    }
+    public function didSubmit(User $user){
+        $r = $this->results()->where('student_id',$user->id_u);
+        return $r->count() > 0;
     }
 }

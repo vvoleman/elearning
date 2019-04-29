@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use App\Quiz;
 use Illuminate\Http\Request;
 use App\Group;
 use App\Course;

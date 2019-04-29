@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use App\Quiz;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Course extends Model{
@@ -62,7 +64,15 @@ class Course extends Model{
         }
         return false;
     }
-    public function getQuizes($private = false,$includeEditMode = false){
-        return $this->quizes->where('isPrivate',$private);
+    public function getQuizesOpen($private = false,$includeEditMode = false){
+        $data = new Collection();
+        $quizes = Quiz::select('id_q')->where('course_id',$this->id_c)->where('isPrivate',$private)->get();
+        foreach($quizes as $q){
+            $data = $data->merge($q->getOpenedFor());
+        }
+        return $data;
+    }
+    public function getNormalQuizes($private = false){
+        return Quiz::where('course_id',$this->id_c)->where('isPrivate',$private)->get();
     }
 }

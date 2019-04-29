@@ -33,7 +33,7 @@ namespace App\Own;
             return $pass;
         }
 
-        public function parseQuiz($quiz){
+        public function parseQuiz($quiz,$open){
             $ret = [];
             foreach($quiz->questions as $q){
                 $ret[] = [
@@ -45,7 +45,7 @@ namespace App\Own;
                 ];
             }
             $data = [
-                "submitTo" => route('quiz.postQuiz',["id"=>$quiz->uuid]),
+                "submitTo" => route('quiz.postQuiz',["id"=>$quiz->uuid,"open_id"=>$open]),
                 "csrf" => csrf_token(),
                 "minutesAvailable" => $quiz->minutesAvailable,
                 "randomOrder" => $quiz->randomOrder,

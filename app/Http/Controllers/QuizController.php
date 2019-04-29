@@ -6,9 +6,12 @@ use App\Quiz;
 use App\Course;
 use App\QuestionType;
 use App\Option;
+use App\User;
 use App\Question;
+use App\QuizOpen;
 use App\QuizResult;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Str;
 use App\Own\Toolkit;
 use Illuminate\Support\Facades\Auth;
@@ -20,22 +23,22 @@ class QuizController extends Controller
     public function __construct(){
         $this->toolkit = new Toolkit();
     }
-    public function getQuiz(Request $request,$id){
+    public function getQuiz(Request $request,$id,$open){
         $q = $this->checkUUID($id);
-        /*if(!$request->session()->has('quizrun') || ($id!=$request->session()->get('quizrun')) || !$q->canAccess(Auth::user()) || $request->session()->has('timestart')){
-            $request->session()->flash('danger',(!$q->canAccess(Auth::user())) ? 'Test pro vás není otevřen!' : 'K testu není možno přistoupit');
-            return redirect()->route('quiz.infoQuiz',["id"=>$id]);
-        }*/
+//        if(!$request->session()->has('quizrun') || ($id!=$request->session()->get('quizrun')) || !$q->canAccess(Auth::user()) || $request->session()->has('timestart')){
+//            $request->session()->flash('danger',(!$q->canAccess(Auth::user())) ? 'Test pro vás není otevřen!' : 'K testu není možno přistoupit');
+//            return redirect()->route('quiz.infoQuiz',["id"=>$id,"open_id"=>$open]);
+//        }
         $request->session()->put('timestart',time());
-        $data = collect($this->toolkit->parseQuiz($q))->toJson();
+        $data = collect($this->toolkit->parseQuiz($q,$open))->toJson();
         return view('Quiz/Quiz',["q"=>$q,"json"=>$data]);
     }
-    public function postQuiz(Request $r,$id){ //dodělat zabezpečení
+    public function postQuiz(Request $r,$id,$open){ //dodělat zabezpečení
         $q = $this->checkuuid($id);
         $data = json_decode($r->data);
-        $isitsaved = $q->checkanswers((empty($data->answers)) ? [] : $data->answers,(int)$data->startdatetime);
+        $isitsaved = $q->checkanswers((empty($data->answers)) ? [] : $data->answers,(int)$data->startdatetime,$open);
         if($isitsaved != false){
-            return response()->json(["response"=>200,"perc"=>$isitsaved]);
+            return redirect()->route('quiz.getQuizResult',["open_id"=>$open]);
         }else{
             $res = 500;
         }
@@ -44,7 +47,7 @@ class QuizController extends Controller
     public function studentResults(){
         $user = Auth::user();
         $results = QuizResult::where('student_id',$user->id_u)->get();
-        dd($results);
+        return view('Quiz/Resultlist',["results"=>$results]);
     }
     public function getNewQuiz($slug){
         if(Course::where('slug',$slug)->count() > 0){
@@ -116,17 +119,41 @@ class QuizController extends Controller
             return redirect()->route('quiz.newQuiz',["slug"=>$slug]);
         }
     }
-    public function getInfoQuiz($id){
+    public function getInfoQuiz($id,$qo){
         $q = $this->checkUUID($id);
-        return view('Quiz/Info',["q"=>$q,"canAccess"=>$q->canAccess(Auth::user())]);
+        $open = $this->checkOpen($qo);
+        return view('Quiz/Info',["q"=>$q,"canAccess"=>$q->canAccess(Auth::user()),"open"=>$open]);
     }
-    public function postInfoQuiz(Request $request,$id){
+    public function postInfoQuiz(Request $request,$id,$open){
         $q = $this->checkUUID($id);
         if(!$request->session()->has('quizrun')){
             $request->session()->put('quizrun',$id);
         }
-        return redirect()->route('quiz.quiz',["id"=>$id]);
+        return redirect()->route('quiz.quiz',["id"=>$id,"open"=>$open]);
 
+    }
+    public function getQuizResult($open){
+        $open = $this->checkOpen($open,false);
+        if(Auth::user()->role->name != "user"){
+            $get = Input::get('user_id');
+            if(!empty($get)){
+                $usr = User::where('id_u',$get);
+                if($usr->count() > 0){
+                    $user = User::find($get);
+                }else{
+                    abort(404);
+                }
+            }else{
+                abort(404);
+            }
+        }else{
+            $user = Auth::user();
+        }
+        $r = QuizResult::where('open_id',$open->id_qo)->where('student_id',$user->id_u)->get();
+        if($r->count() == 0){
+            return view('Quiz/ResultNotFound',["user" => $user]);
+        }
+        return view('Quiz/Result',["result"=>$r[0],"o"=>$open]);
     }
     private function questionsOk($questions){
         for($i = 0;$i<sizeof($questions);$i++){
@@ -164,5 +191,18 @@ class QuizController extends Controller
             abort(500);
         }
         abort(404);
+    }
+    private function checkOpen($id,$active = true){
+        $open = QuizOpen::where('id_qo',$id)->get();
+        if(sizeof($open) == 0){
+            abort(404);
+        }
+        $open = $open[0];
+        if($active){
+            if(!$open->isActive()){
+                abort(404);
+            }
+        }
+        return $open;
     }
 }
