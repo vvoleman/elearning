@@ -94613,8 +94613,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //~~ = Math.floor()
         },
         end: function end() {
-            document.getElementById("form").submit();
-            alert('Vaše výsledky se nyní zpracují!');
+            //document.getElementById("form").submit();
+            //alert('Vaše výsledky se nyní zpracují!');
         }
     },
     computed: {
@@ -95569,22 +95569,9 @@ var render = function() {
                   "sticky-top login_form_div col-12 d-flex justify-content-between"
               },
               [
-                _c(
-                  "div",
-                  [
-                    _vm._v(
-                      "čas: " + _vm._s(_vm.timeLeft) + "\n                "
-                    ),
-                    _c("Timer", {
-                      attrs: {
-                        startDate: _vm.startDateTime,
-                        time: _vm.minutesAvailable
-                      },
-                      on: { end: _vm.end, countDown: _vm.countDown }
-                    })
-                  ],
-                  1
-                ),
+                _c("div", [
+                  _vm._v("čas: " + _vm._s(_vm.timeLeft) + "\n                ")
+                ]),
                 _vm._v(" "),
                 _c("div", [
                   _c(

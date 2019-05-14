@@ -715,3 +715,57 @@ a.page-link{
     background: #1b4b72;
     width: 50px;
 }
+
+.sidebar{
+    background: #333;
+    color:white;
+    min-height: 100% !important;
+    position: fixed !important;
+    z-index:1;
+    padding:5px;
+    box-shadow: 2px 0px 6px -2px rgba(0,0,0,0.75);
+}
+.sidebar ul{
+    list-style-type: none;
+    padding:0;
+}
+.sidebar li{
+    padding:12px;
+}
+.sidebar li:hover{
+    background:#999;
+}
+.timebar{
+    width:150px;
+    height: 30px;
+    background: #ccc;
+    overflow: hidden;
+    border-radius:3px;
+}
+.time{
+    height: 100%;
+    background-color: #678913;
+
+}
+.infobar{
+    background-color: #444;
+    padding:15px;
+    color:white;
+box-shadow: 0px 2px 6px -2px rgba(0,0,0,0.75);
+
+}
+.to_submit > *{
+    padding:10px;
+}
+.to_submit span{
+
+}
+.q_left{
+    font-size:20px;
+}
+.marked{
+    opacity:0.2;
+}
+.question{
+    padding:15px;
+}

@@ -5,7 +5,7 @@
         <div v-if="start">
             <div class="sticky-top login_form_div col-12 d-flex justify-content-between">
                 <div>čas: {{timeLeft}}
-                    <Timer :startDate="startDateTime" :time="minutesAvailable" @end="end" @countDown="countDown"></Timer>
+                    <!--<Timer :startDate="startDateTime" :time="minutesAvailable" @end="end" @countDown="countDown"></Timer>!-->
                 </div>
                 <div><button type="button" @click="end">Odeslat</button></div>
             </div>
@@ -60,8 +60,8 @@
                 //~~ = Math.floor()
             },
             end(){
-                document.getElementById("form").submit();
-                alert('Vaše výsledky se nyní zpracují!');
+                //document.getElementById("form").submit();
+                //alert('Vaše výsledky se nyní zpracují!');
             }
         },
         computed:{

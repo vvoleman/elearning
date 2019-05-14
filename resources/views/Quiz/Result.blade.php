@@ -6,7 +6,7 @@
             Kurz
         </a>
         <div>
-            <h1 class="text-center">Rovnice paraboly</h1>
+            <h1 class="text-center">{{$o->quiz->name}}</h1>
             <hr>
             <div class="d-md-flex justify-content-between">
                 <div>
