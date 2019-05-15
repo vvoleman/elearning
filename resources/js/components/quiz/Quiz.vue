@@ -2,18 +2,10 @@
     <form method="post" :action="submitTo" id="form">
         <input type="hidden" name="_token" :value="csrf">
         <input type="hidden" name="data" :value="JSON.stringify(toSubmit)"/>
-        <div v-if="start">
-            <div class="sticky-top login_form_div col-12 d-flex justify-content-between">
-                <div>čas: {{timeLeft}}
-                    <!--<Timer :startDate="startDateTime" :time="minutesAvailable" @end="end" @countDown="countDown"></Timer>!-->
-                </div>
-                <div><button type="button" @click="end">Odeslat</button></div>
-            </div>
-            <div class="col-md-6 mx-auto">
-                <quiz-frame :questions="questions" v-model="answers">
-
-                </quiz-frame>
-            </div>
+        <div>
+            <QuestionList :questions="questions" :curr_question="selected" @question_selected="setSelected"></QuestionList>
+            <InfoBar :time_limit="timeLeft" @end="end" @move="move" :curr_question="q_data" @changeBookmark="changeBookmark" :questions_left=""></InfoBar>
+            <QuestionBoard :question="" @value_changed="" ></QuestionBoard>
         </div>
     </form>
 </template>
@@ -27,7 +19,6 @@
         props:["datas"],
         data(){
             return {
-                start:false,
                 minutesAvailable:"",
                 randomOrder:"",
                 questions:[],
@@ -36,7 +27,8 @@
                 answers:[],
                 submitTo:"",
                 csrf:"",
-                output:""
+                selected:0,
+                bookmarks:[]
             }
         },
         mounted(){
@@ -44,24 +36,31 @@
             this.minutesAvailable = json.minutesAvailable;
             this.randomOrder = json.randomOrder;
             this.questions = json.questions;
-            console.log(this.questions);
             this.startDateTime = new Date();
             this.submitTo = json.submitTo;
             this.csrf = json.csrf;
-            this.start = true;
         },
         methods: {
-            countDown(time){
-                this.timeLeft = this.toMinutes(time);
-            },
-            toMinutes(s){
-                var temp = s%60;
-                return (~~(s/60))+":"+((temp<10)? '0' : '')+temp;
-                //~~ = Math.floor()
-            },
             end(){
                 //document.getElementById("form").submit();
                 //alert('Vaše výsledky se nyní zpracují!');
+            },
+            move(dir){
+                if(typeof dir != "boolean"){return;}//verifying value
+
+                var val;
+                if(dir){
+                    val = (this.selected > 0) ? this.selected-1 : 0; 
+                }else{
+                    val = (this.selected < this.questions.length-1) ? this.selected+1 : this.questions.length-1;
+                }
+                this.selected = val;
+            },
+            setSelected(index){
+                if(!(index >= 0 && index < this.questions.length)){return;} //verifying value
+
+                this.selected = index;
+
             }
         },
         computed:{
@@ -70,16 +69,24 @@
                     answers:this.answers,
                     startdatetime:this.startDateTime.getTime()
                 }
+            },
+            q_data(){
+                return {
+                    index:this.selected,
+                    hasBookmark:(this.bookmarks.find(this.selected) == true) ? true : false,
+                    canLeft:(this.selected > 0),
+                    canRight:(this.selected < this.questions.length-1)
+                }
             }
         }
     }
 </script>
 
 <style scoped>
-    .dotted{
-        border-bottom: solid 1px #333;
-        color:#333;
-        font-weight: bold;
-        text-decoration: none;
-    }
+.dotted{
+    border-bottom: solid 1px #333;
+    color:#333;
+    font-weight: bold;
+    text-decoration: none;
+}
 </style>

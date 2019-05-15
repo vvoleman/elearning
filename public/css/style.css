@@ -725,6 +725,11 @@ a.page-link{
     padding:5px;
     box-shadow: 2px 0px 6px -2px rgba(0,0,0,0.75);
 }
+@media only screen and (max-width: 767px){
+    .sidebar{
+        position:static !important;
+    }
+}
 .sidebar ul{
     list-style-type: none;
     padding:0;
@@ -767,5 +772,13 @@ box-shadow: 0px 2px 6px -2px rgba(0,0,0,0.75);
     opacity:0.2;
 }
 .question{
-    padding:15px;
+    padding:60px !important;
+    word-break: break-all;
+}
+
+.question input[type=radio], .question input[type=checkbox]{
+    box-shadow: none;
+}
+.question .pad{
+    margin-left:30px;
 }

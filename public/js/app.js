@@ -94535,7 +94535,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.dotted[data-v-4503dcb4]{\n    border-bottom: solid 1px #333;\n    color:#333;\n    font-weight: bold;\n    text-decoration: none;\n}\n", ""]);
+exports.push([module.i, "\n.dotted[data-v-4503dcb4]{\r\n    border-bottom: solid 1px #333;\r\n    color:#333;\r\n    font-weight: bold;\r\n    text-decoration: none;\n}\r\n", ""]);
 
 // exports
 
@@ -94562,14 +94562,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -94579,7 +94571,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ["datas"],
     data: function data() {
         return {
-            start: false,
             minutesAvailable: "",
             randomOrder: "",
             questions: [],
@@ -94588,7 +94579,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             answers: [],
             submitTo: "",
             csrf: "",
-            output: ""
+            selected: 0,
+            bookmarks: []
         };
     },
     mounted: function mounted() {
@@ -94596,25 +94588,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.minutesAvailable = json.minutesAvailable;
         this.randomOrder = json.randomOrder;
         this.questions = json.questions;
-        console.log(this.questions);
         this.startDateTime = new Date();
         this.submitTo = json.submitTo;
         this.csrf = json.csrf;
-        this.start = true;
     },
 
     methods: {
-        countDown: function countDown(time) {
-            this.timeLeft = this.toMinutes(time);
-        },
-        toMinutes: function toMinutes(s) {
-            var temp = s % 60;
-            return ~~(s / 60) + ":" + (temp < 10 ? '0' : '') + temp;
-            //~~ = Math.floor()
-        },
         end: function end() {
             //document.getElementById("form").submit();
             //alert('Vaše výsledky se nyní zpracují!');
+        },
+        move: function move(dir) {
+            if (typeof dir != "boolean") {
+                return;
+            } //verifying value
+
+            var val;
+            if (dir) {
+                val = this.selected > 0 ? this.selected - 1 : 0;
+            } else {
+                val = this.selected < this.questions.length - 1 ? this.selected + 1 : this.questions.length - 1;
+            }
+            this.selected = val;
+        },
+        setSelected: function setSelected(index) {
+            if (!(index >= 0 && index < this.questions.length)) {
+                return;
+            } //verifying value
+
+            this.selected = index;
         }
     },
     computed: {
@@ -94622,6 +94624,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return {
                 answers: this.answers,
                 startdatetime: this.startDateTime.getTime()
+            };
+        },
+        q_data: function q_data() {
+            return {
+                index: this.selected,
+                hasBookmark: this.bookmarks.find(this.selected) == true ? true : false,
+                canLeft: this.selected > 0,
+                canRight: this.selected < this.questions.length - 1
             };
         }
     }
@@ -95540,80 +95550,9 @@ if (false) {
 
 /***/ }),
 /* 424 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    { attrs: { method: "post", action: _vm.submitTo, id: "form" } },
-    [
-      _c("input", {
-        attrs: { type: "hidden", name: "_token" },
-        domProps: { value: _vm.csrf }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "hidden", name: "data" },
-        domProps: { value: JSON.stringify(_vm.toSubmit) }
-      }),
-      _vm._v(" "),
-      _vm.start
-        ? _c("div", [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "sticky-top login_form_div col-12 d-flex justify-content-between"
-              },
-              [
-                _c("div", [
-                  _vm._v("čas: " + _vm._s(_vm.timeLeft) + "\n                ")
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _c(
-                    "button",
-                    { attrs: { type: "button" }, on: { click: _vm.end } },
-                    [_vm._v("Odeslat")]
-                  )
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-6 mx-auto" },
-              [
-                _c("quiz-frame", {
-                  attrs: { questions: _vm.questions },
-                  model: {
-                    value: _vm.answers,
-                    callback: function($$v) {
-                      _vm.answers = $$v
-                    },
-                    expression: "answers"
-                  }
-                })
-              ],
-              1
-            )
-          ])
-        : _vm._e()
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4503dcb4", module.exports)
-  }
-}
+throw new Error("Module build failed: SyntaxError: Unexpected token (1:515)\n    at Parser.pp$4.raise (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:2610:13)\n    at Parser.pp.unexpected (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:637:8)\n    at Parser.pp$3.parseExprAtom (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:2094:10)\n    at Parser.parseExprAtom (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:4372:24)\n    at Parser.pp$3.parseExprSubscripts (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1955:19)\n    at Parser.pp$3.parseMaybeUnary (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1932:17)\n    at Parser.pp$3.parseExprOps (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1874:19)\n    at Parser.pp$3.parseMaybeConditional (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1857:19)\n    at Parser.pp$3.parseMaybeAssign (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1832:19)\n    at Parser.pp$3.parsePropertyValue (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:2310:87)\n    at Parser.parseObj (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:4472:14)\n    at Parser.pp$3.parseExprAtom (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:2077:17)\n    at Parser.parseExprAtom (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:4372:24)\n    at Parser.pp$3.parseExprSubscripts (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1955:19)\n    at Parser.pp$3.parseMaybeUnary (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1932:17)\n    at Parser.pp$3.parseExprOps (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1874:19)\n    at Parser.pp$3.parseMaybeConditional (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1857:19)\n    at Parser.pp$3.parseMaybeAssign (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1832:19)\n    at Parser.pp$3.parsePropertyValue (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:2310:87)\n    at Parser.parseObj (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:4472:14)\n    at Parser.pp$3.parseExprAtom (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:2077:17)\n    at Parser.parseExprAtom (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:4372:24)\n    at Parser.pp$3.parseExprSubscripts (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1955:19)\n    at Parser.pp$3.parseMaybeUnary (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1932:17)\n    at Parser.pp$3.parseExprOps (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1874:19)\n    at Parser.pp$3.parseMaybeConditional (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1857:19)\n    at Parser.pp$3.parseMaybeAssign (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1832:19)\n    at Parser.pp$3.parseExprList (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:2528:20)\n    at Parser.pp$3.parseSubscripts (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1983:29)\n    at Parser.pp$3.parseExprSubscripts (C:\\xampp\\htdocs\\elearning-platform\\node_modules\\vue-template-es2015-compiler\\buble.js:1958:21)");
 
 /***/ }),
 /* 425 */
