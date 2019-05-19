@@ -1,6 +1,6 @@
 <template>
     <div if="context">
-        <h5>{{(context!=null)?context.context.order:""}}. {{question.question}}</h5>
+        <h5>{{index}}. {{question.question}}</h5>
         <div style="padding-left:10px">
             <div class="form-check col-12" v-for="(p,j) in question.options">
                 <input :value="p.id" type="radio" v-model="answer" class="form-check-input">
@@ -11,26 +11,12 @@
 </template>
 
 <script>
+    import BaseType from './BaseType.vue';
     export default {
+        extends:BaseType,
         name: "radio",
-        props:["context","value"],
-        data(){
-          return {
-              answer:this.value
-          }
-        },
         mounted(){
-            console.log(this.context);
-        },
-        computed:{
-            question(){
-                return this.context.context.question;
-            }
-        },
-        watch:{
-            answer(){
-                this.$emit('input',{id:this.question.id,answer:[this.answer]});
-            }
+            this.answer = this.answer[0];
         }
     }
 </script>

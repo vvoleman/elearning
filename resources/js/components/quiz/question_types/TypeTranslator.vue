@@ -7,8 +7,8 @@
     import Checkbox from "./checkbox";
     export default {
         name: "TypeTranslator",
-        components: {Radio},
-        props:["question","order","value"],
+        components: {Radio,Checkbox},
+        props:["question","index","value"],
         data(){
             return {
                 components:{
@@ -20,18 +20,19 @@
         },
         mounted(){
             var componentClass;
-            console.log(this.question)
+            var temp = {
+                question:this.question,
+                    index:this.index,
+                    value:this.value
+            };
+            console.log(temp);
             if(this.components.hasOwnProperty(this.question.type)){
                 componentClass = Vue.extend(this.components[this.question.type]);
                 var instance = new componentClass({
                     propsData:{
-                        context:{
-                            context:{
-                                question:this.question,
-                                order:this.order
-                            },
-                            value:this.value
-                        },
+                        question:this.question,
+                        index:this.index,
+                        value:this.value
                     }
                 });
                 instance.$on('input',function(data){
@@ -43,11 +44,7 @@
                 }
                 this.instance = instance;
             }
-        },
-        watch(){
-
         }
-
     }
 </script>
 
