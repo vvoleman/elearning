@@ -183,7 +183,7 @@
                 this.modals.edit_question = true;
             },
             deleteQuestion(i){
-                if(confirm('Opravdu chcete možnost smazat?')){
+                if(confirm('Opravdu chcete otázku smazat?')){
                     this.questions.splice(i,1);
                 }
             },

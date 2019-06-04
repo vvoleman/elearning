@@ -20,4 +20,7 @@ class Question extends Model
     public function correct_opts(){
         return $this->belongsToMany('\App\Option', 'que_ans', 'question_id', 'option_id');
     }
+    public function getSelectedOptionsIn($qo_id){
+
+    }
 }

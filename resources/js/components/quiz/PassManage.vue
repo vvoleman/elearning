@@ -148,6 +148,8 @@
                             this.addClose();
                         }
                     });
+                }else{
+                    alert("tu");
                 }
             },
             remove(i){

@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div>
-                        <h6>Body: {{$result->points()}}/{{$o->quiz->maxPoints()}}</h6>
+                        <h6>Body: {{$result->points}}/{{$o->quiz->maxPoints()}}</h6>
                         <h6>Úspěšnost: {{$result->percentage}}%</h6>
                     </div>
                 </div>

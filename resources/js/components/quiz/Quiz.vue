@@ -46,6 +46,8 @@
             this.csrf = json.csrf;
 
             this.missing = this.findMissingQuestions(this.answers);
+            console.log(this.startDateTime,new Date());
+
         },
         methods: {
             getAnswersFor(obj){

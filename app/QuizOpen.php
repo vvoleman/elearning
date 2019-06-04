@@ -26,4 +26,7 @@ class QuizOpen extends Model
         $r = $this->results()->where('student_id',$user->id_u);
         return $r->count() > 0;
     }
+    public function getStatsForQuestion($id){
+
+    }
 }

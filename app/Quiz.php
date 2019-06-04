@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\QuizOpen;
 use App\Group;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 
 class Quiz extends Model
@@ -45,7 +46,7 @@ class Quiz extends Model
     }
     public function isGroupActive($group){
         try{
-            return (QuizOpen::where('quiz_id',$this->id_q)->where('group_id',$group->id_g)->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->count() > 0);
+            return (QuizOpen::where('quiz_id',$this->id_q)->where('group_id',$group->id_g)->where('deleted',0)->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->count() > 0);
         }catch(\Exception $e){
             return true;
         }
@@ -68,47 +69,66 @@ class Quiz extends Model
         }
         return $boo;
     }
-    public function saveResult($results,$startedAt,$open){
-        $qr = new QuizResult();
-        $qr->student_id = Auth::user()->id_u;
-        $qr->open_id = $open;
-        $qr->started_at = Carbon::createFromTimestamp($startedAt)->toDateTimeString();
+    public function saveResult($results,$open){
+        if(!Cookie::has('created_quiz')){
+            abort(404,'Nebylo možné nalézt potřebná data');
+        }
+        $id = Cookie::get('created_quiz');
+        $qr = QuizResult::find($id);
+        if($qr->student_id != Auth::user()->id_u || $qr->open_id != $open){
+            dd(($qr->student_id != Auth::user()->id_u));
+            abort(500,"Při přidávání se vyskytla chyba!");
+        }
         $qr->submitted_at = Carbon::createFromTimestamp(time())->toDateTimeString();
         $sum = 0;
         foreach($results as $r){
-            $sum+=$r["result"];
+            $sum+=$r["received_points"];
         }
-        $qr->percentage = floor(100/sizeof($results)*$sum*100)/100;
-        $c = new Collection(["points"=>$sum]);
-        $qr->context = $c->toJSON();
+        $qr->points = $sum;
+        $qr->percentage = floor((100*$sum)/($this->maxPoints())*100)/100;
         if($qr->save()){
-            return $qr->percentage;
+            for($i=0;$i<sizeof($results);$i++){
+                $qr->answers()->attach($results[$i]["answers"]);
+            }
+            return true;
         }else{
             return false;
         }
     }
-    public function checkAnswers($answers,$startedAt,$open){
-        $results = [];
-        for($i=0;$i<$this->questions->count();$i++){
-            $q = $this->questions[$i];
-            $good = 1;
-            if(empty($answers[$i]->answer[0])){
-                $good = 0;
+
+    private function getPoints($ans_opts,$opts){
+        $points = 0;
+        for($j=0;$j<$ans_opts->count();$j++){
+            if($opts->where('id_o',$ans_opts[$j])->count() == 1){
+                $points++;
             }else{
-                foreach($q->correct_opts as $opt){
-                    if($opt->id_o != $answers[$i]->answer[0]){
-                        $good = 0;
-                        break;
-                    }
-                }
+                $points--;
+            }
+        }
+        if($points < 0){
+            $points = 0;
+        }
+        return $points;
+    }
+    public function checkAnswers($answers,$startedAt,$open){
+        //dodělat bodování
+        $results = [];
+        $answers = collect($answers);
+        $questions = $this->questions;
+        for($i=0;$i<$questions->count();$i++){
+            $points = 0;
+
+            if($answers->where('id',$questions[$i]->id_quest)->count() == 1){
+                $opts = $questions[$i]->correct_opts;
+                $ans_opts = collect($answers->where('id',$questions[$i]->id_quest)[$i]->answers);
+                $points = $this->getPoints($ans_opts,$opts);
             }
             $results[] = [
-              "id_q" => $q->id_quest,
-              "result" =>  $good
+                "question_id"=>$questions[$i]->id_quest,
+                "answers"=>(empty($ans_opts)) ? [] : $ans_opts->toArray(),
+                "received_points"=>$points
             ];
-
         }
-        //$question = $this->questions->find($answers[0]["id"]);
-        return $this->saveResult($results,$startedAt,$open);
+        return $this->saveResult($results,$open);
     }
 }

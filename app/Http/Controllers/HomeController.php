@@ -11,4 +11,7 @@ class HomeController extends Controller
     {
         return view('Home/index');
     }
+    public function getAbout(){
+        die("Smrdíš");
+    }
 }

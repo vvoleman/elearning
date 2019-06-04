@@ -18,9 +18,9 @@ class CreateQuizResultsTable extends Migration
             $table->unsignedInteger('open_id');
             $table->unsignedInteger('student_id');
             $table->dateTime('started_at');
-            $table->dateTime('submitted_at');
-            $table->tinyInteger('percentage');
-            $table->text('context');
+            $table->dateTime('submitted_at')->nullable();
+            $table->integer('points')->nullable();
+            $table->decimal('percentage',8,2)->nullable();
 
             $table->foreign('open_id')->references('id_qo')->on('quizes_open');
             $table->foreign('student_id')->references('id_u')->on('users');

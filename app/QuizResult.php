@@ -17,8 +17,8 @@ class QuizResult extends Model
     public function quiz(){
         return $this->belongsTo('\App\QuizOpen','open_id');
     }
-    public function points(){
-        $data = json_decode($this->context);
-        return $data->points;
+    public function answers(){
+        return $this->belongsToMany('App\Option','res_opt','qr_id','option_id');
     }
+
 }

@@ -94753,6 +94753,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.csrf = json.csrf;
 
         this.missing = this.findMissingQuestions(this.answers);
+        console.log(this.startDateTime, new Date());
     },
 
     methods: {
@@ -96855,7 +96856,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.modals.edit_question = true;
         },
         deleteQuestion: function deleteQuestion(i) {
-            if (confirm('Opravdu chcete možnost smazat?')) {
+            if (confirm('Opravdu chcete otázku smazat?')) {
                 this.questions.splice(i, 1);
             }
         },
@@ -98547,6 +98548,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         _this2.addClose();
                     }
                 });
+            } else {
+                alert("tu");
             }
         },
         remove: function remove(i) {

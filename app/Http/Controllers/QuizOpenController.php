@@ -101,8 +101,7 @@ class QuizOpenController extends Controller
         $q = Quiz::where('uuid',$data["quiz"])->get()[0];
         $this->canAccess($q,Auth::user());
         //return response()->json(["data"=>$data]);
-        $collides = QuizOpen::where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereBetween('opened_at',[$data["opened_at"],$data["closing_at"]])->orWhereBetween('closing_at',[$data["opened_at"],$data["closing_at"]])->where('quiz_id',$q->id_q)->where('group_id',$data["group"])->get();
-
+        $collides = QuizOpen::where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereBetween('opened_at',[$data["opened_at"],$data["closing_at"]])->orWhereBetween('closing_at',[$data["opened_at"],$data["closing_at"]])->where('deleted',0)->where('quiz_id',$q->id_q)->where('group_id',$data["group"])->get();
         if(sizeof($collides) != 0){
             $ids = [];
             foreach($collides as $c){
