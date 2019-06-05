@@ -35,18 +35,41 @@ class QuizController extends Controller
         $questions = $open->quiz->questions;
         $formated_questions = $this->parseQuestions($questions);
 
-        $result_=[];
+
+        //potřebuju to dostat do formátu:
+        //[
+        //  "question_id"=>1,
+        //  "selected"=>[vybrané možnosti]
+        //]
+        $results_questions=[];
         foreach($results as $r){
             $temp = [
-                "res_id"=>$r->id_qr
+
             ];
-            $here = [];
+            $questions = [];
             foreach($r->answers as $a){
                 $temp[$a->question->id_quest][] = $a->id_o;
+                if(array_search($a->question->id_quest,$questions) == false){
+                    $questions[] = $a->question->id_quest;
+                }
             }
-            $results_[] = $temp;
+            $tempReady = [];
+            for($i=0;$i<sizeof($questions);$i++){
+                $tempReady[] = [
+                    "question_id"=>$questions[$i],
+                    "selected_options"=>$temp[$questions[$i]]
+                ];
+            }
+            $results_questions[] = [
+                "firstname"=>$r->student->firstname,
+                "surname"=>$r->student->surname,
+                "started_at"=>$r->started_at->timestamp,
+                "submitted_at"=>$r->submitted_at->timestamp,
+                "percentage"=>$r->percentage,
+                "answers"=>$tempReady
+            ];
         }
-        dd($results_);
+        dd($results_questions);
     }
     public function getQuiz(Request $request,$id,$open){
         $q = $this->checkUUID($id);
