@@ -42,34 +42,39 @@ class QuizController extends Controller
         //  "selected"=>[vybrané možnosti]
         //]
         $results_questions=[];
-        foreach($results as $r){
+        foreach($students as $s){
             $temp = [
 
             ];
-            $questions = [];
-            foreach($r->answers as $a){
-                $temp[$a->question->id_quest][] = $a->id_o;
-                if(array_search($a->question->id_quest,$questions) == false){
-                    $questions[] = $a->question->id_quest;
+            $r = $results->where("student_id",$s->id_u);
+            if(sizeof($r) > 0){
+                $r = $r[0];
+                $questions = [];
+                foreach($r->answers as $a){
+                    $temp[$a->question->id_quest][] = $a->id_o;
+                    if(array_search($a->question->id_quest,$questions) == false){
+                        $questions[] = $a->question->id_quest;
+                    }
                 }
-            }
-            $tempReady = [];
-            for($i=0;$i<sizeof($questions);$i++){
-                $tempReady[] = [
-                    "question_id"=>$questions[$i],
-                    "selected_options"=>$temp[$questions[$i]]
-                ];
+                $tempReady = [];
+                for($i=0;$i<sizeof($questions);$i++){
+                    $tempReady[] = [
+                        "question_id"=>$questions[$i],
+                        "selected_options"=>$temp[$questions[$i]]
+                    ];
+                }
+            }else{
+                $r = null;
             }
             $results_questions[] = [
-                "firstname"=>$r->student->firstname,
-                "surname"=>$r->student->surname,
-                "started_at"=>$r->started_at->timestamp,
-                "submitted_at"=>$r->submitted_at->timestamp,
-                "percentage"=>$r->percentage,
-                "answers"=>$tempReady
+                "firstname"=>$s->firstname,
+                "surname"=>$s->surname,
+                "time" => ($r!=null) ? ($r->submitted_at->timestamp-$r->started_at->timestamp) : null,
+                "percentage"=>($r!=null) ? $r->percentage : null,
+                "answers"=>($r==null) ? [] : $tempReady
             ];
         }
-        dd($results_questions);
+        return view('Quiz/OpenResults',["results"=>$results_questions,"questions"=>$formated_questions]);
     }
     public function getQuiz(Request $request,$id,$open){
         $q = $this->checkUUID($id);
