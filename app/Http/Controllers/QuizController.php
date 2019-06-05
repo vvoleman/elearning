@@ -47,8 +47,8 @@ class QuizController extends Controller
 
             ];
             $r = $results->where("student_id",$s->id_u);
-            if(sizeof($r) > 0){
-                $r = $r[0];
+            if(sizeof($r) > 0 && $r->first()->submitted_at != null){
+                $r = $r->first();
                 $questions = [];
                 foreach($r->answers as $a){
                     $temp[$a->question->id_quest][] = $a->id_o;
@@ -67,6 +67,7 @@ class QuizController extends Controller
                 $r = null;
             }
             $results_questions[] = [
+                "user_id"=>$s->id_u,
                 "firstname"=>$s->firstname,
                 "surname"=>$s->surname,
                 "time" => ($r!=null) ? ($r->submitted_at->timestamp-$r->started_at->timestamp) : null,
@@ -74,7 +75,7 @@ class QuizController extends Controller
                 "answers"=>($r==null) ? [] : $tempReady
             ];
         }
-        return view('Quiz/OpenResults',["results"=>$results_questions,"questions"=>$formated_questions]);
+        return view('Quiz/OpenResults',["results"=>$results_questions,"questions"=>$formated_questions,"quiz"=>$open->quiz->name]);
     }
     public function getQuiz(Request $request,$id,$open){
         $q = $this->checkUUID($id);

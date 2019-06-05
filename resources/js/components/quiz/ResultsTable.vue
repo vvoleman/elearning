@@ -16,7 +16,7 @@
                 <th>Úspěšnost</th>
             </thead>
             <tbody>
-                <tr v-for="(o,i) in filtered" :class="{not_submit:o.percentage==null}">
+                <tr v-for="(o,i) in filtered" :class="{not_submit:o.time==null}">
                     <td>{{i+1}}</td>
                     <td>{{o.surname}}</td>
                     <td>{{o.firstname}}</td>
@@ -66,6 +66,6 @@
 
 <style scoped>
     .not_submit{
-        background:#ff7979;
+        background:#ff7979 !important;
     }
 </style>
