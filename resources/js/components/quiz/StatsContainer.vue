@@ -1,6 +1,6 @@
 <template>
     <div class="m-top-2">
-        <div class="d-flex align-items-center disabledbutton">
+        <div class="d-flex align-items-center">
             <label class="switch">
                 <input type="checkbox" v-model="user_toggle">
                 <span class="slider round"></span>
@@ -33,22 +33,17 @@
         },
         data(){
             return {
-                user_toggle:false,
+                user_toggle:true,
                 selected_user:0
             }
         },
         mounted(){
-
-            console.log(this.results);
+            this.filtered;
         },
         computed:{
             filtered(){
-                if(this.user_toggle == false){
-                    return this.results;
-                }
-                console.log(this.results.filter(()=>{
+                //udělat filtrování studentů
 
-                }));
 
             }
         }

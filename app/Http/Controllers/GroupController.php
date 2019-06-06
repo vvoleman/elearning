@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\QuizOpen;
 use App\User;
 use Illuminate\Http\Request;
 use App\Group;
@@ -22,7 +23,15 @@ class GroupController extends Controller
         if(!$group->canAccess(Auth::user())){
             abort(403);
         }
-        return view('Group/GroupPage',["g"=>$group]);
+        $toReturn = [
+            "g" => $group
+        ];
+        if(Auth::user()->ownGroup($group->slug)){
+            $opens = QuizOpen::where('group_id',$group->id_g)->get();
+            $toReturn["opens"] = $opens;
+        }
+
+        return view('Group/GroupPage',$toReturn);
     }
     public function getEditStudent($id){
         $group = $this->checkIfExist($id);

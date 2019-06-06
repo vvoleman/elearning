@@ -2,6 +2,7 @@
     <div>
         <div>
             <h4>{{question.text}}</h4>
+            <span class="small">Úspěšnost: 25.3%</span>
             <div class="offset">
                 <div class="d-flex ans align-items-center justify-content-between" v-for="(o,i) in question.options" :class="{'bg-success':getOptionById(o.option_id) != null && getOptionById(o.option_id).correct}">
                     <span>{{o.text}}</span>

@@ -50,6 +50,7 @@ class QuizController extends Controller
             if(sizeof($r) > 0 && $r->first()->submitted_at != null){
                 $r = $r->first();
                 $questions = [];
+
                 foreach($r->answers as $a){
                     $temp[$a->question->id_quest][] = $a->id_o;
                     if(array_search($a->question->id_quest,$questions) == false){
@@ -57,6 +58,7 @@ class QuizController extends Controller
                     }
                 }
                 $tempReady = [];
+
                 for($i=0;$i<sizeof($questions);$i++){
                     $tempReady[] = [
                         "question_id"=>$questions[$i],

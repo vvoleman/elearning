@@ -65,6 +65,24 @@
                     </div>
                 </div>
             </hideable>
+            @if(Auth::user()->ownGroup($g->slug))
+            <hideable def_show="true" >
+                <span slot="head-text">Otevření testů</span>
+                <div slot="body">
+                    <div class="d-md-flex flex-wrap">
+                        @foreach($opens as $o)
+                            <div class="col-md-4 st">
+                                <a href="{{route('quiz.resultAuth',$o->id_qo)}}" class="no-a">
+                                    <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
+                                        <span>{{$o->quiz->name}}</span>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </hideable>
+                @endif
         </div>
     </div>
 @stop

@@ -23,29 +23,13 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group d-flex align-items-center justify-content-between">
-                        <label class="label" style="margin-top:0">Nutné otevření</label>
-
-                        <label class="switch m-top">
-                            <input type="checkbox" v-model="inputs.isPrivate">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="form-group d-flex align-items-center justify-content-between">
-                        <label class="label" style="margin-top:0">Náhodné řazení otázek</label>
-
-                        <label class="switch m-top">
-                            <input type="checkbox" v-model="inputs.random">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
                 </div>
             </div>
         </div>
         <div class="m-top-2">
             <div class="d-md-flex justify-content-between">
                 <h3>Otázky</h3>
-                <i class="fas fa-plus clickable" @click="modals.newQuestion = true"></i>
+                <i id="content" class="fas fa-plus clickable" @click="modals.newQuestion = true"></i>
                 <modal v-if="modals.newQuestion" @closeModal="modals.newQuestion = false" @send="newQuestion">
                     <h3 slot="header">Nová otázka</h3>
                     <div slot="body">
@@ -97,6 +81,12 @@
                 </modal>
             </div>
         </div>
+        <transition name="fade">
+            <button type="button" class="up_link fas fa-arrow-up" v-if="show_up" @click="goUp">
+
+            </button>
+        </transition>
+
     </div>
 </template>
 
@@ -107,6 +97,7 @@
         components: {TypeTranslator},
         data(){
             return{
+                show_up:false,
                 inputs:{
                     name:"",
                     minutesAvailable:20,
@@ -140,16 +131,18 @@
                         title:"Více odpovědí",
                         name:"checkbox",
                         answers:-1
-                    },
-                    {
-                        title:"Textové pole",
-                        name:"string",
-                        answers:-1
                     }
                 ],
                 questions:[{"type":"radio","question":"Máš hlad?","options":[{"text":"ano","isAnswer":true},{"text":"ne","isAnswer":false}]}]
             }
         },
+        created () {
+            window.addEventListener('scroll', this.handleScroll);
+        },
+        destroyed () {
+            window.removeEventListener('scroll', this.handleScroll);
+        },
+
         methods:{
             newQuestion(){
                 if(this.inputs.modals.new.question.length < 1){
@@ -164,6 +157,12 @@
                 this.modals.newQuestion = false;
                 this.inputs.modals.new.question = "";
                 this.inputs.modals.new.type=1;
+            },
+            handleScroll(e){
+                this.show_up = (document.getElementById("content").getBoundingClientRect().y < 0);
+            },
+            goUp(){
+                window.scrollBy(0,document.getElementById("content").getBoundingClientRect().top);
             },
             getIndexType(type){
                 console.log(type);
@@ -238,4 +237,20 @@
     }
     .clickable:hover{
     }
+    .up_link{
+        position: fixed;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        top:90%;
+        right:1%;
+        width: 50px;
+        height:50px;
+        background: #242424;
+        padding:10px;
+        color:white;
+        z-index:15;
+        border-radius: 30px;
+    }
+
 </style>
