@@ -1,5 +1,6 @@
 <template>
     <div class="col-md-8 m-top-2 mx-auto">
+        <vue-snotify></vue-snotify>
         <div>
             <h1 class="text-center">Úprava studentů</h1>
             <a :href="'/group/'+slug" class="no-a d-flex align-items-center">
@@ -70,10 +71,24 @@
             }else{
                 this.backup = this.g.students.slice();
             }
+            this.$snotify.confirm('Přejete si ukončit test?', 'Ukončit', {
+                timeout: 0,
+                buttons: [
+                    {text: 'Ano', action: (toast)=>{this.ano}, bold: false},
+                    {text: 'Ne', action: (toast)=>{this.ne}}
+                ]
+            });
         },
         methods:{
-            testing(temp){
-                console.log(temp);
+            ano(toast){
+                console.log("ano");
+                this.zrusit(toast.id);
+            },
+            ne(toast){
+                this.zrusit(toast.id);
+            },
+            zrusit(id){
+                this.$snotify.remove(toast.id);
             },
             addToGroup(){
                 if(this.modal_list.length > 0){
@@ -94,7 +109,19 @@
                         if(data.response == 200){
                             this.backup = this.g.students.slice();
                             this.changed = false;
-
+                            this.$snotify.success('Změny byly úspěšně uloženy!', 'Úspěch', {
+                                timeout: 2000,
+                                showProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: true
+                            });
+                        }else{
+                            this.$snotify.danger('Při ukládání se vyskytla chyba!', 'Chyba', {
+                                timeout: 2000,
+                                showProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: true
+                            });
                         }
                     }.bind(this));
                 }

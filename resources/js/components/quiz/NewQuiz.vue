@@ -61,7 +61,7 @@
                     </div>
                     <hr>
                     <div>
-                        <TypeTranslator :question="o.type" @answers="(data)=>{o.answers=data}" v-model="questions[i]"></TypeTranslator>
+                        <TypeTranslator @answers="(data)=>{o.answers=data}" v-model="questions[i]"></TypeTranslator>
                     </div>
                 </div>
                 <modal v-if="modals.edit_question" @closeModal="modals.edit_question = false" @send="editQuestion">
@@ -165,10 +165,8 @@
                 window.scrollBy(0,document.getElementById("content").getBoundingClientRect().top);
             },
             getIndexType(type){
-                console.log(type);
                 for(var i = 0; i<this.q_types.length; i++){
                     if(this.q_types[i].name == type){
-                        console.log(i);
                         return i;
                     }
                 }
@@ -188,6 +186,12 @@
             },
             editQuestion(){
                 var i = this.inputs.modals.edit;
+                if(this.questions[i.editedQuestion].type == "checkbox" && this.q_types[i.type].name == "radio"){
+                    for(var j=0;j<this.questions[i.editedQuestion].options.length;j++){
+                        this.questions[i.editedQuestion].options[j].isAnswer = false;
+                    }
+                }
+                console.log(this.q_types[i.type].name+" - "+this.questions[i.editedQuestion].type);
                 this.questions[i.editedQuestion].type = this.q_types[i.type].name;
                 this.questions[i.editedQuestion].question = i.question;
                 this.modals.edit_question = false;

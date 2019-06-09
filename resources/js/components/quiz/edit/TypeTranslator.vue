@@ -1,5 +1,8 @@
 <template>
-    <div ref="container"></div>
+    <div>
+        <radio v-if="value.type == 'radio'" v-model="value" @answers="emitAnswers" @input="emitInput"></radio>
+        <checkbox v-if="value.type == 'checkbox'" v-model="value" @answers="emitAnswers" @input="emitInput"></checkbox>
+    </div>
 </template>
 
 <script>
@@ -7,38 +10,22 @@
     import Checkbox from "./checkbox";
     export default {
         name: "TypeTranslator",
-        components: {Radio},
+        components: {Checkbox, Radio},
         props:["value"],
         data(){
             return {
-                components:{
-                    radio:Radio,
-                    checkbox:Checkbox
-                }
+
             }
         },
         mounted(){
-            var componentClass;
-            console.log(this.value);
-            if(this.components.hasOwnProperty(this.value.type)){
-                componentClass = Vue.extend(this.components[this.value.type]);
-                var instance = new componentClass({
-                    propsData:{
-                        context:{
-                            context:{
-                                question:this.value.type,
-                            }
-                        },
-                        value:this.value
-                    }
-                });
-                instance.$on('input',function(data){
-                    this.$emit('input',data);
-                }.bind(this));
-                if(componentClass != null){
-                    instance.$mount(); // pass nothing
-                    this.$refs.container.appendChild(instance.$el);
-                }
+
+        },
+        methods:{
+            emitInput(data){
+                this.$emit('input',data);
+            },
+            emitAnswers(data){
+                this.$emit('answers',data);
             }
         }
 

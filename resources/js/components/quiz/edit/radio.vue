@@ -91,9 +91,6 @@
         watch:{
             options(){
                 this.$emit('input',this.question.options);
-            },
-            answers(){
-                this.$emit('answers',this.question.answers);
             }
         }
     }

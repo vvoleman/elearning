@@ -1,5 +1,6 @@
 <template>
     <div class="m-top-2 col-md-10 mx-auto">
+        <vue-snotify></vue-snotify>
         <h3>Správa přístupu</h3>
         <hr>
         <div class="d-md-flex justify-content-between">
@@ -136,6 +137,12 @@
                         if(data.response == 200){
                             this.loadData();
                             this.extendClose();
+                            this.$snotify.success('Položka byla úspěšně upravena!', 'Úspěch', {
+                                timeout: 2000,
+                                showProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: false
+                            });
                         }
                     });
                 }
@@ -146,6 +153,12 @@
                         if(data.response == 200){
                             this.loadData();
                             this.addClose();
+                            this.$snotify.success('Položka byla úspěšně přidána!', 'Úspěch', {
+                                timeout: 2000,
+                                showProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: false
+                            });
                         }
                     });
                 }else{
@@ -157,8 +170,19 @@
                     $.post('/ajax/removeQuizOpen',{id:this.passes[i].id},(data)=>{
                         if(data.response == 200){
                             this.loadData();
+                            this.$snotify.success('Položka byla úspěšně smazána!', 'Úspěch', {
+                                timeout: 2000,
+                                showProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: false
+                            });
                         }else{
-
+                            this.$snotify.danger('Při mazání položky se vyskytla chyba!', 'Chyba', {
+                                timeout: 2000,
+                                showProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: false
+                            });
                         }
                     });
                 }
@@ -168,7 +192,12 @@
                     if(data.data != null){
                         this.passes = data.data;
                     }else{
-                        alert("Načítání se nezdařilo");
+                        this.$snotify.danger('Při načítání se vyskytla chyba!', 'Chyba', {
+                            timeout: 2000,
+                            showProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true
+                        });
                     }
                 });
             },

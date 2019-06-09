@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="d-lg-flex justify-content-between align-items-center">
+            <vue-snotify></vue-snotify>
             <slot name="title"></slot>
             <!--<h1>Úprava tříd v kurzu</h1>!-->
             <div>
@@ -58,6 +59,12 @@
                         if(data.response == 200){
                             this.og = this.items.slice();
                             this.change = false;
+                            this.$snotify.success('Ukládání proběhlo úspěšně!', 'Úspěch', {
+                                timeout: 2000,
+                                showProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: false
+                            });
                         }
                     }.bind(this));
                 }

@@ -190,7 +190,7 @@ class QuizOpenController extends Controller
         $data["closing_at"] = Carbon::createFromTimestamp($data["closing_at"]);
         $data["opened_at"] = Carbon::createFromTimestamp($data["opened_at"]);
         //////////////////////////////////////////////
-        $collides = QuizOpen::where('id_qo','!=',$qo->id_qo)->where('quiz_id',$qo->quiz->id_q)->where('group_id',$qo->group->id_g)->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereRaw('((opened_at BETWEEN ? AND ?) OR (closing_at BETWEEN ? AND ?))',[$data["opened_at"],$data["closing_at"],$data["opened_at"],$data["closing_at"]])->get();
+        $collides = QuizOpen::where('deleted',0)->where('id_qo','!=',$qo->id_qo)->where('quiz_id',$qo->quiz->id_q)->where('group_id',$qo->group->id_g)->where('opened_at','<',Carbon::now())->where('closing_at','>',Carbon::now())->whereRaw('((opened_at BETWEEN ? AND ?) OR (closing_at BETWEEN ? AND ?))',[$data["opened_at"],$data["closing_at"],$data["opened_at"],$data["closing_at"]])->get();
         if(sizeof($collides) != 0){
             $ids = [];
             foreach($collides as $c){

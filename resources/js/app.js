@@ -3,26 +3,24 @@ import VeeValidate from 'vee-validate';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import Datetime from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import Datetime from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
+import Snotify, { SnotifyPosition } from 'vue-snotify';
+import 'vue-snotify/styles/material.css';
 
 require('./bootstrap');
-
 
 Vue.use(VeeValidate);
 Vue.use(BootstrapVue);
 Vue.use(Datetime);
 
-/**
- *
- *
- */
+const options = {
+    toast: {
+        position: SnotifyPosition.centerTop
+    }
+}
+Vue.use(Snotify,options)
+
 window.Vue = require('vue');
 Vue.directive('click-outside', {
     bind: function (el, binding, vnode) {
@@ -39,7 +37,6 @@ Vue.directive('click-outside', {
         document.body.removeEventListener('click', el.clickOutsideEvent)
     },
 });
-
 
 const dict = {
     custom: {
@@ -60,14 +57,6 @@ const dict = {
         }
     }
 }; //err messages
-
-;
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 
 Vue.component('emailver', require('./components/EmailVer.vue'));
 Vue.component('tabs', require('./components/Tabs.vue'));
