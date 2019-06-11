@@ -69,12 +69,14 @@
             <hideable def_show="true" >
                 <span slot="head-text">Otevření testů</span>
                 <div slot="body">
+                    <opensinteractive></opensinteractive>
                     <div class="d-md-flex flex-wrap">
                         @foreach($opens as $o)
                             <div class="col-md-4 st">
                                 <a href="{{route('quiz.resultAuth',$o->id_qo)}}" class="no-a">
                                     <div class="col-md-12 student_box d-flex align-items-center justify-content-between">
                                         <span>{{$o->quiz->name}}</span>
+                                        <i v-b-popover.hover="'Od: {{$o->opened_at}}'" title="Informace" class="fas fa-info-circle"></i>
                                     </div>
                                 </a>
                             </div>

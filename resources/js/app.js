@@ -78,6 +78,7 @@ Vue.component('showquiz',require('./components/quiz/Quiz.vue'));
 Vue.component('newquiz',require('./components/quiz/NewQuiz'));
 Vue.component('passmanage',require('./components/quiz/PassManage.vue'));
 Vue.component('openresults',require('./components/quiz/OpenResults.vue'));
+Vue.component('opensinteractive',require('./components/OpensInteractive.vue'));
 
 const app = new Vue({
     el: '#app',

@@ -173,10 +173,9 @@
                 return false;
             },
             editQuestion_start(i){
-                console.log(this.getIndexType(this.questions[i].type));
                 this.inputs.modals.edit.type = this.getIndexType(this.questions[i].type);
                 this.inputs.modals.edit.question = this.questions[i].question;
-                this.editedQuestion = i;
+                this.inputs.modals.edit.editedQuestion = i;
                 this.modals.edit_question = true;
             },
             deleteQuestion(i){
@@ -186,6 +185,7 @@
             },
             editQuestion(){
                 var i = this.inputs.modals.edit;
+                console.log(i);
                 if(this.questions[i.editedQuestion].type == "checkbox" && this.q_types[i.type].name == "radio"){
                     for(var j=0;j<this.questions[i.editedQuestion].options.length;j++){
                         this.questions[i.editedQuestion].options[j].isAnswer = false;

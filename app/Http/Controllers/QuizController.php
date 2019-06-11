@@ -139,7 +139,7 @@ class QuizController extends Controller
             $q = new Quiz();
             $q->name = $json->name;
             $q->minutesAvailable = $json->minutesAvailable;
-            $q->isPrivate = $json->isPrivate;
+            $q->isPrivate = 1;//$json->isPrivate;
             $q->randomOrder = $json->random;
             $q->course_id = Course::where('slug',$slug)->first()->id_c;
             $q->uuid = Str::uuid();
