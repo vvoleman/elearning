@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="d-md-flex flex-wrap">
-            <div class="d-flex justify-content-between col-12 align-items-center">
-                <div class="d-flex">
+            <div class="col-12">
+                <div class="d-flex col-12">
                     <div class="toggle-part" @click="active = !active">
                         <label class="switch">
                             <input type="checkbox" v-model="active">
@@ -18,7 +18,7 @@
                         <span class="l">Ukončené</span>
                     </div>
                 </div>
-                <div>
+                <div class="col-12">
                     <chooser></chooser>
                 </div>
             </div>
@@ -42,8 +42,11 @@
 </script>
 
 <style scoped>
+    .col-12,.col-4{
+        padding-left:0;
+        padding-right:0;
+    }
     .toggle-part{
-        background:#acacac;
         display:flex;
         align-items: center;
         padding:5px;
@@ -59,5 +62,8 @@
         font-weight:bold;
         color:#242424;
         user-select: none;
+    }
+    .slider{
+        background:#acacac;
     }
 </style>
