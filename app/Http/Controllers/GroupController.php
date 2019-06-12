@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\QuizOpen;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Group;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +28,26 @@ class GroupController extends Controller
             "g" => $group
         ];
         if(Auth::user()->ownGroup($group->slug)){
-            $opens = QuizOpen::where('group_id',$group->id_g)->get();
-            $toReturn["opens"] = $opens;
+            /*
+             * open_id, quiz_name, course_id, opened_at, closing_at
+             */
+            $opens = QuizOpen::where('group_id',$group->id_g)->where('opened_at','<=',Carbon::now())->get();
+            $odata = [];
+            foreach($opens as $o){
+                $odata[] = [
+                    "id_qo"=>$o->id_qo,
+                    "quiz_name"=>$o->quiz->name,
+                    "course"=>[
+                        "id"=>$o->quiz->course->id_c,
+                        "name"=>$o->quiz->course->name
+                    ],
+                    "result"=>route('quiz.resultAuth',$o->id_qo),
+                    "opened_at"=>date('d. m. Y H:i',$o->opened_at->timestamp),
+                    "closing_at"=>date('d. m. Y H:i',$o->closing_at->timestamp),
+                    "active"=>($o->opened_at->isPast() && !$o->closing_at->isPast())
+                ];
+            }
+            $toReturn["opens"] = $odata;
         }
 
         return view('Group/GroupPage',$toReturn);

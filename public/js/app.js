@@ -101574,7 +101574,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.col-12[data-v-724654b8],.col-4[data-v-724654b8]{\n    padding-left:0;\n    padding-right:0;\n}\n.toggle-part[data-v-724654b8]{\n    display:-webkit-box;\n    display:-ms-flexbox;\n    display:flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    padding:5px;\n    margin:5px;\n    cursor:pointer;\n}\n.toggle-part label[data-v-724654b8]{\n    margin-bottom:0;\n}\n.l[data-v-724654b8]{\n    margin-left:5px;\n    font-weight:bold;\n    color:#242424;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n.slider[data-v-724654b8]{\n    background:#acacac;\n}\n", ""]);
+exports.push([module.i, "\n.col-12[data-v-724654b8],.col-4[data-v-724654b8]{\n    padding-left:0;\n    padding-right:0;\n}\n.toggle-part[data-v-724654b8]{\n    display:-webkit-box;\n    display:-ms-flexbox;\n    display:flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    padding:5px;\n    margin:5px;\n    cursor:pointer;\n}\n.toggle-part label[data-v-724654b8]{\n    margin-bottom:0;\n}\n.l[data-v-724654b8]{\n    margin-left:5px;\n    font-weight:bold;\n    color:#242424;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n        -ms-user-select: none;\n            user-select: none;\n}\n.slider[data-v-724654b8]{\n    background:#acacac;\n}\n.act[data-v-724654b8]{\n    background:#def9cf;\n}\n.stop[data-v-724654b8]{\n    background: #f9dbe3;\n}\n", ""]);
 
 // exports
 
@@ -101613,20 +101613,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "OpensInteractive",
     components: { Chooser: __WEBPACK_IMPORTED_MODULE_0__Chooser___default.a },
+    props: ["o"],
     data: function data() {
         return {
-            active: true,
-            nonactive: true
+            filter: [],
+            opens: [],
+            courses: []
         };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.opens = JSON.parse(this.o);
+        for (var i = 0; i < this.opens.length; i++) {
+            if (this.courses.filter(function (c) {
+                return c.id == _this.opens[i].course.id;
+            }).length == 0) {
+                this.courses.push(this.opens[i].course);
+            }
+        }
+    },
+
+    methods: {
+        filterChange: function filterChange(data) {
+            this.filter = data;
+        }
+    },
+    computed: {
+        filtered: function filtered() {
+            var _this2 = this;
+
+            if (this.filter.length == 0) {
+                return this.opens;
+            }
+            var temp = this.opens.filter(function (o) {
+                for (var i = 0; i < _this2.filter.length; i++) {
+                    if (_this2.filter[i].id == o.course.id) {
+                        return true;
+                    }
+                }
+            });
+            return temp;
+        }
     }
+
 });
 
 /***/ }),
@@ -101715,7 +101750,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.fa-plus[data-v-74476120]{\n    margin-left:10px;\n}\n.close[data-v-74476120]{\n    font-size:20px;\n    margin-left:5px;\n    color:white;\n}\n.filter[data-v-74476120]{\n    padding:10px;\n    color:white;\n    margin:0px 10px;\n    background:#2a9055;\n    -webkit-box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.45);\n            box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.45);\n}\n", ""]);
+exports.push([module.i, "\n.col-md-8[data-v-74476120]{\n    margin-left:0px;\n    margin-right:0px;\n}\n.fa-plus[data-v-74476120]{\n    margin-left:10px;\n}\n.close[data-v-74476120]{\n    font-size:20px;\n    margin-left:5px;\n    color:white;\n}\n.filter[data-v-74476120]{\n    padding:10px;\n    color:white;\n    margin:0px 10px;\n    background:#2a9055;\n    -webkit-box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.45);\n            box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.45);\n    min-width:150px;\n    margin-bottom:5px;\n}\n", ""]);
 
 // exports
 
@@ -101746,39 +101781,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "Chooser",
+    props: ["c"],
     data: function data() {
         return {
             currSelect: 0,
-            courses: [{
-                label: "Český jazyk",
-                id: 1
-            }, {
-                label: "Matematika",
-                id: 2
-            }, {
-                label: "Fyzika",
-                id: 3
-            }, {
-                label: "Matematika",
-                id: 2
-            }, {
-                label: "Fyzika",
-                id: 3
-            }, {
-                label: "Matematika",
-                id: 2
-            }, {
-                label: "Fyzika",
-                id: 3
-            }, {
-                label: "Matematika",
-                id: 2
-            }, {
-                label: "Fyzika",
-                id: 3
-            }],
-            active_filter: []
+            active_filter: [],
+            courses: []
         };
+    },
+    mounted: function mounted() {
+
+        this.courses = this.c;
     },
 
     methods: {
@@ -101792,6 +101805,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.courses[i] == null) {
                 this.currSelect = i;
             }
+        },
+        removeFilter: function removeFilter(i) {
+            console.log("test");
+            this.courses.push(this.active_filter[i]);
+            this.active_filter.splice(i, 1);
+        }
+    },
+    watch: {
+        active_filter: function active_filter() {
+            this.$emit("filterChange", this.active_filter);
         }
     }
 });
@@ -101839,7 +101862,7 @@ var render = function() {
           _vm._v(" "),
           _vm._l(_vm.courses, function(o, i) {
             return _c("option", { domProps: { value: i + 1 } }, [
-              _vm._v(_vm._s(o.label))
+              _vm._v(_vm._s(o.name))
             ])
           })
         ],
@@ -101859,12 +101882,26 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "d-flex" },
+      {
+        staticClass: "d-flex col-md-7 justify-content-end",
+        staticStyle: { overflow: "auto" }
+      },
       _vm._l(_vm.active_filter, function(o, i) {
         return _c("div", [
           _c("div", { staticClass: "filter" }, [
-            _vm._v(_vm._s(o.label) + " "),
-            _c("span", { staticClass: "close" }, [_vm._v("×")])
+            _vm._v(_vm._s(o.name) + " "),
+            _c(
+              "span",
+              {
+                staticClass: "close",
+                on: {
+                  click: function($event) {
+                    _vm.removeFilter(i)
+                  }
+                }
+              },
+              [_vm._v("×")]
+            )
           ])
         ])
       })
@@ -101892,127 +101929,72 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "d-md-flex flex-wrap" }, [
       _c("div", { staticClass: "col-12" }, [
-        _c("div", { staticClass: "d-flex col-12" }, [
-          _c(
-            "div",
-            {
-              staticClass: "toggle-part",
-              on: {
-                click: function($event) {
-                  _vm.active = !_vm.active
-                }
-              }
-            },
-            [
-              _c("label", { staticClass: "switch" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.active,
-                      expression: "active"
-                    }
-                  ],
-                  attrs: { type: "checkbox" },
-                  domProps: {
-                    checked: Array.isArray(_vm.active)
-                      ? _vm._i(_vm.active, null) > -1
-                      : _vm.active
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$a = _vm.active,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = null,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 && (_vm.active = $$a.concat([$$v]))
-                        } else {
-                          $$i > -1 &&
-                            (_vm.active = $$a
-                              .slice(0, $$i)
-                              .concat($$a.slice($$i + 1)))
-                        }
-                      } else {
-                        _vm.active = $$c
-                      }
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "slider round" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "l" }, [_vm._v("Aktivní")])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "toggle-part",
-              on: {
-                click: function($event) {
-                  _vm.nonactive = !_vm.nonactive
-                }
-              }
-            },
-            [
-              _c("label", { staticClass: "switch" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.nonactive,
-                      expression: "nonactive"
-                    }
-                  ],
-                  attrs: { type: "checkbox" },
-                  domProps: {
-                    checked: Array.isArray(_vm.nonactive)
-                      ? _vm._i(_vm.nonactive, null) > -1
-                      : _vm.nonactive
-                  },
-                  on: {
-                    change: function($event) {
-                      var $$a = _vm.nonactive,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = null,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 && (_vm.nonactive = $$a.concat([$$v]))
-                        } else {
-                          $$i > -1 &&
-                            (_vm.nonactive = $$a
-                              .slice(0, $$i)
-                              .concat($$a.slice($$i + 1)))
-                        }
-                      } else {
-                        _vm.nonactive = $$c
-                      }
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "slider round" })
-              ]),
-              _vm._v(" "),
-              _c("span", { staticClass: "l" }, [_vm._v("Ukončené")])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-12" }, [_c("chooser")], 1)
+        _c(
+          "div",
+          { staticClass: "col-12" },
+          [
+            _c("chooser", {
+              attrs: { c: _vm.courses },
+              on: { filterChange: _vm.filterChange }
+            })
+          ],
+          1
+        )
       ])
     ]),
     _vm._v(" "),
-    _c("hr")
+    _c("hr"),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "d-flex flex-wrap" },
+      _vm._l(_vm.filtered, function(o, i) {
+        return _c("div", { staticClass: "col-md-4 st" }, [
+          _c("a", { staticClass: "no-a", attrs: { href: o.result } }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "col-md-12 student_box d-flex align-items-center justify-content-between ",
+                class: { act: o.active, stop: !o.active }
+              },
+              [
+                _c("span", [_vm._v(_vm._s(o.quiz_name))]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("span", { staticClass: "small" }, [
+                    _vm._v(_vm._s(o.active ? "Aktivní" : "Uzavřeno"))
+                  ]),
+                  _vm._v(" "),
+                  _c("i", {
+                    directives: [
+                      {
+                        name: "b-popover",
+                        rawName: "v-b-popover.hover",
+                        value:
+                          "Kurz: " +
+                          o.course.name +
+                          "\n" +
+                          "Od: " +
+                          o.opened_at +
+                          "\n" +
+                          "Do: " +
+                          o.closing_at,
+                        expression:
+                          "'Kurz: '+o.course.name+'\\n'+'Od: '+o.opened_at+'\\n'+'Do: '+o.closing_at",
+                        modifiers: { hover: true }
+                      }
+                    ],
+                    staticClass: "fas fa-info-circle",
+                    attrs: { title: "Informace" }
+                  })
+                ])
+              ]
+            )
+          ])
+        ])
+      })
+    )
   ])
 }
 var staticRenderFns = []
