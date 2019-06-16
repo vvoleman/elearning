@@ -9,7 +9,7 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('about') }}">O nás</a>
+                <a class="disabledbutton nav-link" href="{{ route('about') }}">O nás</a>
             </li>
             @if(Auth::check())
                 @include('partials/_account-nav-item')

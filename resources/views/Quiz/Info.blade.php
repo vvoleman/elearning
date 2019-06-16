@@ -15,7 +15,7 @@
                 {!! Form::open(["route"=>["quiz.postInfoQuiz",$q->uuid,$open->id_qo]]) !!}
                 @csrf
                 @if($canAccess)
-                <button>Spustit test</button>
+                <button class="btn btn-dark">Spustit test</button>
                 @else
                 <div class="alert alert-danger col-12">
                     Tento test pro vás není přístupný!

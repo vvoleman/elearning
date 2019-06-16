@@ -91188,22 +91188,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        var _this = this;
-
         this.g = JSON.parse(this.datas);
         if (this.g.students.length == 0) {
             this.g.students = [];
         } else {
             this.backup = this.g.students.slice();
         }
-        this.$snotify.confirm('Přejete si ukončit test?', 'Ukončit', {
-            timeout: 0,
-            buttons: [{ text: 'Ano', action: function action(toast) {
-                    _this.ano;
-                }, bold: false }, { text: 'Ne', action: function action(toast) {
-                    _this.ne;
-                } }]
-        });
     },
 
     methods: {
@@ -96252,7 +96242,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "Quiz",
     components: { QuestionBoard: __WEBPACK_IMPORTED_MODULE_2__QuestionBoard___default.a, InfoBar: __WEBPACK_IMPORTED_MODULE_1__InfoBar___default.a, QuestionList: __WEBPACK_IMPORTED_MODULE_0__QuestionList___default.a },
-    props: ["datas"],
+    props: ["datas", "corr_amount"],
     data: function data() {
         return {
             secondsAvailable: "",
@@ -96265,7 +96255,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selected: 0,
             bookmarks: [],
             missing: 0,
-            onlyBookmarks: false
+            onlyBookmarks: false,
+            ca: []
         };
     },
     mounted: function mounted() {
@@ -96277,6 +96268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.startDateTime = new Date();
         this.submitTo = json.submitTo;
         this.csrf = json.csrf;
+        this.ca = JSON.parse(this.corr_amount);
 
         this.missing = this.findMissingQuestions(this.answers);
         console.log(this.startDateTime, new Date());
@@ -97201,7 +97193,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97241,6 +97233,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         answer: {
             type: Array
+        },
+        corr_amount: {
+            type: Number
         }
     },
     name: "QuestionBoard",
@@ -97286,7 +97281,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97316,10 +97311,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__BaseType_vue___default.a,
     name: "checkbox",
-    mounted: function mounted() {
-        if (this.answer.length > 0) {
-            this.answer = this.answer[0];
-        }
+    mounted: function mounted() {},
+
+    watch: {
+        answer: function answer() {}
     }
 });
 
@@ -97358,7 +97353,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97389,6 +97384,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         index: {
             type: Number,
             required: true
+        },
+        corr_amount: {
+            type: Number
         }
 
     },
@@ -97440,7 +97438,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { if: "context" } }, [
     _c("h5", [
-      _vm._v(_vm._s(_vm.index) + ". " + _vm._s(_vm.question.question))
+      _vm._v(
+        _vm._s(_vm.index) +
+          ". " +
+          _vm._s(_vm.question.question) +
+          " (" +
+          _vm._s(_vm.corr_amount) +
+          " odpovědi)"
+      )
     ]),
     _vm._v(" "),
     _c(
@@ -97458,7 +97463,7 @@ var render = function() {
               }
             ],
             staticClass: "form-check-input",
-            attrs: { type: "checkbox" },
+            attrs: { name: "otazka", type: "checkbox" },
             domProps: {
               value: p.id,
               checked: Array.isArray(_vm.answer)
@@ -97887,7 +97892,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97928,6 +97933,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             default: function _default() {
                 return [];
             }
+        },
+        corr_amount: {
+            type: Number
         }
     },
     name: "Interpreter",
@@ -97952,6 +97960,7 @@ var render = function() {
       _vm.question.type == "checkbox"
         ? _c("checkbox", {
             attrs: {
+              corr_amount: _vm.corr_amount,
               ans: _vm.answer,
               question: _vm.question,
               index: _vm.index
@@ -97997,7 +98006,12 @@ var render = function() {
     { staticClass: "question col-12" },
     [
       _c("interpreter", {
-        attrs: { question: _vm.question, index: _vm.index, answer: _vm.answer },
+        attrs: {
+          question: _vm.question,
+          index: _vm.index,
+          answer: _vm.answer,
+          corr_amount: _vm.corr_amount
+        },
         on: { answers: _vm.handleAnswers }
       })
     ],
@@ -98075,6 +98089,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("question-board", {
                     attrs: {
+                      corr_amount: _vm.ca[_vm.selected],
                       question: _vm.questions[_vm.selected],
                       answer: _vm.getAnswersFor(_vm.answers[_vm.selected]),
                       index: _vm.selected + 1
@@ -100514,7 +100529,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -100549,13 +100564,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "OpenResults",
     components: { StatsContainer: __WEBPACK_IMPORTED_MODULE_1__StatsContainer___default.a, ResultsTable: __WEBPACK_IMPORTED_MODULE_0__ResultsTable___default.a },
-    props: ["res", "quests", "quiz"],
+    props: ["res", "quests", "quiz", "act"],
     data: function data() {
         return {
             results: [],
@@ -100955,7 +100971,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.qs_box[data-v-89916c7e]:nth-child(even){\n    background:#d3d3d3;\n}\n.qs_box[data-v-89916c7e]{\n    padding:25px;\n    margin-top:10px;\n}\n", ""]);
 
 // exports
 
@@ -100968,6 +100984,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__QuestionStat__ = __webpack_require__(486);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__QuestionStat___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__QuestionStat__);
+//
 //
 //
 //
@@ -101003,19 +101020,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            user_toggle: true,
             selected_user: 0
         };
     },
-    mounted: function mounted() {
-        this.filtered;
-    },
 
     computed: {
+        findStudentNull: function findStudentNull() {
+            if (this.filtered.length > 1 || this.selected_user == 0) {
+                return false;
+            }
+            return this.filtered[0].percentage == null;
+        },
         filtered: function filtered() {
-            //udělat filtrování studentů
+            var _this = this;
 
-
+            if (this.selected_user == 0) {
+                return this.results;
+            }
+            return this.results.filter(function (r) {
+                return r.user_id == _this.selected_user;
+            });
         }
     }
 });
@@ -101106,7 +101130,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.offset[data-v-231a678e]{\n    margin-left:30px;\n}\n.ans[data-v-231a678e]{\n    padding:5px;\n    border-radius:5px;\n    margin-bottom:3px;\n}\n.smaller[data-v-231a678e]{\n    font-size:16px;\n}\n", ""]);
+exports.push([module.i, "\n.offset[data-v-231a678e]{\n    margin-left:30px;\n}\n.ans[data-v-231a678e]{\n    padding:5px;\n    border-radius:5px;\n    margin-bottom:3px;\n}\n.smaller[data-v-231a678e]{\n    font-size:16px;\n}\n.corr[data-v-231a678e]{\n    font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -101135,6 +101159,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "QuestionStat",
@@ -101144,6 +101169,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         results: {
             required: true
+        },
+        index: {
+            type: Number
         }
     },
     data: function data() {
@@ -101153,11 +101181,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.runStats();
-        this.getOptionById(10);
     },
 
     methods: {
         runStats: function runStats() {
+            this.stats = [];
             for (var i = 0; i < this.question.options.length; i++) {
                 this.stats.push({
                     option_id: this.question.options[i].option_id,
@@ -101194,6 +101222,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             return toReturn;
         },
+        getSuccessPercentage: function getSuccessPercentage() {
+            var sum = 0;
+            var filtered = this.results.filter(function (r) {
+                return r.time != null;
+            });
+            for (var i = 0; i < filtered.length; i++) {
+                sum += filtered[i].points[this.index - 1];
+            }
+            console.log(sum + "/" + "(" + filtered.length + "*" + this.question.correct_opts.length + ")");
+            return sum / (filtered.length * this.question.correct_opts.length) * 100;
+        },
         isOptionCorrect: function isOptionCorrect(option_id) {
             return this.question.correct_opts.filter(function (o) {
                 return o == option_id;
@@ -101208,6 +101247,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             return null;
         }
+    },
+    watch: {
+        results: function results() {
+            this.runStats();
+        }
     }
 });
 
@@ -101221,9 +101265,21 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", [
-      _c("h4", [_vm._v(_vm._s(_vm.question.text))]),
+      _c("h4", [_vm._v(_vm._s(_vm.index) + ". " + _vm._s(_vm.question.text))]),
       _vm._v(" "),
-      _c("span", { staticClass: "small" }, [_vm._v("Úspěšnost: 25.3%")]),
+      _vm.results.length == 1
+        ? _c("span", [
+            _vm._v("Bodů: " + _vm._s(_vm.results[0].points[_vm.index - 1]))
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.results.length > 1
+        ? _c("span", { staticClass: "small" }, [
+            _vm._v("Úspěšnost: " + _vm._s(_vm.getSuccessPercentage()) + "%")
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("hr"),
       _vm._v(" "),
       _c(
         "div",
@@ -101241,8 +101297,19 @@ var render = function() {
               }
             },
             [
-              _c("span", [_vm._v(_vm._s(o.text))]),
+              _c(
+                "span",
+                {
+                  class: {
+                    corr:
+                      _vm.getOptionById(o.option_id) != null &&
+                      _vm.getOptionById(o.option_id).students.length > 0
+                  }
+                },
+                [_vm._v(_vm._s(o.text))]
+              ),
               _vm._v(" "),
+              _vm.results.length > 1 &&
               _vm.getOptionById(o.option_id) != null &&
               _vm.getOptionById(o.option_id).students.length > 0
                 ? _c(
@@ -101308,107 +101375,77 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "m-top-2" }, [
     _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c("label", { staticClass: "switch" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.user_toggle,
-              expression: "user_toggle"
-            }
-          ],
-          attrs: { type: "checkbox" },
-          domProps: {
-            checked: Array.isArray(_vm.user_toggle)
-              ? _vm._i(_vm.user_toggle, null) > -1
-              : _vm.user_toggle
-          },
-          on: {
-            change: function($event) {
-              var $$a = _vm.user_toggle,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 && (_vm.user_toggle = $$a.concat([$$v]))
-                } else {
-                  $$i > -1 &&
-                    (_vm.user_toggle = $$a
-                      .slice(0, $$i)
-                      .concat($$a.slice($$i + 1)))
-                }
-              } else {
-                _vm.user_toggle = $$c
-              }
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("span", { staticClass: "slider round" })
-      ]),
-      _vm._v(" "),
       _c("label", { staticStyle: { "margin-left": "5px" } }, [
         _vm._v("Zobrazit studenta")
       ]),
       _vm._v(" "),
-      _vm.user_toggle
-        ? _c(
-            "select",
+      _c(
+        "select",
+        {
+          directives: [
             {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.selected_user,
-                  expression: "selected_user"
-                }
-              ],
-              staticClass: "form-control col-2",
-              staticStyle: { "margin-left": "5px" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.selected_user = $event.target.multiple
-                    ? $$selectedVal
-                    : $$selectedVal[0]
-                }
-              }
-            },
-            _vm._l(_vm.results, function(o, i) {
-              return _c("option", { domProps: { value: o.user_id } }, [
-                _vm._v(_vm._s(o.surname) + " " + _vm._s(o.firstname))
-              ])
-            })
-          )
-        : _vm._e()
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selected_user,
+              expression: "selected_user"
+            }
+          ],
+          staticClass: "form-control col-2",
+          staticStyle: { "margin-left": "5px" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selected_user = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { value: "0" } }, [_vm._v("Všichni")]),
+          _vm._v(" "),
+          _vm._l(_vm.results, function(o, i) {
+            return _c("option", { domProps: { value: o.user_id } }, [
+              _vm._v(_vm._s(o.surname) + " " + _vm._s(o.firstname))
+            ])
+          })
+        ],
+        2
+      )
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "m-top-2 col-md-3" },
-      _vm._l(_vm.questions, function(o, i) {
-        return _c(
+    _vm.findStudentNull
+      ? _c("div", { staticClass: "m-top-2" }, [
+          _c("h3", [_vm._v("Student tento test neodevzdal!")])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.findStudentNull
+      ? _c(
           "div",
-          [
-            _c("question-stat", {
-              key: i,
-              attrs: { question: o, results: _vm.results }
-            })
-          ],
-          1
+          { staticClass: "m-top-2 d-md-flex flex-wrap" },
+          _vm._l(_vm.questions, function(o, i) {
+            return _c(
+              "div",
+              { staticClass: "col-md-4 qs_box" },
+              [
+                _c("question-stat", {
+                  key: i,
+                  attrs: { index: i + 1, question: o, results: _vm.filtered }
+                })
+              ],
+              1
+            )
+          })
         )
-      })
-    )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -101432,7 +101469,21 @@ var render = function() {
   return _c("div", { staticClass: "col-md-10 mx-auto m-top-2" }, [
     _c("div", [
       _c("h3", { staticClass: "text-center" }, [
-        _vm._v('Výsledky testu "' + _vm._s(_vm.quiz) + '"')
+        _vm._v('Výsledky testu "' + _vm._s(_vm.quiz) + '" ')
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-center col-12" }, [
+        _c("b", [
+          _c(
+            "span",
+            { class: { "text-success": _vm.act, "text-danger": !_vm.act } },
+            [
+              _vm._v(
+                _vm._s(_vm.act ? "Test je stále otevřen!" : "Test uzavřen!")
+              )
+            ]
+          )
+        ])
       ]),
       _vm._v(" "),
       _c("hr"),

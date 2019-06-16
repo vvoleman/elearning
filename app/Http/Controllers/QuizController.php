@@ -35,7 +35,6 @@ class QuizController extends Controller
         $questions = $open->quiz->questions;
         $formated_questions = $this->parseQuestions($questions);
 
-
         //potřebuju to dostat do formátu:
         //[
         //  "question_id"=>1,
@@ -47,10 +46,13 @@ class QuizController extends Controller
 
             ];
             $r = $results->where("student_id",$s->id_u);
+            $points=[];
             if(sizeof($r) > 0 && $r->first()->submitted_at != null){
                 $r = $r->first();
                 $questions = [];
-
+                for($i=0;$i<$r->quiz->quiz->questions->count();$i++){
+                    $points[] = $r->getPointsForQuestion($r->quiz->quiz->questions[$i]->id_quest);
+                }
                 foreach($r->answers as $a){
                     $temp[$a->question->id_quest][] = $a->id_o;
                     if(array_search($a->question->id_quest,$questions) == false){
@@ -62,9 +64,11 @@ class QuizController extends Controller
                 for($i=0;$i<sizeof($questions);$i++){
                     $tempReady[] = [
                         "question_id"=>$questions[$i],
-                        "selected_options"=>$temp[$questions[$i]]
+                        "selected_options"=>$temp[$questions[$i]],
+
                     ];
                 }
+                //sdd($tempReady);
             }else{
                 $r = null;
             }
@@ -72,12 +76,13 @@ class QuizController extends Controller
                 "user_id"=>$s->id_u,
                 "firstname"=>$s->firstname,
                 "surname"=>$s->surname,
+                "points"=>$points,
                 "time" => ($r!=null) ? ($r->submitted_at->timestamp-$r->started_at->timestamp) : null,
                 "percentage"=>($r!=null) ? $r->percentage : null,
                 "answers"=>($r==null) ? [] : $tempReady
             ];
         }
-        return view('Quiz/OpenResults',["results"=>$results_questions,"questions"=>$formated_questions,"quiz"=>$open->quiz->name]);
+        return view('Quiz/OpenResults',["results"=>$results_questions,"questions"=>$formated_questions,"quiz"=>$open->quiz->name,"act"=>$open->isActive()]);
     }
     public function getQuiz(Request $request,$id,$open){
         $q = $this->checkUUID($id);
@@ -99,7 +104,11 @@ class QuizController extends Controller
         $data = collect($this->toolkit->parseQuiz($q,$open));
         $data["startDate"] = $startDate;
         $data = $data->toJson();
-        return view('Quiz/Quiz',["q"=>$q,"json"=>$data]);
+        $corr = [];
+        for($i=0;$i<sizeof($q->questions);$i++){
+            $corr[] = $q->questions[$i]->correct_opts()->count();
+        }
+        return view('Quiz/Quiz',["q"=>$q,"json"=>$data,"corr_amount"=>$corr]);
     }
     public function postQuiz(Request $r,$id,$open){ //dodělat zabezpečení
         $q = $this->checkuuid($id);
@@ -116,6 +125,7 @@ class QuizController extends Controller
     public function studentResults(){
         $user = Auth::user();
         $results = QuizResult::where('submitted_at','!=',null)->where('student_id',$user->id_u)->get();
+
         return view('Quiz/Resultlist',["results"=>$results]);
     }
     public function getNewQuiz($slug){
@@ -223,7 +233,8 @@ class QuizController extends Controller
         if($r->count() == 0){
             return view('Quiz/ResultNotFound',["user" => $user]);
         }
-        return view('Quiz/Result',["result"=>$r[0],"o"=>$open]);
+        $time = $r[0]->submitted_at->diffInSeconds($r[0]->started_at);
+        return view('Quiz/Result',["result"=>$r[0],"o"=>$open,"time"=>$time]);
     }
     private function questionsOk($questions){
         for($i = 0;$i<sizeof($questions);$i++){

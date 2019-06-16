@@ -80,7 +80,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         if($this->hasRole('admin')){
             return Group::all();
         }else if($this->hasRole('user')){
-            return [];
+            return collect([]);
         }
         return $this->hasMany('App\Group',"owner_id")->get();
     }
@@ -120,7 +120,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }else if($role == "student"){
             return false;
         }
-        if(sizeof($this->ownGroups()->where('slug',$c_id)->get()) > 0){
+        if(sizeof($this->ownGroups()->where('slug',$c_id)) > 0){
             return true;
         }
         return false;

@@ -1,6 +1,6 @@
 <template>
     <div class="question col-12">
-        <interpreter :question="question" :index="index" @answers="handleAnswers" :answer="answer"></interpreter>
+        <interpreter :question="question" :index="index" @answers="handleAnswers" :answer="answer" :corr_amount="corr_amount"></interpreter>
     </div>
 </template>
 
@@ -21,6 +21,9 @@
             },
             answer:{
                 type:Array
+            },
+            corr_amount:{
+                type:Number
             }
         },
         name: "QuestionBoard",

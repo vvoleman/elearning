@@ -1,19 +1,20 @@
 <template>
     <div class="m-top-2">
         <div class="d-flex align-items-center">
-            <label class="switch">
-                <input type="checkbox" v-model="user_toggle">
-                <span class="slider round"></span>
-            </label>
             <label style="margin-left:5px">Zobrazit studenta</label>
-            <select v-if="user_toggle" v-model="selected_user" class="form-control col-2" style="margin-left:5px">
+            <select v-model="selected_user" class="form-control col-2" style="margin-left:5px">
+                <option value="0">Všichni</option>
                 <option v-for="(o,i) in results" :value="o.user_id">{{o.surname}} {{o.firstname}}</option>
             </select>
         </div>
-        <div class="m-top-2 col-md-3">
-            <div v-for="(o,i) in questions">
-                <question-stat :question="o" :key="i" :results="results"></question-stat>
+        <div v-if="findStudentNull" class="m-top-2">
+            <h3>Student tento test neodevzdal!</h3>
+        </div>
+        <div class="m-top-2 d-md-flex flex-wrap" v-if="!findStudentNull">
+            <div v-for="(o,i) in questions" class="col-md-4 qs_box">
+                <question-stat :index="i+1" class="" :question="o" :key="i" :results="filtered"></question-stat>
             </div>
+
         </div>
     </div>
 </template>
@@ -33,23 +34,35 @@
         },
         data(){
             return {
-                user_toggle:true,
                 selected_user:0
             }
         },
-        mounted(){
-            this.filtered;
-        },
         computed:{
+            findStudentNull(){
+                if(this.filtered.length > 1 || this.selected_user == 0){
+                    return false;
+                }
+                return this.filtered[0].percentage == null;
+            },
             filtered(){
-                //udělat filtrování studentů
-
-
+                if(this.selected_user == 0){
+                    return this.results;
+                }
+                return this.results.filter((r)=>{
+                    return r.user_id == this.selected_user;
+                });
             }
         }
     }
 </script>
 
 <style scoped>
+    .qs_box:nth-child(even){
+        background:#d3d3d3;
 
+    }
+    .qs_box{
+        padding:25px;
+        margin-top:10px;
+    }
 </style>

@@ -74,10 +74,10 @@ class GroupController extends Controller
         ]);
         if(!empty($data["users"]) && !empty($data["name"]) && ((Auth::user()->hasRole('admin')) ? !empty($data["teacher"]) : true)){ //manual mode
             $data["users"] = $this->t->getUserModels(json_decode($data["users"],true));
-            $data["teacher"] = (Auth::user()->hasRole('admin')) ? $this->t->getUserModels(json_decode($data["teacher"],true)[0]) : Auth::user()->id_u;
+            $data["teacher"] = (Auth::user()->hasRole('admin')) ? $this->t->getUserModels([json_decode($data["teacher"],true)[0]]) : Auth::user()->id_u;
             $group = new Group();
             $group->name = $data["name"];
-            $group->owner_id = $data["teacher"];
+            $group->owner_id = $data["teacher"][0];
             $group->slug = substr(md5(mt_rand()), 0, 8);
             if($group->save()){
                 $group->students()->attach($data["users"]);

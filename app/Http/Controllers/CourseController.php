@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Option;
 use App\Question;
 use App\Quiz;
 use Illuminate\Http\Request;
@@ -34,7 +35,8 @@ class CourseController extends Controller
             $c = $user->ownCourses();
             $g = $user->ownGroups();
         }
-        return view('Course/dashboard',["msgs_count"=>$msgs_count,"c"=>$c,"groups"=>$g]);
+
+        return view('Course/dashboard',["msgs_count"=>$msgs_count,"c"=>$this->limitCourseToOne($c),"groups"=>$g]);
     }
     public function getCoursePage($id){
         $course = $this->checkIfCanAccess($id);
@@ -185,5 +187,15 @@ class CourseController extends Controller
     private function updateGroups($data,$c){
         $c->groups()->sync($this->toolkit->getUserModels($data["items"]));
         return $c;
+    }
+    private function limitCourseToOne($c){ //pokud jsou dva kurzy, vypíše ho jenom jednou
+        $toReturn = collect();
+        for($i=0;$i<sizeof($c);$i++){
+            $id = $c[$i]->id_c;
+            if($toReturn->filter(function($item,$key) use(&$id) {return $item->id_c == $id;})->count() == 0){
+                $toReturn->push($c[$i]);
+            }
+        }
+        return $toReturn;
     }
 }

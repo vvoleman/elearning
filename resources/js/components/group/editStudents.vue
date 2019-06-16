@@ -71,13 +71,6 @@
             }else{
                 this.backup = this.g.students.slice();
             }
-            this.$snotify.confirm('Přejete si ukončit test?', 'Ukončit', {
-                timeout: 0,
-                buttons: [
-                    {text: 'Ano', action: (toast)=>{this.ano}, bold: false},
-                    {text: 'Ne', action: (toast)=>{this.ne}}
-                ]
-            });
         },
         methods:{
             ano(toast){

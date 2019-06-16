@@ -6,7 +6,7 @@
             <question-list :setFilter="onlyBookmarks" :bookmarks="bookmarks" :questions="questions" :curr_question="selected" @question_selected="setSelected"></question-list>
             <div class="body col-md-10 offset-md-2" style="padding-left:0;padding-right: 0" v-if="startDateTime != null">
                 <info-bar :time_limit="secondsAvailable" @end="end" @move="move" :start_date="startDateTime" :curr_question="q_data" :questions_left="missing.length" @changeBookmark="changeBookmark"></info-bar>
-                <question-board :question="questions[selected]" :answer="getAnswersFor(answers[selected])" :index="selected+1" @changeAnswers="setAnswer"></question-board>
+                <question-board :corr_amount="ca[selected]" :question="questions[selected]" :answer="getAnswersFor(answers[selected])" :index="selected+1" @changeAnswers="setAnswer"></question-board>
             </div>
         </div>
     </form>
@@ -19,7 +19,7 @@
     export default {
         name: "Quiz",
         components: {QuestionBoard, InfoBar, QuestionList},
-        props:["datas"],
+        props:["datas","corr_amount"],
         data(){
             return {
                 secondsAvailable:"",
@@ -32,7 +32,8 @@
                 selected:0,
                 bookmarks:[],
                 missing:0,
-                onlyBookmarks:false
+                onlyBookmarks:false,
+                ca:[]
             }
         },
         mounted(){
@@ -44,9 +45,12 @@
             this.startDateTime = new Date();
             this.submitTo = json.submitTo;
             this.csrf = json.csrf;
+            this.ca = JSON.parse(this.corr_amount);
 
             this.missing = this.findMissingQuestions(this.answers);
             console.log(this.startDateTime,new Date());
+
+
 
         },
         methods: {

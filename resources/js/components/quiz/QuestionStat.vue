@@ -1,15 +1,16 @@
 <template>
     <div>
         <div>
-            <h4>{{question.text}}</h4>
-            <span class="small">Úspěšnost: 25.3%</span>
+            <h4>{{index}}. {{question.text}}</h4>
+            <span v-if="results.length == 1">Bodů: {{results[0].points[index-1]}}</span>
+            <span v-if="results.length > 1" class="small">Úspěšnost: {{getSuccessPercentage()}}%</span>
+            <hr>
             <div class="offset">
                 <div class="d-flex ans align-items-center justify-content-between" v-for="(o,i) in question.options" :class="{'bg-success':getOptionById(o.option_id) != null && getOptionById(o.option_id).correct}">
-                    <span>{{o.text}}</span>
-                    <div v-if="getOptionById(o.option_id)!=null && getOptionById(o.option_id).students.length > 0" style="margin-left:15px" class="smaller d-flex align-items-center">
+                    <span :class="{corr:getOptionById(o.option_id)!=null && getOptionById(o.option_id).students.length > 0}">{{o.text}}</span>
+                    <div v-if="results.length > 1 && getOptionById(o.option_id)!=null && getOptionById(o.option_id).students.length > 0" style="margin-left:15px" class="smaller d-flex align-items-center">
                         <b v-b-popover.hover="returnAsString(getOptionById(o.option_id).students)" title="Tuto možnost vybrali:">{{(getOptionById(o.option_id).students.length+"x")}}</b>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -25,6 +26,9 @@
             },
             results:{
                 required:true
+            },
+            index:{
+                type:Number
             }
         },
         data(){
@@ -36,10 +40,10 @@
         },
         mounted(){
             this.runStats();
-            this.getOptionById(10);
         },
         methods:{
             runStats(){
+                this.stats = [];
                 for(var i = 0; i<this.question.options.length;i++){
                     this.stats.push({
                         option_id:this.question.options[i].option_id,
@@ -76,6 +80,15 @@
                 }
                 return toReturn;
             },
+            getSuccessPercentage(){
+                var sum = 0;
+                var filtered = this.results.filter((r)=>{return r.time != null});
+                for(var i=0;i<filtered.length;i++){
+                    sum+=filtered[i].points[this.index-1];
+                }
+                console.log(sum+"/"+"("+filtered.length+"*"+this.question.correct_opts.length+")");
+                return (sum/(filtered.length*this.question.correct_opts.length))*100;
+            },
             isOptionCorrect(option_id){
                 return this.question.correct_opts.filter((o)=>{
                     return o == option_id;
@@ -90,6 +103,11 @@
                 }
                 return null;
 
+            }
+        },
+        watch:{
+            results(){
+                this.runStats();
             }
         }
     }
@@ -106,5 +124,8 @@
     }
     .smaller{
         font-size:16px;
+    }
+    .corr{
+        font-weight: bold;
     }
 </style>

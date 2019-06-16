@@ -96,17 +96,16 @@ class Quiz extends Model
         }
     }
 
-    private function getPoints($ans_opts,$opts){
+    public function getPoints($ans_opts,$opts){
         $points = 0;
+
+        if($ans_opts->count() > $opts->count()){
+            return 0;
+        }
         for($j=0;$j<$ans_opts->count();$j++){
             if($opts->where('id_o',$ans_opts[$j])->count() == 1){
                 $points++;
-            }else{
-                $points--;
             }
-        }
-        if($points < 0){
-            $points = 0;
         }
         return $points;
     }

@@ -16,6 +16,9 @@
             index:{
                 type:Number,
                 required:true
+            },
+            corr_amount:{
+                type:Number
             }
 
         },

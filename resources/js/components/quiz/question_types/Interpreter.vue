@@ -1,6 +1,6 @@
 <template>
     <div>
-        <checkbox v-if="question.type=='checkbox'" :ans="answer" :question="question" :index="index" @answers="sendAnswers"></checkbox>
+        <checkbox v-if="question.type=='checkbox'" :corr_amount="corr_amount"  :ans="answer" :question="question" :index="index" @answers="sendAnswers"></checkbox>
         <radio v-if="question.type=='radio'" :ans="answer" :question="question" :index="index" @answers="sendAnswers"></radio>
     </div>
 </template>
@@ -22,6 +22,9 @@
             answer:{
                 type:Array,
                 default:()=>[]
+            },
+            corr_amount:{
+                type:Number
             }
         },
         name: "Interpreter",

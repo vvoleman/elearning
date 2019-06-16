@@ -1,7 +1,8 @@
 <template>
     <div class="col-md-10 mx-auto m-top-2">
         <div>
-            <h3 class="text-center">Výsledky testu "{{quiz}}"</h3>
+            <h3 class="text-center">Výsledky testu "{{quiz}}" </h3>
+            <div class="text-center col-12"><b><span :class="{'text-success':act,'text-danger':!act}">{{(act) ? "Test je stále otevřen!" : "Test uzavřen!"}}</span></b></div>
             <hr>
             <div>
                 <div class="d-block"><b>Odevzdaných výsledků: </b>{{filledQuizesAmount().length}}/{{results.length}}</div>
@@ -24,7 +25,7 @@
     export default {
         name: "OpenResults",
         components: {StatsContainer, ResultsTable},
-        props:["res","quests","quiz"],
+        props:["res","quests","quiz","act"],
         data(){
             return {
                 results:[],
