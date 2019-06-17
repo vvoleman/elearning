@@ -1,5 +1,6 @@
 /* -------- Imports -------- */
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
 /* ------ End Imports ------ */
 
 :root{
@@ -408,8 +409,43 @@ input:not([type=checkbox]),textarea{
     display:flex;
     justify-content: center;
 }
-
-
+.m-top-3{
+    margin-top:50px;
+}
+.shadow{
+    background: #dddddd;
+    height: 100%;
+    box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.31);
+}
+.infobox_head{
+    background: #2b3038;
+    width:100%;
+    padding:5px;
+    color:white;
+    font-size:25px;
+}
+.infobox_head span{
+    margin-left:10px;
+}
+.infobox_stat{
+    padding:12px;
+}
+.infobox_stat .fas{
+    color:#3b5998;
+    width:85px;
+    font-size:60px;
+}
+.infobox_stat span{
+    margin-left:20px;
+    font-size:20px;
+}
+.infobox_body{
+    min-height: 300px;
+    background: #dddddd;
+}
+.infobox_body p{
+    padding:15px;
+}
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
