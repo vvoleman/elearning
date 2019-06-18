@@ -7,7 +7,7 @@
                 <span>Projekt</span><span><b id="blink">|</b></span>
             </div>
         </div>
-        <div class="d-md-flex justify-content-around col-10 mx-auto m-top-3 align-content-stretch">
+        <div class="d-md-flex justify-content-around col-10 mx-auto m-top-3">
             <div class="col-md-4">
                 <div class="shadow">
                     <div class="infobox_head"><span>O projektu</span></div>
@@ -16,9 +16,7 @@
                             Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Fusce consectetuer risus a nunc. Aenean placerat.
                             Praesent dapibus. Fusce consectetuer risus a nunc. In enim a arcu imperdiet malesuada. Duis condimentum augue id
                             magna semper rutrum. Etiam dui sem, fermentum vitae, sagittis id, malesuada in, quam. Etiam ligula pede, sagittis quis,
-                            interdum ultricies, scelerisque eu. Aliquam id dolor. Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla,
-                            et sollicitudin sem purus in lacus. In convallis. Morbi imperdiet, mauris ac auctor dictum, nisl ligula egestas nulla,
-                            et sollicitudin sem purus in lacus. In convallis.
+                            interdum ultricies, scelerisque eu.
                         </p>
                     </div>
                 </div>
@@ -27,25 +25,25 @@
                 <div class="shadow">
                     <div class="infobox_head col-12"><span>V číslech</span></div>
                     <div class="infobox_body d-flex justify-content-between flex-wrap">
-                        <div class="col-md-5 mx-auto">
+                        <div class="col-md-12">
                             <div class="d-flex align-items-center infobox_stat">
                                 <i class="fas fa-chalkboard"></i>
                                 <span>{{$courses}}</span>
                             </div>
                         </div>
-                        <div class="col-md-5 mx-auto">
+                        <div class="col-md-12">
                             <div class="d-flex align-items-center infobox_stat">
                                 <i class="fas fa-book"></i>
                                 <span>{{$modules}}</span>
                             </div>
                         </div>
-                        <div class="col-md-5 mx-auto">
+                        <div class="col-md-12">
                             <div class="d-flex align-items-center infobox_stat">
                                 <i class="fas fa-question"></i>
                                 <span>{{$quizes}}</span>
                             </div>
                         </div>
-                        <div class="col-md-5 mx-auto">
+                        <div class="col-md-12">
                             <div class="d-flex align-items-center infobox_stat">
                                 <i class="fas fa-users"></i>
                                 <span>{{$users}}</span>
@@ -63,8 +61,12 @@
                             <span>info@projekt.cz</span>
                         </div>
                         <div class="d-flex align-items-center infobox_stat">
-                            <i class="fas fa-phone-alt"></i>
+                            <i class="fas fa-phone"></i>
                             <span>123 456 789</span>
+                        </div>
+                        <div class="d-flex align-items-center infobox_stat">
+                            <i class="fab fa-facebook"></i>
+                            <span>FB stránka</span>
                         </div>
                     </div>
                 </div>

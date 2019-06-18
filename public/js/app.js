@@ -100690,7 +100690,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.not_submit[data-v-5c005357]{\n    background:#ff7979 !important;\n}\n", ""]);
+exports.push([module.i, "\n.not_submit[data-v-5c005357]{\r\n    background:#ff7979 !important;\n}\n.form-group input[type=number][data-v-5c005357]{\r\n    border:1px solid #333;\n}\r\n", ""]);
 
 // exports
 
@@ -100701,6 +100701,35 @@ exports.push([module.i, "\n.not_submit[data-v-5c005357]{\n    background:#ff7979
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -100780,55 +100809,136 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "m-top-2" }, [
-    _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c("label", { staticClass: "switch" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.submitToggle,
-              expression: "submitToggle"
-            }
-          ],
-          attrs: { type: "checkbox" },
-          domProps: {
-            checked: Array.isArray(_vm.submitToggle)
-              ? _vm._i(_vm.submitToggle, null) > -1
-              : _vm.submitToggle
-          },
-          on: {
-            change: function($event) {
-              var $$a = _vm.submitToggle,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 && (_vm.submitToggle = $$a.concat([$$v]))
-                } else {
-                  $$i > -1 &&
-                    (_vm.submitToggle = $$a
-                      .slice(0, $$i)
-                      .concat($$a.slice($$i + 1)))
+    _c(
+      "div",
+      { staticClass: "d-md-flex justify-content-between align-items-center" },
+      [
+        _c("div", { staticClass: "d-flex align-items-center" }, [
+          _c("label", { staticClass: "switch" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.submitToggle,
+                  expression: "submitToggle"
                 }
-              } else {
-                _vm.submitToggle = $$c
+              ],
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.submitToggle)
+                  ? _vm._i(_vm.submitToggle, null) > -1
+                  : _vm.submitToggle
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.submitToggle,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.submitToggle = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.submitToggle = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.submitToggle = $$c
+                  }
+                }
               }
-            }
-          }
-        }),
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "slider round" })
+          ]),
+          _vm._v(" "),
+          _c("label", { staticStyle: { "margin-left": "5px" } }, [
+            _vm._v("Zobrazit neodevzdané")
+          ])
+        ]),
         _vm._v(" "),
-        _c("span", { staticClass: "slider round" })
-      ]),
-      _vm._v(" "),
-      _c("label", { staticStyle: { "margin-left": "5px" } }, [
-        _vm._v("Zobrazit neodevzdané")
-      ])
-    ]),
+        _c(
+          "div",
+          [
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "b-modal",
+                    rawName: "v-b-modal",
+                    value: "edit-grades",
+                    expression: "'edit-grades'"
+                  }
+                ],
+                staticClass: "btn btn-success"
+              },
+              [_vm._v("Upravit známky")]
+            ),
+            _vm._v(" "),
+            _c(
+              "b-modal",
+              { attrs: { id: "edit-grades", title: "Upravit známky" } },
+              [
+                _c("div", { staticClass: "d-md-flex flex-wrap" }, [
+                  _c("div", { staticClass: "form-group col-md-6" }, [
+                    _c("label", { staticClass: "label" }, [_vm._v("1")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "number", min: "1", max: "100" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-6" }, [
+                    _c("label", { staticClass: "label" }, [_vm._v("2")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "number", min: "1", max: "100" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-6" }, [
+                    _c("label", { staticClass: "label" }, [_vm._v("3")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "number", min: "1", max: "100" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-6" }, [
+                    _c("label", { staticClass: "label" }, [_vm._v("4")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "number", min: "1", max: "100" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-6" }, [
+                    _c("label", { staticClass: "label" }, [_vm._v("5")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "number", min: "1", max: "100" }
+                    })
+                  ])
+                ])
+              ]
+            )
+          ],
+          1
+        )
+      ]
+    ),
     _vm._v(" "),
-    _c("table", { staticClass: "table table-striped" }, [
+    _c("table", { staticClass: "table table-striped m-top" }, [
       _vm._m(0),
       _vm._v(" "),
       _c(

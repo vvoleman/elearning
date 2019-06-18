@@ -430,18 +430,26 @@ input:not([type=checkbox]),textarea{
 .infobox_stat{
     padding:12px;
 }
-.infobox_stat .fas{
+.infobox_stat .fas,.infobox_stat .fab{
     color:#3b5998;
     width:85px;
     font-size:60px;
+}
+.fa-facebook{
+    margin-left:8px;
+    margin-right:-8px;
 }
 .infobox_stat span{
     margin-left:20px;
     font-size:20px;
 }
 .infobox_body{
-    min-height: 300px;
     background: #dddddd;
+}
+.fa-phone{
+    transform: rotateY(180deg);
+    margin-left:-15px;
+    margin-right:15px;
 }
 .infobox_body p{
     padding:15px;
