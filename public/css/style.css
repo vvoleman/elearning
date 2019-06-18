@@ -237,6 +237,7 @@ input:not([type=checkbox]),textarea{
     padding-left:0px;
     padding-right:0px;
     padding:0px;
+    height:80%;
     font-family:"Century Gothic";
 }
 .messenger .col-lg-3, .messenger .col-md-5{
@@ -286,7 +287,6 @@ input:not([type=checkbox]),textarea{
     border:2px solid #898C8E;
 }
 .messenger .shortcut_part{
-    height:85%;
     overflow: auto;
     border-right:1px solid #929292;
 }

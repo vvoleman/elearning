@@ -95,6 +95,7 @@
     export default {
         name: "NewQuiz",
         components: {TypeTranslator},
+        props:["course_id"],
         data(){
             return{
                 show_up:false,
@@ -115,6 +116,7 @@
                         }
                     }
                 },
+                loadedModules:[],
                 modals:{
                     newQuestion:false,
                     new_error:null,
@@ -133,7 +135,7 @@
                         answers:-1
                     }
                 ],
-                questions:[{"type":"radio","question":"Máš hlad?","options":[{"text":"ano","isAnswer":true},{"text":"ne","isAnswer":false}]}]
+                questions:[]
             }
         },
         created () {
@@ -142,7 +144,6 @@
         destroyed () {
             window.removeEventListener('scroll', this.handleScroll);
         },
-
         methods:{
             newQuestion(){
                 if(this.inputs.modals.new.question.length < 1){

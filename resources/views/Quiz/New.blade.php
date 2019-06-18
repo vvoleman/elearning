@@ -2,5 +2,6 @@
 @section('title','Nový test | ')
 @section('content')
     {{Form::open()}}
-    <newquiz></newquiz>
+    <newquiz course_id="{{$course_id}}"></newquiz>
+    {{Form::close()}}
 @stop

@@ -12,7 +12,7 @@
                 <div>
                     <h6>Třída: {{$o->group->name}}</h6>
                     <h6>Odevzdáno: {{date("d. m. Y H:i",$result->started_at->timestamp)}}</h6>
-                    <h6>Potřebná doba: {{floor($time/60)}}:{{$time%60}}</h6>
+                    <h6>Potřebná doba: {{((floor($time/60) < 10) ? "0" :"").floor($time/60)}}:{{((floor($time%60) < 10) ? "0" :"").floor($time%60)}}</h6>
                 </div>
                 <div class="d-flex align-items-end justify-content-start">
                     <div class="result_perc align-items-end d-flex">

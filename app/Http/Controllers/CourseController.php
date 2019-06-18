@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Option;
 use App\Question;
 use App\Quiz;
+use App\Module;
 use Illuminate\Http\Request;
 use App\Group;
 use App\Course;
@@ -151,6 +152,12 @@ class CourseController extends Controller
     }
     public function ajaxEditSettings(Request $request){
         dd($request);
+    }
+    public function ajaxGetReferencedModule(Request $request){
+        $data = $request->validate([
+            "course_id"=>"required|Integer"
+        ]);
+        return response()->json(Module::where('course_id',$data["course_id"])->get());
     }
 
     private function checkIfHasPerm($id){

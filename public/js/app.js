@@ -87591,7 +87591,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -87747,11 +87747,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $.post('/ajax/postMessage', { data: d }, function (data) {
                 if (data.response != null && data.response == 200) {
                     temp.clearInputs();
-                    alert('Zpráva byla úspěšně odeslána!');
+                    this.$snotify.success('Zpráva byla odeslána!', 'Úspěch', {
+                        timeout: 2000,
+                        showProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: false
+                    });
                     temp.newMsgShow.show = false;
                     temp.currMsg = "";
                 }
-            });
+            }.bind(this));
         },
         markAsSeen: function markAsSeen(msg, boo) {
             var temp = this;
@@ -87834,6 +87839,8 @@ var render = function() {
     "div",
     { staticClass: "messenger_megadiv" },
     [
+      _c("vue-snotify"),
+      _vm._v(" "),
       _c("div", { staticClass: "col-md-12 messenger d-md-flex" }, [
         _c("div", { staticClass: "col-md-4 col-lg-3 shortcut_part" }, [
           _c(
@@ -96235,6 +96242,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -96303,7 +96311,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return;
                 }
             }
-            alert('Vaše výsledky se nyní zpracují!');
             document.getElementById("form").submit();
         },
         move: function move(dir) {
@@ -98040,6 +98047,8 @@ var render = function() {
     "form",
     { attrs: { method: "post", action: _vm.submitTo, id: "form" } },
     [
+      _c("vue-snotify"),
+      _vm._v(" "),
       _c("input", {
         attrs: { type: "hidden", name: "_token" },
         domProps: { value: _vm.csrf }
@@ -98103,7 +98112,8 @@ var render = function() {
         ],
         1
       )
-    ]
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -98312,6 +98322,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "NewQuiz",
     components: { TypeTranslator: __WEBPACK_IMPORTED_MODULE_0__edit_TypeTranslator___default.a },
+    props: ["course_id"],
     data: function data() {
         return {
             show_up: false,
@@ -98332,6 +98343,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 }
             },
+            loadedModules: [],
             modals: {
                 newQuestion: false,
                 new_error: null,
@@ -98347,7 +98359,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 name: "checkbox",
                 answers: -1
             }],
-            questions: [{ "type": "radio", "question": "Máš hlad?", "options": [{ "text": "ano", "isAnswer": true }, { "text": "ne", "isAnswer": false }] }]
+            questions: []
         };
     },
     created: function created() {
@@ -98356,7 +98368,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     destroyed: function destroyed() {
         window.removeEventListener('scroll', this.handleScroll);
     },
-
 
     methods: {
         newQuestion: function newQuestion() {
@@ -100760,6 +100771,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "ResultsTable",
@@ -100771,13 +100789,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             submitToggle: true,
-            orderBy: "surname"
+            orderBy: "surname",
+            grades: [87, 73, 58, 43],
+            modal: [],
+            modalShow: false,
+            gradesOk: true,
+            rangeOk: true
         };
     },
 
     methods: {
         formateDate: function formateDate(seconds) {
-            return Math.floor(seconds / 60) + ":" + Math.floor(seconds % 60);
+            return (Math.floor(seconds / 60) < 10 ? "0" : "") + Math.floor(seconds / 60) + ":" + (Math.floor(seconds % 60) < 10 ? "0" : "") + Math.floor(seconds % 60);
         },
         compare: function compare(a, b) {
             if (a[this.orderBy] < b[this.orderBy]) {
@@ -100787,6 +100810,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return 1;
             }
             return 0;
+        },
+        findGrade: function findGrade(perc) {
+            for (var i = 0; i < 5; i++) {
+                if (perc > this.grades[i]) {
+                    return i + 1;
+                }
+            }
+            return 5;
+        },
+        clickEdit: function clickEdit() {
+            this.modal = this.grades.slice();
+            this.modalShow = true;
+        },
+        changeGrades: function changeGrades() {
+            this.grades = this.modal.slice();
+        },
+        close: function close() {
+            console.log("ahoj");
+            this.modalShow = false;
+        },
+        checkHide: function checkHide(evt) {
+            if (evt.trigger == "backdrop") {
+                evt.preventDefault();
+            }
+        }
+    },
+    watch: {
+        modal: function modal() {
+            var corr = true;
+            var limit = true;
+            for (var i = 0; i < this.modal.length; i++) {
+                if (this.modal[i] >= 100 || this.modal[i] <= 0) {
+                    limit = false;
+                    break;
+                }
+                if (this.modal[i + 1] != null && this.modal[i] <= this.modal[i + 1]) {
+                    corr = false;
+                    break;
+                }
+            }
+            this.gradesOk = corr;
+            this.rangeOk = limit;
         }
     },
     computed: {
@@ -100866,40 +100931,54 @@ var render = function() {
           [
             _c(
               "button",
-              {
-                directives: [
-                  {
-                    name: "b-modal",
-                    rawName: "v-b-modal",
-                    value: "edit-grades",
-                    expression: "'edit-grades'"
-                  }
-                ],
-                staticClass: "btn btn-success"
-              },
-              [_vm._v("Upravit známky")]
+              { staticClass: "btn btn-success", on: { click: _vm.clickEdit } },
+              [_vm._v("Upravit hranice známek")]
             ),
             _vm._v(" "),
             _c(
               "b-modal",
-              { attrs: { id: "edit-grades", title: "Upravit známky" } },
+              {
+                ref: "edit-grades",
+                attrs: { title: "Upravit hranice známky" },
+                on: {
+                  ok: _vm.changeGrades,
+                  hide: _vm.checkHide,
+                  cancel: _vm.close,
+                  close: _vm.close
+                },
+                model: {
+                  value: _vm.modalShow,
+                  callback: function($$v) {
+                    _vm.modalShow = $$v
+                  },
+                  expression: "modalShow"
+                }
+              },
               [
                 _c("div", { staticClass: "d-md-flex flex-wrap" }, [
-                  _c("div", { staticClass: "form-group col-md-6" }, [
-                    _c("label", { staticClass: "label" }, [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: { type: "number", min: "1", max: "100" }
-                    })
-                  ]),
-                  _vm._v(" "),
                   _c("div", { staticClass: "form-group col-md-6" }, [
                     _c("label", { staticClass: "label" }, [_vm._v("2")]),
                     _vm._v(" "),
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.modal[0],
+                          expression: "modal[0]"
+                        }
+                      ],
                       staticClass: "form-control",
-                      attrs: { type: "number", min: "1", max: "100" }
+                      attrs: { type: "number", min: "1", max: "100" },
+                      domProps: { value: _vm.modal[0] },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.modal, 0, $event.target.value)
+                        }
+                      }
                     })
                   ]),
                   _vm._v(" "),
@@ -100907,8 +100986,25 @@ var render = function() {
                     _c("label", { staticClass: "label" }, [_vm._v("3")]),
                     _vm._v(" "),
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.modal[1],
+                          expression: "modal[1]"
+                        }
+                      ],
                       staticClass: "form-control",
-                      attrs: { type: "number", min: "1", max: "100" }
+                      attrs: { type: "number", min: "1", max: "100" },
+                      domProps: { value: _vm.modal[1] },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.modal, 1, $event.target.value)
+                        }
+                      }
                     })
                   ]),
                   _vm._v(" "),
@@ -100916,8 +101012,25 @@ var render = function() {
                     _c("label", { staticClass: "label" }, [_vm._v("4")]),
                     _vm._v(" "),
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.modal[2],
+                          expression: "modal[2]"
+                        }
+                      ],
                       staticClass: "form-control",
-                      attrs: { type: "number", min: "1", max: "100" }
+                      attrs: { type: "number", min: "1", max: "100" },
+                      domProps: { value: _vm.modal[2] },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.modal, 2, $event.target.value)
+                        }
+                      }
                     })
                   ]),
                   _vm._v(" "),
@@ -100925,10 +101038,55 @@ var render = function() {
                     _c("label", { staticClass: "label" }, [_vm._v("5")]),
                     _vm._v(" "),
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.modal[3],
+                          expression: "modal[3]"
+                        }
+                      ],
                       staticClass: "form-control",
-                      attrs: { type: "number", min: "1", max: "100" }
+                      attrs: { type: "number", min: "1", max: "100" },
+                      domProps: { value: _vm.modal[3] },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.modal, 3, $event.target.value)
+                        }
+                      }
                     })
                   ])
+                ]),
+                _vm._v(" "),
+                !_vm.rangeOk || !_vm.gradesOk ? _c("hr") : _vm._e(),
+                _vm._v(" "),
+                !_vm.rangeOk
+                  ? _c("div", { staticClass: "alert-danger col-12" }, [
+                      _vm._v(
+                        "\n                    Pozor! Hranice mohou být pouze v rozsahu 0-100 (ne včetně)\n                "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.gradesOk
+                  ? _c("div", { staticClass: "alert-danger col-12" }, [
+                      _vm._v(
+                        "\n                    Pozor! Špatné pořadí hranic známek!\n                "
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { attrs: { slot: "modal-cancel" }, slot: "modal-cancel" },
+                  [_vm._v("Zrušit")]
+                ),
+                _vm._v(" "),
+                _c("div", { attrs: { slot: "modal-ok" }, slot: "modal-ok" }, [
+                  _vm._v("Použít")
                 ])
               ]
             )
@@ -100961,7 +101119,9 @@ var render = function() {
               _vm._v(
                 _vm._s(o.percentage) + _vm._s(o.percentage != null ? "%" : "-")
               )
-            ])
+            ]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.findGrade(o.percentage)))])
           ])
         })
       )
@@ -100982,7 +101142,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Čas")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Úspěšnost")])
+      _c("th", [_vm._v("Úspěšnost")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Známka")])
     ])
   }
 ]

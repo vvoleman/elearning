@@ -124,13 +124,12 @@ class QuizController extends Controller
     }
     public function studentResults(){
         $user = Auth::user();
-        $results = QuizResult::where('submitted_at','!=',null)->where('student_id',$user->id_u)->get();
-
+        $results = QuizResult::where('submitted_at','!=',null)->where('student_id',$user->id_u)->orderBy('submitted_at','desc')->get();
         return view('Quiz/Resultlist',["results"=>$results]);
     }
     public function getNewQuiz($slug){
         if(Course::where('slug',$slug)->count() > 0){
-            return view('Quiz/New');
+            return view('Quiz/New',["course_id"=>Course::where('slug',$slug)->first()->id_c]);
         }
         abort(404);
     }

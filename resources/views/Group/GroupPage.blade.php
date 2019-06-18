@@ -69,10 +69,9 @@
             <hideable def_show="true" >
                 <span slot="head-text">Otevření testů</span>
                 <div slot="body">
+                    @if(!empty($opens))
                     <opensinteractive o="{{json_encode($opens)}}"></opensinteractive>
-                    <div class="d-md-flex flex-wrap">
-
-                    </div>
+                    @endif
                 </div>
             </hideable>
                 @endif

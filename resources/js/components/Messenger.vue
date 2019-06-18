@@ -1,5 +1,6 @@
 <template>
     <div class="messenger_megadiv">
+        <vue-snotify></vue-snotify>
         <div class="col-md-12 messenger d-md-flex">
             <div class="col-md-4 col-lg-3 shortcut_part">
                 <div class="m-top boxbox">
@@ -12,7 +13,6 @@
                                 <span class="attr text"><span>{{o.message.substr(0,27)}}{{(o.message.length >27)? "..." : ""}}</span></span>
                                 <span class="attr" style="font-size:14px">({{getDate(o.sent)}})</span>
                             </div>
-
                         </div>
                     </div>
                     <div v-if="messages.length == 0" class="d-flex align-items-center justify-content-center">
@@ -143,11 +143,16 @@
                 $.post('/ajax/postMessage',{data:d},function(data){
                    if(data.response != null && data.response == 200){
                        temp.clearInputs();
-                       alert('Zpráva byla úspěšně odeslána!');
+                       this.$snotify.success('Zpráva byla odeslána!', 'Úspěch', {
+                           timeout: 2000,
+                           showProgressBar: true,
+                           closeOnClick: true,
+                           pauseOnHover: false
+                       });
                        temp.newMsgShow.show = false;
                        temp.currMsg = "";
                    }
-                });
+                }.bind(this));
             },
             markAsSeen:function(msg,boo){
                 var temp = this;

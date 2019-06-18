@@ -1,5 +1,6 @@
 <template>
     <form method="post" :action="submitTo" id="form">
+        <vue-snotify></vue-snotify>
         <input type="hidden" name="_token" :value="csrf">
         <input v-if="startDateTime != null" type="hidden" name="data" :value="JSON.stringify(toSubmit)"/>
         <div>
@@ -82,7 +83,6 @@
                         return;
                     }
                 }
-                alert('Vaše výsledky se nyní zpracují!');
                 document.getElementById("form").submit();
             },
             move(dir){

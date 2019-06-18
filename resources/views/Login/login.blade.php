@@ -26,7 +26,7 @@
         <button class="btn btn-block btn-success">Přihlásit</button>
         <hr>
         <div>
-            <a href="#">Zapomněli jste heslo?</a>
+            <a href="#" id="forget">Zapomněli jste heslo?</a>
         </div>
     </div>
 </div>
@@ -35,6 +35,9 @@
 @section('customjs')
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
 <script>
+    $("#forget").on('click',()=>{
+        alert('To je ale smůůla');
+    });
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
