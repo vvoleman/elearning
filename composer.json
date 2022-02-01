@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "themulti/elearning",
+    "description": "Elearning platform.",
+    "keywords": ["framework", "laravel","elearning"],
     "license": "MIT",
     "type": "project",
     "require": {
