@@ -18,7 +18,7 @@ class MessageController extends Controller
         $this->toolkit = new Toolkit();
     }
     public function getMessenger(){
-        return view('messages/messenger',["id"=>Input::get('id')]);
+        return view('Messages/messenger',["id"=>Input::get('id')]);
     }
     private function parseMessages($msgs){
         $pass = [];

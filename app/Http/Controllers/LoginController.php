@@ -12,7 +12,7 @@ class LoginController extends Controller
         if(Auth::check()){
             return redirect()->route('index');
         }//checks if user is not logged
-        return view("login/login");
+        return view("Login/login");
     }
     public function verifyLogin(Request $request){
         if(Auth::check()) {
